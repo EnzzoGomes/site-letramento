@@ -311,6 +311,27 @@
 
         .sidebar.collapsed {
             width: 60px;
+            width: 70px;
+        }
+
+        .sidebar.collapsed .logo,
+        .sidebar.collapsed .menu-text {
+            display: none;
+        }
+
+        .sidebar.collapsed .sidebar-header {
+            padding: 20px 0;
+            justify-content: center;
+        }
+
+        .sidebar.collapsed .menu-item {
+            padding: 15px 0;
+            justify-content: center;
+        }
+
+        .sidebar.collapsed .menu-icon {
+            margin-right: 0;
+            font-size: 18px;
         }
 
         .sidebar-header {
@@ -361,12 +382,14 @@
 
         .main-content.full-width {
             margin-left: 60px;
+            margin-left: 70px;
         }
 
         .header {
             position: fixed;
             top: 0;
             left: 280px;
+            left: 250px;
             right: 0;
             height: 80px;
             background: rgba(255, 255, 255, 0.8);
@@ -381,6 +404,7 @@
 
         .header.full-width {
             left: 60px;
+            left: 70px;
         }
 
         .logo {
@@ -1605,6 +1629,7 @@
                             <p style="color: var(--cinza-medio); font-size: 14px;">Visão geral do sistema e indicadores de performance.</p>
                         </div>
                         <button class="btn-primary" onclick="AdminDashboard.exportReport()">+ Gerar Relatório</button>
+                        <button class="btn-primary" onclick="window.AdminDashboard.exportReport()">+ Gerar Relatório</button>
                     </div>
                     <div class="dashboard-grid">
                         <div class="stat-card">
@@ -1622,6 +1647,8 @@
                         <div class="stat-card">
                             <div class="stat-number">98%</div>
                             <div class="stat-label">Satisfação Alunos</div>
+                            <div class="stat-number" id="total-certificates">0</div>
+                            <div class="stat-label">Certificados Gerados</div>
                         </div>
                     </div>
                     
@@ -1744,6 +1771,7 @@
                 });
             }
         };
+        window.AdminDashboard = AdminDashboard;
 
         // === MÓDULO DE GERENCIAMENTO DE CURSOS ===
         const CourseManager = {
@@ -2021,6 +2049,7 @@
                 }
             }
         };
+        window.CourseManager = CourseManager;
 
         // === MÓDULO DE GERENCIAMENTO DE ALUNOS ===
         const StudentManager = {
@@ -2149,6 +2178,7 @@
                 Toast.show('Exportação simulada realizada com sucesso!', 'success');
             }
         };
+        window.StudentManager = StudentManager;
 
         // === MÓDULO DE CATÁLOGO DE CURSOS (ALUNO) ===
         const CourseCatalog = {
@@ -2305,6 +2335,7 @@
                 }
             }
         };
+        window.CourseCatalog = CourseCatalog;
 
         // === MÓDULO DE DETALHES DO CURSO ===
         const CourseDetail = {
@@ -2440,6 +2471,7 @@
                 Quiz.render(courseId, lessonId, lesson);
             }
         };
+        window.CourseDetail = CourseDetail;
 
         // === MÓDULO DE PLAYER DE VÍDEO ===
         const LessonPlayer = {
@@ -2482,6 +2514,7 @@
                 CourseDetail.render(courseId);
             }
         };
+        window.LessonPlayer = LessonPlayer;
 
         // === MÓDULO DE QUIZ ===
         const Quiz = {
@@ -2638,6 +2671,7 @@
                 CourseDetail.render(this.courseId);
             }
         };
+        window.Quiz = Quiz;
 
         // === MÓDULO DE MEUS CURSOS ===
         const MyCourses = {
@@ -2689,6 +2723,7 @@
                 document.getElementById('content-area').innerHTML = content;
             }
         };
+        window.MyCourses = MyCourses;
 
         // === MÓDULO DE CERTIFICADO ===
         const Certificate = {
@@ -2731,6 +2766,7 @@
                 document.getElementById('content-area').innerHTML = content;
             }
         };
+        window.Certificate = Certificate;
 
         // === MÓDULO DE PERFIL DO ALUNO ===
         const StudentProfile = {
@@ -2837,6 +2873,7 @@
                 }
             }
         };
+        window.StudentProfile = StudentProfile;
 
         // === MÓDULO PRINCIPAL ===
         const MainApp = {
@@ -2887,6 +2924,7 @@
                 `).join('');
             }
         };
+        window.MainApp = MainApp;
 
         // === CONFIGURAÇÃO DE ROTAS ===
         Router.addRoute('admin-dashboard', () => AdminDashboard.render());
@@ -2895,6 +2933,7 @@
         Router.addRoute('catalog', () => CourseCatalog.render());
         Router.addRoute('my-courses', () => MyCourses.render());
         Router.addRoute('profile', () => StudentProfile.render());
+        window.Router = Router;
 
         // === EVENT LISTENERS ===
         document.addEventListener('DOMContentLoaded', () => {
@@ -2982,6 +3021,7 @@
         window.Certificate = Certificate;
         window.StudentProfile = StudentProfile;
         window.Router = Router;
+        // Make core utility functions globally available
         window.Modal = Modal;
         window.Toast = Toast;
         window.Auth = Auth;
