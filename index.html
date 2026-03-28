@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Letramento Digital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .aluno {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .aluno-nome {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .xp-badge {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .aula {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .aula:hover {
+            background: #f0f0f0;
+            border-color: #667eea;
+        }
+
+        .aula.concluida {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .aula-titulo {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .aula-xp {
+            color: #667eea;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background: #764ba2;
+        }
+
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 0.9em;
+        }
+
+        .ranking {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .ranking h4 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .ranking-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .ranking-item:last-child {
+            border-bottom: none;
+        }
+
+        .medal {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #ffc107;
+            color: #333;
+            text-align: center;
+            line-height: 25px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .selo {
+            background: #ffc107;
+            color: #333;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            display: inline-block;
+            margin: 5px 0;
+        }
+
+        .forum {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .forum-titulo {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .forum-autor {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .resposta {
+            background: white;
+            padding: 10px;
+            margin: 8px 0;
+            border-left: 3px solid #667eea;
+            border-radius: 5px;
+        }
+
+        .section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #ddd;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .icons {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><span class="icons">📚</span>Plataforma de Letramento Digital</h1>
+            <p class="subtitle">Desenvolva suas habilidades digitais - Jovens Aprendizes (14-24 anos)</p>
+        </header>
+
+        <div class="main-content">
+            <!-- SEÇÃO DE ALUNOS -->
+            <div class="card">
+                <h3><span class="icons">👥</span>Alunos</h3>
+                <div id="listaAlunos"></div>
+                <button class="btn btn-small" onclick="adicionarAluno()">+ Novo Aluno</button>
+            </div>
+
+            <!-- SEÇÃO DE TRILHAS E AULAS -->
+            <div class="card">
+                <h3><span class="icons">🎓</span>Trilha: IA & Futuro</h3>
+                <p><strong>Categoria:</strong> IA_FUTURO</p>
+                <p><strong>Selo Alvo:</strong> <span class="selo">OURO</span></p>
+                
+                <h4 style="margin-top: 15px; color: #333;">Módulo: Fundamentos de IA</h4>
+                <div id="listaAulas"></div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO DE DOWNLOADS DE CERTIFICADOS -->
+        <div class="section">
+            <h3><span class="icons">🏆</span>Certificados Desbloqueados</h3>
+            <div id="certificados"></div>
+        </div>
+
+        <!-- SEÇÃO DO RANKING -->
+        <div class="section">
+            <div class="ranking">
+                <h4>🏆 Ranking de Engajamento</h4>
+                <div id="ranking"></div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO DO FÓRUM -->
+        <div class="section">
+            <h3><span class="icons">💬</span>Fórum - Dúvidas e Discussões</h3>
+            <div id="forum"></div>
+            <button class="btn" onclick="adicionarTopico()">+ Novo Tópico</button>
+        </div>
+    </div>
+
+    <!-- MODAL PARA NOVO ALUNO -->
+    <div id="modalAluno" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal('modalAluno')">&times;</span>
+            <h2>Adicionar Novo Aluno</h2>
+            <input type="text" id="nomeAluno" placeholder="Digite o nome do aluno">
+            <button class="btn" onclick="salvarAluno()">Salvar</button>
+        </div>
+    </div>
+
+    <!-- MODAL PARA NOVO TÓPICO -->
+    <div id="modalTopico" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal('modalTopico')">&times;</span>
+            <h2>Criar Novo Tópico</h2>
+            <input type="text" id="tituloTopico" placeholder="Título da dúvida">
+            <input type="text" id="autorTopico" placeholder="Seu nome">
+            <button class="btn" onclick="salvarTopico()">Criar</button>
+        </div>
+    </div>
+
+    <script>
+        // ===== MODELOS =====
+        class Aula {
+            constructor(id, titulo, xp) {
+                this.id = id;
+                this.titulo = titulo;
+                this.xpRecompensa = xp;
+            }
+        }
+
+        class Modulo {
+            constructor(nome) {
+                this.nome = nome;
+                this.aulas = [];
+            }
+
+            addAula(aula) {
+                this.aulas.push(aula);
+            }
+        }
+
+        class Trilha {
+            constructor(nome, categoria, selo) {
+                this.nome = nome;
+                this.categoria = categoria;
+                this.seloAlvo = selo;
+                this.modulos = [];
+            }
+
+            addModulo(modulo) {
+                this.modulos.push(modulo);
+            }
+        }
+
+        class Usuario {
+            constructor(nome) {
+                this.nome = nome;
+                this.xp = 0;
+                this.aulasConcluidas = new Set();
+                this.conquistas = [];
+            }
+
+            ganharXp(pts) {
+                this.xp += pts;
+            }
+
+            registrarAula(id) {
+                this.aulasConcluidas.add(id);
+            }
+        }
+
+        class TopicoForum {
+            constructor(titulo, autor) {
+                this.titulo = titulo;
+                this.autor = autor;
+                this.respostas = [];
+            }
+
+            responder(msg) {
+                this.respostas.push(msg);
+            }
+        }
+
+        // ===== ESTADO DA APLICAÇÃO =====
+        let alunos = [];
+        let trilhaIA;
+        let topicos = [];
+        let aulasGlobais = [];
+
+        // ===== INICIALIZAÇÃO =====
+        function inicializar() {
+            // Criar Trilha
+            trilhaIA = new Trilha("IA & Futuro", "IA_FUTURO", "OURO");
+            
+            // Criar Módulo
+            const m1 = new Modulo("Fundamentos de IA");
+            
+            // Criar Aulas
+            const a1 = new Aula(1, "O que é ChatGPT?", 500);
+            const a2 = new Aula(2, "Prompt Engineering", 500);
+            
+            aulasGlobais = [a1, a2];
+            
+            m1.addAula(a1);
+            m1.addAula(a2);
+            trilhaIA.addModulo(m1);
+
+            // Alunos iniciais
+            alunos = [
+                new Usuario("Gabriel"),
+                new Usuario("Beatriz")
+            ];
+
+            // Fórum inicial
+            const topico1 = new TopicoForum("Dúvida sobre Prompts", "Beatriz");
+            topico1.responder("Use o método Persona para melhores resultados!");
+            topicos.push(topico1);
+
+            renderizar();
+        }
+
+        // ===== FUNÇÕES DE NEGÓCIO =====
+        function completarAula(nomeAluno, idAula) {
+            const aluno = alunos.find(a => a.nome === nomeAluno);
+            if (!aluno) {
+                alert("Aluno não encontrado!");
+                return;
+            }
+
+            if (aluno.aulasConcluidas.has(idAula)) {
+                alert(`${aluno.nome} já assistiu essa aula!`);
+                return;
+            }
+
+            const aula = aulasGlobais.find(a => a.id === idAula);
+            aluno.registrarAula(idAula);
+            aluno.ganharXp(aula.xpRecompensa);
+
+            alert(`✅ Parabéns! ${aluno.nome} concluiu: ${aula.titulo}`);
+            renderizar();
+        }
+
+        function verificarCertificado(nomeAluno, trilha) {
+            const aluno = alunos.find(a => a.nome === nomeAluno);
+            if (!aluno) return false;
+
+            let todasAulas = [];
+            trilha.modulos.forEach(m => {
+                m.aulas.forEach(a => todasAulas.push(a.id));
+            });
+
+            const temTodas = todasAulas.every(id => aluno.aulasConcluidas.has(id));
+            
+            if (temTodas && !aluno.conquistas.includes(trilha.seloAlvo)) {
+                const certificado = `CERTIFICADO ${trilha.seloAlvo} - ${trilha.nome}`;
+                aluno.conquistas.push(certificado);
+                alert(`🎓 Parabéns! Selo ${trilha.seloAlvo} desbloqueado para ${aluno.nome}!`);
+                return true;
+            }
+            return temTodas;
+        }
+
+        function adicionarAluno() {
+            document.getElementById('modalAluno').style.display = 'block';
+        }
+
+        function salvarAluno() {
+            const nome = document.getElementById('nomeAluno').value.trim();
+            if (!nome) {
+                alert("Digite um nome!");
+                return;
+            }
+
+            if (alunos.find(a => a.nome === nome)) {
+                alert("Aluno já existe!");
+                return;
+            }
+
+            alunos.push(new Usuario(nome));
+            fecharModal('modalAluno');
+            document.getElementById('nomeAluno').value = '';
+            renderizar();
+        }
+
+        function adicionarTopico() {
+            document.getElementById('modalTopico').style.display = 'block';
+        }
+
+        function salvarTopico() {
+            const titulo = document.getElementById('tituloTopico').value.trim();
+            const autor = document.getElementById('autorTopico').value.trim();
+
+            if (!titulo || !autor) {
+                alert("Preencha todos os campos!");
+                return;
+            }
+
+            topicos.push(new TopicoForum(titulo, autor));
+            fecharModal('modalTopico');
+            document.getElementById('tituloTopico').value = '';
+            document.getElementById('autorTopico').value = '';
+            renderizar();
+        }
+
+        function fecharModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // ===== RENDERIZAÇÃO =====
+        function renderizar() {
+            renderizarAlunos();
+            renderizarAulas();
+            renderizarRanking();
+            renderizarCertificados();
+            renderizarForum();
+        }
+
+        function renderizarAlunos() {
+            const container = document.getElementById('listaAlunos');
+            container.innerHTML = alunos.map(aluno => `
+                <div class="aluno">
+                    <span class="aluno-nome">${aluno.nome}</span>
+                    <span class="xp-badge">${aluno.xp} XP</span>
+                </div>
+            `).join('');
+        }
+
+        function renderizarAulas() {
+            const container = document.getElementById('listaAulas');
+            const todasConcluidas = {};
+            
+            alunos.forEach(aluno => {
+                aulasGlobais.forEach(aula => {
+                    if (aluno.aulasConcluidas.has(aula.id)) {
+                        if (!todasConcluidas[aula.id]) todasConcluidas[aula.id] = 0;
+                        todasConcluidas[aula.id]++;
+                    }
+                });
+            });
+
+            container.innerHTML = aulasGlobais.map(aula => {
+                const concluida = todasConcluidas[aula.id] > 0;
+                return `
+                    <div class="aula ${concluida ? 'concluida' : ''}" onclick="selecionarAula(${aula.id})">
+                        <div class="aula-titulo">${aula.titulo}</div>
+                        <div class="aula-xp">💰 ${aula.xpRecompensa} XP</div>
+                        <div style="color: #999; font-size: 0.85em; margin-top: 5px;">Concluída por ${todasConcluidas[aula.id] || 0} aluno(s)</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selecionarAula(idAula) {
+            const aula = aulasGlobais.find(a => a.id === idAula);
+            const aluno = alunos[0]; // Usar primeiro aluno como exemplo
+            
+            if (aluno) {
+                completarAula(aluno.nome, idAula);
+            } else {
+                alert("Adicione um aluno primeiro!");
+            }
+        }
+
+        function renderizarRanking() {
+            const container = document.getElementById('ranking');
+            const ranking = [...alunos].sort((a, b) => b.xp - a.xp);
+
+            container.innerHTML = ranking.map((aluno, idx) => {
+                const medals = ['🥇', '🥈', '🥉'];
+                const medal = medals[idx] || '⭐';
+                return `
+                    <div class="ranking-item">
+                        <span>${medal} ${aluno.nome}</span>
+                        <span>${aluno.xp} XP</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderizarCertificados() {
+            const container = document.getElementById('certificados');
+            let html = '';
+
+            alunos.forEach(aluno => {
+                if (aluno.conquistas.length > 0) {
+                    html += `<p><strong>${aluno.nome}:</strong> `;
+                    aluno.conquistas.forEach(cert => {
+                        html += `<span class="selo">${cert}</span> `;
+                    });
+                    html += `</p>`;
+                } else {
+                    html += `<p><strong>${aluno.nome}:</strong> Nenhum certificado ainda</p>`;
+                }
+            });
+
+            container.innerHTML = html || '<p>Nenhum certificado desbloqueado ainda</p>';
+        }
+
+        function renderizarForum() {
+            const container = document.getElementById('forum');
+            container.innerHTML = topicos.map((topico, idx) => `
+                <div class="forum">
+                    <div class="forum-titulo">📌 ${topico.titulo}</div>
+                    <div class="forum-autor">por ${topico.autor}</div>
+                    ${topico.respostas.map(resposta => `
+                        <div class="resposta">✓ ${resposta}</div>
+                    `).join('')}
+                    <input type="text" placeholder="Adicionar resposta..." onkeypress="if(event.key==='Enter') adicionarResposta(${idx}, this.value); this.value='';">
+                </div>
+            `).join('');
+        }
+
+        function adicionarResposta(idx, texto) {
+            if (!texto.trim()) return;
+            topicos[idx].responder(texto);
+            renderizar();
+        }
+
+        // Fechar modal ao clicar fora
+        window.onclick = function(event) {
+            const modalAluno = document.getElementById('modalAluno');
+            const modalTopico = document.getElementById('modalTopico');
+            if (event.target === modalAluno) modalAluno.style.display = 'none';
+            if (event.target === modalTopico) modalTopico.style.display = 'none';
+        }
+
+        // Iniciar aplicação
+        window.onload = inicializar;
+    </script>
+</body>
+</html>
