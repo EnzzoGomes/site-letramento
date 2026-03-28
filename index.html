@@ -3,720 +3,451 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNISO Voluntários - Plataforma de Ensino</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>UNISO Voluntarios - Plataforma de Ensino</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --purple-dark: #2D1B69;
-            --purple-medium: #5B2D8E;
-            --purple-light: #8B5CF6;
-            --purple-pastel: #F5F3FF;
-            --white: #FFFFFF;
-            --gray-dark: #1F2937;
-            --gray-medium: #6B7280;
-            --green-success: #10B981;
-            --red-error: #EF4444;
-            --yellow-warning: #F59E0B;
-            --shadow-light: 0 2px 4px rgba(0,0,0,0.1);
-            --shadow-medium: 0 4px 6px rgba(0,0,0,0.1);
-            --shadow-heavy: 0 10px 15px rgba(0,0,0,0.1);
-        }
-
-        * {
+        /* ============================================
+           RESET E VARIAVEIS CSS
+           ============================================ */
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --purple-dark: #2D1B69;
+            --purple-medium: #5B2D8E;
+            --purple-light: #8B5CF6;
+            --purple-lighter: #EDE9FE;
+            --purple-pastel: #F5F3FF;
+            --white: #FFFFFF;
+            --gray-dark: #1F2937;
+            --gray-medium: #6B7280;
+            --gray-light: #E5E7EB;
+            --success: #10B981;
+            --error: #EF4444;
+            --warning: #F59E0B;
+            --sidebar-width: 260px;
+            --sidebar-collapsed: 70px;
+            --header-height: 60px;
+            --shadow-sm: 0 1px 2px 0 rgba(45, 27, 105, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(45, 27, 105, 0.1), 0 2px 4px -1px rgba(45, 27, 105, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(45, 27, 105, 0.1), 0 4px 6px -2px rgba(45, 27, 105, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(45, 27, 105, 0.1), 0 10px 10px -5px rgba(45, 27, 105, 0.04);
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --transition-fast: 150ms ease;
+            --transition-normal: 250ms ease;
+            --transition-slow: 350ms ease;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--purple-pastel);
             color: var(--gray-dark);
             line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
+        /* ============================================
+           SCROLLBAR CUSTOMIZADA
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--purple-lighter);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--purple-medium);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--purple-dark);
+        }
+
+        ::selection {
+            background-color: var(--purple-light);
+            color: var(--white);
+        }
+
+        /* ============================================
+           ANIMACOES
+           ============================================ */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInFast {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.3s ease forwards;
+        }
+
+        .scale-in {
+            animation: scaleIn 0.3s ease forwards;
+        }
+
+        /* ============================================
+           COMPONENTES BASE
+           ============================================ */
         .hidden {
             display: none !important;
         }
 
-        /* Login Styles */
-        .login-container {
-            min-height: 100vh;
+        .flex {
             display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-2 { gap: 8px; }
+        .gap-3 { gap: 12px; }
+        .gap-4 { gap: 16px; }
+
+        .mt-2 { margin-top: 8px; }
+        .mt-3 { margin-top: 12px; }
+        .mt-4 { margin-top: 16px; }
+        .mb-2 { margin-bottom: 8px; }
+        .mb-3 { margin-bottom: 12px; }
+        .mb-4 { margin-bottom: 16px; }
+
+        .p-3 { padding: 12px; }
+        .p-4 { padding: 16px; }
+        .p-6 { padding: 24px; }
+
+        .w-full { width: 100%; }
+        .text-center { text-align: center; }
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        .text-sm { font-size: 0.875rem; }
+        .text-base { font-size: 1rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+
+        /* ============================================
+           BOTOES
+           ============================================ */
+        .btn {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--purple-dark), var(--purple-medium));
-        }
-
-        .login-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow-heavy);
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .login-header h1 {
-            color: var(--purple-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--gray-dark);
-            font-weight: 500;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--purple-light);
-        }
-
-        .btn {
-            width: 100%;
-            padding: 0.75rem;
+            gap: 8px;
+            padding: 10px 20px;
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
             border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all var(--transition-normal);
+            text-decoration: none;
         }
 
         .btn-primary {
-            background-color: var(--purple-medium);
-            color: white;
+            background: linear-gradient(135deg, var(--purple-medium), var(--purple-dark));
+            color: var(--white);
+            box-shadow: 0 4px 14px rgba(91, 45, 142, 0.4);
         }
 
-        .btn-primary:hover {
-            background-color: var(--purple-light);
+        .btn-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--purple-light), var(--purple-medium));
             transform: translateY(-2px);
         }
 
         .btn-secondary {
-            background-color: var(--gray-medium);
-            color: white;
+            background: var(--white);
+            color: var(--purple-dark);
+            border: 2px solid var(--purple-light);
         }
 
-        .btn-secondary:hover {
-            background-color: #4b5563;
+        .btn-secondary:hover:not(:disabled) {
+            background: var(--purple-lighter);
         }
 
-        .switch-form {
-            text-align: center;
-            margin-top: 1rem;
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.75rem;
         }
 
-        .switch-form a {
-            color: var(--purple-medium);
-            text-decoration: none;
-        }
-
-        .error-message {
-            color: var(--red-error);
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
-
-        /* Main Layout */
-        .app-container {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
-            background: var(--purple-dark);
-            color: white;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            z-index: 100;
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar.collapsed {
-            transform: translateX(-260px);
-        }
-
-        .sidebar-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .sidebar-header h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        .nav-menu {
-            padding: 1rem 0;
-        }
-
-        .nav-item {
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .nav-item:hover {
-            background-color: rgba(255,255,255,0.1);
-        }
-
-        .nav-item.active {
-            background-color: var(--purple-medium);
-        }
-
-        .nav-icon {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* Header */
-        .header {
-            flex: 1;
-            margin-left: 260px;
-            background: white;
-            padding: 1rem 2rem;
-            box-shadow: var(--shadow-light);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 99;
-        }
-
-        .header.collapsed {
-            margin-left: 0;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .menu-toggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--gray-dark);
-            font-size: 1.5rem;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .avatar {
+        .btn-icon {
             width: 40px;
             height: 40px;
+            padding: 0;
             border-radius: 50%;
-            background: var(--purple-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
         }
 
-        .notification-badge {
-            position: relative;
+        /* ============================================
+           INPUTS E FORMULARIOS
+           ============================================ */
+        .form-group {
+            margin-bottom: 20px;
         }
 
-        .notification-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: var(--red-error);
-            color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: 260px;
-            padding: 2rem;
-            transition: margin-left 0.3s ease;
-        }
-
-        .main-content.collapsed {
-            margin-left: 0;
-        }
-
-        .page-title {
-            font-size: 1.75rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: var(--purple-dark);
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: var(--shadow-medium);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Dashboard Admin */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow-light);
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--purple-medium);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: var(--gray-medium);
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
             font-size: 0.875rem;
-        }
-
-        /* Charts */
-        .chart-container {
-            height: 200px;
-            background: white;
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: flex-end;
-            gap: 0.5rem;
-            justify-content: space-around;
-        }
-
-        .chart-bar {
-            flex: 1;
-            background: var(--purple-light);
-            border-radius: 4px 4px 0 0;
-            position: relative;
-            min-height: 10px;
-        }
-
-        .chart-bar-label {
-            position: absolute;
-            bottom: -20px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--gray-medium);
-        }
-
-        /* Tables */
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .table th,
-        .table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .table th {
-            background: var(--purple-pastel);
-            font-weight: 600;
-            color: var(--purple-dark);
-        }
-
-        .table tr:nth-child(even) {
-            background: #f9fafb;
-        }
-
-        .table-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn-table {
-            padding: 0.25rem 0.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.875rem;
-        }
-
-        .btn-edit {
-            background: var(--yellow-warning);
-            color: white;
-        }
-
-        .btn-delete {
-            background: var(--red-error);
-            color: white;
-        }
-
-        .btn-view {
-            background: var(--purple-medium);
-            color: white;
-        }
-
-        /* Forms */
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .form-full {
-            grid-column: 1 / -1;
-        }
-
-        /* Course Catalog */
-        .courses-carousel {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .course-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: var(--shadow-medium);
-            overflow: hidden;
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
-
-        .course-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .course-image {
-            height: 160px;
-            background: linear-gradient(45deg, var(--purple-light), var(--purple-medium));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3rem;
-        }
-
-        .course-content {
-            padding: 1.5rem;
-        }
-
-        .course-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--purple-dark);
-        }
-
-        .course-description {
-            color: var(--gray-medium);
-            margin-bottom: 1rem;
-            font-size: 0.875rem;
-        }
-
-        .course-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .course-category {
-            background: var(--purple-pastel);
-            color: var(--purple-dark);
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
             font-weight: 500;
+            color: var(--gray-dark);
         }
 
-        .course-progress {
-            height: 6px;
-            background: #e5e7eb;
-            border-radius: 3px;
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            font-family: inherit;
+            font-size: 0.875rem;
+            color: var(--gray-dark);
+            background: var(--white);
+            border: 2px solid var(--gray-light);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--purple-light);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+
+        .form-checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--purple-medium);
+            cursor: pointer;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group .form-input {
+            padding-left: 44px;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-medium);
+            pointer-events: none;
+        }
+
+        /* ============================================
+           CARDS
+           ============================================ */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
             overflow: hidden;
-            margin-bottom: 1rem;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-dark);
+        }
+
+        /* ============================================
+           BADGES
+           ============================================ */
+        .badge {
+            display: inline-flex;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 20px;
+        }
+
+        .badge-primary {
+            background: var(--purple-lighter);
+            color: var(--purple-dark);
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        /* ============================================
+           PROGRESS BAR
+           ============================================ */
+        .progress {
+            width: 100%;
+            height: 8px;
+            background: var(--gray-light);
+            border-radius: 10px;
+            overflow: hidden;
         }
 
         .progress-bar {
             height: 100%;
-            background: var(--green-success);
-            border-radius: 3px;
+            background: linear-gradient(90deg, var(--purple-light), var(--purple-medium));
+            border-radius: 10px;
+            transition: width var(--transition-slow);
         }
 
-        /* Video Player */
-        .player-container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: var(--shadow-medium);
-            overflow: hidden;
-            margin-bottom: 2rem;
-        }
-
-        .video-player {
-            width: 100%;
-            height: 400px;
-            background: var(--purple-dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2rem;
-        }
-
-        .player-content {
-            padding: 1.5rem;
-        }
-
-        .lesson-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--purple-dark);
-        }
-
-        .lesson-description {
-            color: var(--gray-medium);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        /* Quiz */
-        .quiz-container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: var(--shadow-medium);
-            padding: 2rem;
-        }
-
-        .question-number {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--purple-medium);
-        }
-
-        .question-text {
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .options-grid {
-            display: grid;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .option-btn {
-            padding: 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.3s;
-        }
-
-        .option-btn:hover {
-            border-color: var(--purple-light);
-            background: var(--purple-pastel);
-        }
-
-        .option-btn.selected {
-            border-color: var(--purple-medium);
-            background: var(--purple-pastel);
-        }
-
-        .option-btn.correct {
-            border-color: var(--green-success);
-            background: #ecfdf5;
-        }
-
-        .option-btn.incorrect {
-            border-color: var(--red-error);
-            background: #fef2f2;
-        }
-
-        /* Certificate */
-        .certificate-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border: 20px solid #d1d5db;
-            border-image: linear-gradient(45deg, var(--purple-light), var(--purple-medium)) 1;
-            padding: 3rem;
-            margin-top: 2rem;
-        }
-
-        .certificate-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .certificate-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--purple-dark);
-            margin-bottom: 1rem;
-        }
-
-        .certificate-body {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .certificate-name {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: 1rem 0;
-            color: var(--purple-medium);
-        }
-
-        .certificate-course {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-        }
-
-        .certificate-footer {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 2px solid #e5e7eb;
-        }
-
-        .signature-area {
-            text-align: center;
-        }
-
-        .signature-line {
-            height: 2px;
-            background: #000;
-            margin: 2rem 0;
-            width: 200px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* Toast Notifications */
+        /* ============================================
+           TOASTS
+           ============================================ */
         .toast-container {
             position: fixed;
-            top: 100px;
+            top: 20px;
             right: 20px;
-            z-index: 1000;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
         }
 
         .toast {
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 0.75rem;
-            color: white;
-            font-weight: 500;
-            box-shadow: var(--shadow-heavy);
-            animation: slideInRight 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            animation: slideInRight 0.3s ease forwards;
+            border-left: 4px solid;
         }
 
-        .toast.success {
-            background: var(--green-success);
+        .toast-success { border-color: var(--success); }
+        .toast-error { border-color: var(--error); }
+
+        .toast-content {
+            flex: 1;
         }
 
-        .toast.error {
-            background: var(--red-error);
+        .toast-title {
+            font-weight: 600;
+            font-size: 0.875rem;
         }
 
-        .toast.info {
-            background: var(--blue-500, #3B82F6);
+        .toast-message {
+            font-size: 0.8125rem;
+            color: var(--gray-medium);
+            margin-top: 2px;
         }
 
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--gray-medium);
+            cursor: pointer;
+            padding: 4px;
         }
 
-        /* Modal */
+        /* ============================================
+           MODAL
+           ============================================ */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(45, 27, 105, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 9000;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            padding: 20px;
         }
 
         .modal {
-            background: white;
-            border-radius: 12px;
-            box-shadow: var(--shadow-heavy);
-            width: 90%;
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
             max-width: 600px;
+            width: 100%;
             max-height: 90vh;
-            overflow-y: auto;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: scaleIn 0.3s ease forwards;
         }
 
         .modal-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-light);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -725,7 +456,6 @@
         .modal-title {
             font-size: 1.25rem;
             font-weight: 600;
-            color: var(--purple-dark);
         }
 
         .modal-close {
@@ -737,1569 +467,834 @@
         }
 
         .modal-body {
-            padding: 1.5rem;
+            padding: 24px;
+            overflow-y: auto;
         }
 
         .modal-footer {
-            padding: 1rem 1.5rem;
-            border-top: 1px solid #e5e7eb;
+            padding: 16px 24px;
+            border-top: 1px solid var(--gray-light);
             display: flex;
+            gap: 12px;
             justify-content: flex-end;
-            gap: 1rem;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-260px);
-            }
+        /* ============================================
+           LOADING
+           ============================================ */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(245, 243, 255, 0.9);
+            z-index: 9500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+        }
 
-            .sidebar.active {
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--purple-lighter);
+            border-top-color: var(--purple-medium);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* ============================================
+           SIDEBAR
+           ============================================ */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: linear-gradient(180deg, var(--purple-dark), #1E1448);
+            color: var(--white);
+            z-index: 8000;
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition-normal);
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed);
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-logo {
+            width: 40px;
+            height: 40px;
+            background: var(--white);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--purple-dark);
+        }
+
+        .sidebar-brand h1 {
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        .sidebar-brand span {
+            font-size: 0.6875rem;
+            opacity: 0.7;
+        }
+
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: var(--radius-md);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 12px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+
+        .sidebar-link.active {
+            background: var(--purple-medium);
+            color: var(--white);
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple-light), var(--purple-medium));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        .header {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            height: var(--header-height);
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            z-index: 7000;
+            transition: left var(--transition-normal);
+        }
+
+        .sidebar.collapsed ~ .header {
+            left: var(--sidebar-collapsed);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-left: auto;
+        }
+
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 12px 6px 6px;
+            border-radius: var(--radius-xl);
+            cursor: pointer;
+        }
+
+        .header-user:hover {
+            background: var(--purple-pastel);
+        }
+
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--header-height);
+            min-height: calc(100vh - var(--header-height));
+            padding: 24px;
+            transition: margin-left var(--transition-normal);
+        }
+
+        .sidebar.collapsed ~ .main-content {
+            margin-left: var(--sidebar-collapsed);
+        }
+
+        .page-header {
+            margin-bottom: 24px;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--gray-dark);
+        }
+
+        /* ============================================
+           GRID
+           ============================================ */
+        .grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+        .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+        /* ============================================
+           STAT CARDS
+           ============================================ */
+        .stat-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-lg);
+            background: var(--purple-lighter);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        /* ============================================
+           AUTH PAGES
+           ============================================ */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--purple-dark), var(--purple-medium));
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            width: 100%;
+            max-width: 440px;
+            overflow: hidden;
+        }
+
+        .auth-header {
+            background: linear-gradient(135deg, var(--purple-medium), var(--purple-dark));
+            padding: 32px;
+            text-align: center;
+        }
+
+        .auth-logo {
+            width: 64px;
+            height: 64px;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .auth-logo-text {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--purple-dark);
+        }
+
+        .auth-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .auth-body {
+            padding: 32px;
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--gray-light);
+        }
+
+        /* ============================================
+           COURSE CARDS
+           ============================================ */
+        .course-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: transform var(--transition-normal);
+        }
+
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .course-card-image {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, var(--purple-light), var(--purple-medium));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .course-card-body {
+            padding: 16px;
+        }
+
+        .course-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .course-card-description {
+            font-size: 0.8125rem;
+            color: var(--gray-medium);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 991px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
                 transform: translateX(0);
             }
-
-            .header {
+            .header, .main-content {
+                left: 0;
                 margin-left: 0;
             }
-
-            .main-content {
-                margin-left: 0;
+            .grid-cols-3, .grid-cols-4 {
+                grid-template-columns: repeat(2, 1fr);
             }
+        }
 
-            .form-row {
+        @media (max-width: 767px) {
+            .grid-cols-2, .grid-cols-3, .grid-cols-4 {
                 grid-template-columns: 1fr;
             }
-
-            .courses-carousel {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .video-player {
-                height: 250px;
-            }
-        }
-
-        /* Loading */
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #e5e7eb;
-            border-radius: 50%;
-            border-top-color: var(--purple-medium);
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Breadcrumbs */
-        .breadcrumbs {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--gray-medium);
-            font-size: 0.875rem;
-        }
-
-        .breadcrumb-divider {
-            color: var(--gray-medium);
-        }
-
-        .breadcrumb-link {
-            color: var(--purple-medium);
-            text-decoration: none;
-        }
-
-        .breadcrumb-current {
-            color: var(--gray-dark);
-            font-weight: 500;
-        }
-
-        /* Filters */
-        .filters {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-select {
-            padding: 0.5rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 0.875rem;
-        }
-
-        .search-input {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 2rem;
-        }
-
-        .page-btn {
-            padding: 0.5rem 0.75rem;
-            border: 1px solid #e5e7eb;
-            background: white;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.3s;
-        }
-
-        .page-btn:hover {
-            background: var(--purple-pastel);
-            border-color: var(--purple-light);
-        }
-
-        .page-btn.active {
-            background: var(--purple-medium);
-            color: white;
-            border-color: var(--purple-medium);
-        }
-
-        .page-btn.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Accordion */
-        .accordion-item {
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            margin-bottom: 0.75rem;
-            overflow: hidden;
-        }
-
-        .accordion-header {
-            padding: 1rem;
-            background: var(--purple-pastel);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .accordion-content {
-            padding: 1rem;
-            background: white;
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            width: 100%;
-            background: #e5e7eb;
-            border-radius: 12px;
-            height: 12px;
-            overflow: hidden;
-            margin: 0.5rem 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--green-success), var(--purple-light));
-            border-radius: 12px;
-            transition: width 0.3s ease;
-        }
-
-        /* Icons (CSS only) */
-        .icon-home::before {
-            content: "🏠";
-        }
-
-        .icon-users::before {
-            content: "👥";
-        }
-
-        .icon-book::before {
-            content: "📚";
-        }
-
-        .icon-video::before {
-            content: "🎥";
-        }
-
-        .icon-test::before {
-            content: "📝";
-        }
-
-        .icon-cert::before {
-            content: "📜";
-        }
-
-        .icon-settings::before {
-            content: "⚙️";
-        }
-
-        .icon-notify::before {
-            content: "🔔";
-        }
-
-        .icon-user::before {
-            content: "👤";
-        }
-
-        .icon-logout::before {
-            content: "🚪";
-        }
-
-        .icon-menu::before {
-            content: "☰";
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--purple-dark);
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 3rem;
-        }
-
-        .footer p {
-            margin: 0.25rem 0;
-        }
-
-        .footer strong {
-            color: var(--purple-light);
         }
     </style>
 </head>
 <body>
-    <!-- Login Screen -->
-    <div id="loginScreen" class="login-container">
-        <div class="login-card">
-            <div class="login-header">
-                <h1>UNISO Voluntários</h1>
-                <p>Plataforma de Ensino</p>
-            </div>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="loginEmail">Email</label>
-                    <input type="email" id="loginEmail" required>
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword">Senha</label>
-                    <input type="password" id="loginPassword" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Entrar</button>
-            </form>
-            <div class="switch-form">
-                <a href="#" id="showRegister">Criar conta</a> | 
-                <a href="#" id="showForgot">Esqueci minha senha</a>
-            </div>
-        </div>
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p class="loading-text">Carregando...</p>
     </div>
+    <div id="toast-container" class="toast-container"></div>
 
-    <!-- Registration Screen -->
-    <div id="registerScreen" class="login-container hidden">
-        <div class="login-card">
-            <div class="login-header">
-                <h1>Criar Conta</h1>
-                <p>Plataforma de Ensino UNISO Voluntários</p>
+    <div id="auth-container" class="auth-container">
+        <div id="login-form" class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo"><span class="auth-logo-text">UV</span></div>
+                <h2 class="auth-title">UNISO Voluntarios</h2>
+                <p class="text-sm" style="color:rgba(255,255,255,0.7);">Plataforma de Ensino</p>
             </div>
-            <form id="registerForm">
-                <div class="form-group">
-                    <label for="registerName">Nome Completo</label>
-                    <input type="text" id="registerName" required>
-                </div>
-                <div class="form-group">
-                    <label for="registerEmail">Email</label>
-                    <input type="email" id="registerEmail" required>
-                </div>
-                <div class="form-group">
-                    <label for="registerPassword">Senha</label>
-                    <input type="password" id="registerPassword" required>
-                </div>
-                <div class="form-group">
-                    <label for="registerConfirmPassword">Confirmar Senha</label>
-                    <input type="password" id="registerConfirmPassword" required>
-                </div>
-                <div class="form-group">
-                    <label for="registerPhone">Telefone</label>
-                    <input type="tel" id="registerPhone" required>
-                </div>
-                <div class="form-group">
-                    <label for="registerBirthDate">Data de Nascimento</label>
-                    <input type="date" id="registerBirthDate" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Cadastrar</button>
-            </form>
-            <div class="switch-form">
-                <a href="#" id="showLogin">Voltar para login</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Forgot Password Screen -->
-    <div id="forgotScreen" class="login-container hidden">
-        <div class="login-card">
-            <div class="login-header">
-                <h1>Recuperar Senha</h1>
-                <p>Digite seu email para receber instruções</p>
-            </div>
-            <form id="forgotForm">
-                <div class="form-group">
-                    <label for="forgotEmail">Email</label>
-                    <input type="email" id="forgotEmail" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Enviar Link</button>
-            </form>
-            <div class="switch-form">
-                <a href="#" id="showLoginFromForgot">Voltar para login</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main App -->
-    <div id="appContainer" class="app-container hidden">
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <h2>UNISO Voluntários</h2>
-            </div>
-            <div class="nav-menu" id="navMenu">
-                <!-- Navigation items will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Header -->
-        <div class="header" id="header">
-            <div class="header-left">
-                <button class="menu-toggle" id="menuToggle">☰</button>
-                <h3 id="pageTitle">Dashboard</h3>
-            </div>
-            <div class="header-right">
-                <div class="user-info">
-                    <div class="avatar" id="userAvatar">U</div>
-                    <span id="userName">Usuário</span>
-                    <div class="notification-badge">
-                        <span>🔔</span>
-                        <span class="notification-count" id="notificationCount">0</span>
+            <div class="auth-body">
+                <form id="login-form-element">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-icon">👤</span>
+                            <input type="email" class="form-input" id="login-email" placeholder="seu@email.com" required>
+                        </div>
                     </div>
+                    <div class="form-group">
+                        <label class="form-label">Senha</label>
+                        <div class="input-group">
+                            <span class="input-icon">🔒</span>
+                            <input type="password" class="form-input" id="login-password" placeholder="Sua senha" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-full">Entrar</button>
+                </form>
+                <div class="auth-divider"><span>ou</span></div>
+                <button type="button" class="btn btn-secondary w-full" onclick="showRegisterForm()">Criar conta</button>
+            </div>
+        </div>
+
+        <div id="register-form" class="auth-card hidden">
+            <div class="auth-header">
+                <div class="auth-logo"><span class="auth-logo-text">UV</span></div>
+                <h2 class="auth-title">Criar Conta</h2>
+            </div>
+            <div class="auth-body">
+                <form id="register-form-element">
+                    <div class="form-group">
+                        <label class="form-label">Nome completo</label>
+                        <input type="text" class="form-input" id="register-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Senha</label>
+                        <input type="password" class="form-input" id="register-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirmar senha</label>
+                        <input type="password" class="form-input" id="register-confirm-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-full">Cadastrar</button>
+                </form>
+                <p class="text-center mt-4"><a href="#" onclick="showLoginForm(event)" style="color:var(--purple-medium);">Já tem conta? Entrar</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-container" class="hidden">
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo"><span class="sidebar-logo-text">UV</span></div>
+                <div class="sidebar-brand"><h1>UNISO Voluntarios</h1><span>Plataforma de Ensino</span></div>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav"></nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="avatar" id="sidebar-avatar"><span id="sidebar-avatar-initials">AD</span></div>
+                    <div class="sidebar-user-info"><div class="sidebar-user-name" id="sidebar-user-name">Usuário</div></div>
                 </div>
-                <button class="btn btn-secondary" id="logoutBtn">Sair</button>
             </div>
-        </div>
+        </aside>
 
-        <!-- Main Content -->
-        <div class="main-content" id="mainContent">
-            <!-- Content will be loaded here dynamically -->
-        </div>
+        <header class="header">
+            <div class="header-right">
+                <div class="header-user" onclick="toggleUserMenu()">
+                    <div class="header-user-info"><div class="header-user-name" id="header-user-name">Usuário</div></div>
+                    <div class="avatar" id="header-avatar"><span id="header-avatar-initials">AD</span></div>
+                </div>
+            </div>
+            <div id="user-menu" class="dropdown-menu hidden" style="position:absolute;top:60px;right:20px;background:white;border-radius:8px;box-shadow:0 10px 25px rgba(0,0,0,0.1);padding:8px 0;min-width:180px;z-index:1000;">
+                <button class="dropdown-item" onclick="navigateTo('profile')" style="width:100%;padding:10px 16px;text-align:left;background:none;border:none;cursor:pointer;">Meu Perfil</button>
+                <button class="dropdown-item" onclick="logout()" style="width:100%;padding:10px 16px;text-align:left;background:none;border:none;cursor:pointer;">Sair</button>
+            </div>
+        </header>
 
-        <!-- Footer -->
-        <div class="footer">
-            <p><strong>Programa UNISO Voluntários</strong></p>
-            <p>Ensino de Informática e IA para Jovens Aprendizes</p>
-            <p>Campus UNISO - Terças e Quintas, 14h às 17h</p>
-        </div>
+        <main class="main-content" id="main-content"></main>
     </div>
-
-    <!-- Toast Container -->
-    <div class="toast-container" id="toastContainer"></div>
-
-    <!-- Modal -->
-    <div id="modalOverlay" class="modal-overlay hidden">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title" id="modalTitle">Modal Title</h3>
-                <button class="modal-close" id="modalClose">&times;</button>
-            </div>
-            <div class="modal-body" id="modalBody">
-                <!-- Modal content will be inserted here -->
-            </div>
-            <div class="modal-footer" id="modalFooter">
-                <button class="btn btn-secondary" id="modalCancel">Cancelar</button>
-                <button class="btn btn-primary" id="modalSave">Salvar</button>
-            </div>
-        </div>
-    </div>
+    <div id="modal-container"></div>
 
     <script>
-        // Configuration and Constants
-        const CONFIG = {
-            APP_NAME: 'UNISO Voluntários - Plataforma de Ensino',
-            VERSION: '1.0.0',
-            THEMES: {
-                PRIMARY_DARK: '#2D1B69',
-                PRIMARY_MEDIUM: '#5B2D8E',
-                PRIMARY_LIGHT: '#8B5CF6'
-            },
-            ROUTES: {
-                LOGIN: 'login',
-                REGISTER: 'register',
-                DASHBOARD_ADMIN: 'dashboard-admin',
-                DASHBOARD_STUDENT: 'dashboard-student',
-                COURSES: 'courses',
-                COURSE_DETAIL: 'course-detail',
-                LESSON_PLAYER: 'lesson-player',
-                QUIZ: 'quiz',
-                CERTIFICATES: 'certificates',
-                PROFILE: 'profile',
-                MANAGE_COURSES: 'manage-courses',
-                MANAGE_USERS: 'manage-users',
-                MANAGE_QUIZZES: 'manage-quizzes',
-                MANAGE_CERTIFICATES: 'manage-certificates',
-                REPORTS: 'reports',
-                SETTINGS: 'settings'
-            }
-        };
-
-        // Storage Helper Functions
-        const Storage = {
-            get(key) {
-                try {
-                    const item = localStorage.getItem(key);
-                    return item ? JSON.parse(item) : null;
-                } catch (e) {
-                    console.error('Error parsing storage item:', e);
-                    return null;
-                }
-            },
-
-            set(key, value) {
-                try {
-                    localStorage.setItem(key, JSON.stringify(value));
-                } catch (e) {
-                    console.error('Error setting storage item:', e);
-                }
-            },
-
-            remove(key) {
-                localStorage.removeItem(key);
-            }
-        };
-
-        // Initial Data Seed
-        function initializeDatabase() {
-            // Check if we have initial data
-            if (!Storage.get('users')) {
-                // Create default admin user
-                const adminUser = {
-                    id: generateId(),
-                    name: 'Administrador UNISO',
-                    email: 'admin@uniso.br',
-                    password: 'admin123',
-                    phone: '(11) 99999-9999',
-                    birthDate: '1980-01-01',
-                    role: 'admin',
-                    profilePicture: null,
-                    createdAt: new Date().toISOString(),
-                    isActive: true
-                };
-
-                // Create default student user
-                const studentUser = {
-                    id: generateId(),
-                    name: 'João Silva',
-                    email: 'aluno@uniso.br',
-                    password: 'aluno123',
-                    phone: '(11) 98888-8888',
-                    birthDate: '2008-01-01',
-                    role: 'student',
-                    profilePicture: null,
-                    createdAt: new Date().toISOString(),
-                    isActive: true,
-                    enrolledCourses: [1, 4],
-                    courseProgress: {
-                        1: { completedLessons: 7, totalLessons: 12, completionRate: 60 },
-                        4: { completedLessons: 3, totalLessons: 9, completionRate: 30 }
-                    }
-                };
-
-                Storage.set('users', [adminUser, studentUser]);
-            }
-
-            // Create categories if they don't exist
-            if (!Storage.get('categories')) {
-                const categories = [
-                    { id: 1, name: 'Pacote Office', description: 'Cursos sobre Microsoft Office', icon: '💼', color: '#8B5CF6' },
-                    { id: 2, name: 'Inteligência Artificial', description: 'Cursos sobre IA e Machine Learning', icon: '🤖', color: '#10B981' },
-                    { id: 3, name: 'Informática Básica', description: 'Fundamentos de informática', icon: '💻', color: '#F59E0B' }
-                ];
-                Storage.set('categories', categories);
-            }
-
-            // Create courses if they don't exist
-            if (!Storage.get('courses')) {
-                const courses = [
-                    {
-                        id: 1,
-                        title: 'Word - Do Básico ao Avançado',
-                        shortDescription: 'Aprenda Word do zero até recursos avançados',
-                        fullDescription: 'Curso completo de Microsoft Word, abordando desde conceitos básicos até recursos avançados de edição, formatação e automação.',
-                        categoryId: 1,
-                        level: 'Básico',
-                        totalHours: 20,
-                        totalModules: 3,
-                        totalLessons: 12,
-                        coverImage: 'https://placehold.co/400x200/8B5CF6/FFFFFF?text=Word',
-                        status: 'active',
-                        displayOrder: 1,
-                        enrolledStudents: 15,
-                        averageRating: 4.5
-                    },
-                    {
-                        id: 2,
-                        title: 'Excel Essencial',
-                        shortDescription: 'Domine o Excel para análise de dados',
-                        fullDescription: 'Curso prático de Excel, cobrindo fórmulas, funções, gráficos e análise de dados.',
-                        categoryId: 1,
-                        level: 'Básico',
-                        totalHours: 24,
-                        totalModules: 3,
-                        totalLessons: 12,
-                        coverImage: 'https://placehold.co/400x200/10B981/FFFFFF?text=Excel',
-                        status: 'active',
-                        displayOrder: 2,
-                        enrolledStudents: 18,
-                        averageRating: 4.7
-                    },
-                    {
-                        id: 3,
-                        title: 'PowerPoint - Apresentações Profissionais',
-                        shortDescription: 'Crie apresentações impactantes',
-                        fullDescription: 'Aprenda a criar apresentações profissionais e atrativas no PowerPoint.',
-                        categoryId: 1,
-                        level: 'Básico',
-                        totalHours: 16,
-                        totalModules: 2,
-                        totalLessons: 8,
-                        coverImage: 'https://placehold.co/400x200/F59E0B/FFFFFF?text=PowerPoint',
-                        status: 'active',
-                        displayOrder: 3,
-                        enrolledStudents: 12,
-                        averageRating: 4.3
-                    },
-                    {
-                        id: 4,
-                        title: 'Introdução à Inteligência Artificial',
-                        shortDescription: 'Entenda os fundamentos da IA',
-                        fullDescription: 'Introdução aos conceitos de inteligência artificial, machine learning e suas aplicações práticas.',
-                        categoryId: 2,
-                        level: 'Básico',
-                        totalHours: 20,
-                        totalModules: 3,
-                        totalLessons: 9,
-                        coverImage: 'https://placehold.co/400x200/EC4899/FFFFFF?text=IA',
-                        status: 'active',
-                        displayOrder: 4,
-                        enrolledStudents: 20,
-                        averageRating: 4.8
-                    },
-                    {
-                        id: 5,
-                        title: 'Informática Básica - Fundamentos',
-                        shortDescription: 'Conceitos essenciais de informática',
-                        fullDescription: 'Curso introdutório sobre hardware, software, internet e ferramentas básicas.',
-                        categoryId: 3,
-                        level: 'Básico',
-                        totalHours: 18,
-                        totalModules: 3,
-                        totalLessons: 9,
-                        coverImage: 'https://placehold.co/400x200/6366F1/FFFFFF?text=Informática',
-                        status: 'active',
-                        displayOrder: 5,
-                        enrolledStudents: 16,
-                        averageRating: 4.4
-                    }
-                ];
-                Storage.set('courses', courses);
-
-                // Create modules for courses
-                const modules = [
-                    // Word Course Modules
-                    { id: 1, courseId: 1, title: 'Introdução ao Word', description: 'Primeiros passos no Word', order: 1 },
-                    { id: 2, courseId: 1, title: 'Formatação Avançada', description: 'Estilos, cabeçalhos e rodapés', order: 2 },
-                    { id: 3, courseId: 1, title: 'Recursos Profissionais', description: 'Mala direta, sumários e revisão', order: 3 },
-                    
-                    // Excel Course Modules
-                    { id: 4, courseId: 2, title: 'Primeiros Passos no Excel', description: 'Planilhas e fórmulas básicas', order: 1 },
-                    { id: 5, courseId: 2, title: 'Fórmulas e Funções', description: 'SOMA, MÉDIA, SE, PROCV', order: 2 },
-                    { id: 6, courseId: 2, title: 'Gráficos e Análise', description: 'Visualização de dados', order: 3 },
-                    
-                    // PowerPoint Course Modules
-                    { id: 7, courseId: 3, title: 'Fundamentos do PowerPoint', description: 'Interface e slides básicos', order: 1 },
-                    { id: 8, courseId: 3, title: 'Recursos Avançados', description: 'Animações e transições', order: 2 },
-                    
-                    // AI Course Modules
-                    { id: 9, courseId: 4, title: 'O que é IA', description: 'História e tipos de IA', order: 1 },
-                    { id: 10, courseId: 4, title: 'Ferramentas de IA', description: 'ChatGPT e assistentes', order: 2 },
-                    { id: 11, courseId: 4, title: 'IA na Prática', description: 'Aplicações diárias', order: 3 },
-                    
-                    // Basic IT Course Modules
-                    { id: 12, courseId: 5, title: 'Conhecendo o Computador', description: 'Hardware e software', order: 1 },
-                    { id: 13, courseId: 5, title: 'Navegando na Internet', description: 'Segurança e pesquisa', order: 2 },
-                    { id: 14, courseId: 5, title: 'Ferramentas do Dia a Dia', description: 'Email e armazenamento', order: 3 }
-                ];
-                Storage.set('modules', modules);
-
-                // Create lessons for modules
-                const lessons = [
-                    // Word Module 1 Lessons
-                    { id: 1, moduleId: 1, title: 'Interface do Word', description: 'Conheça o ambiente do Word', type: 'video', duration: 15, order: 1, status: 'published', mandatory: true },
-                    { id: 2, moduleId: 1, title: 'Digitação e Formatação Básica', description: 'Formatos de texto e parágrafos', type: 'video', duration: 20, order: 2, status: 'published', mandatory: true },
-                    { id: 3, moduleId: 1, title: 'Salvar e Abrir Documentos', description: 'Gerenciamento de arquivos', type: 'video', duration: 12, order: 3, status: 'published', mandatory: true },
-                    { id: 4, moduleId: 1, title: 'Exercícios Práticos', description: 'Pratique os conceitos aprendidos', type: 'quiz', duration: 10, order: 4, status: 'published', mandatory: true },
-                    
-                    // Word Module 2 Lessons
-                    { id: 5, moduleId: 2, title: 'Estilos e Formatação Avançada', description: 'Estilos e formatação profissional', type: 'video', duration: 25, order: 1, status: 'published', mandatory: true },
-                    { id: 6, moduleId: 2, title: 'Cabeçalhos e Rodapés', description: 'Elementos repetidos em páginas', type: 'video', duration: 18, order: 2, status: 'published', mandatory: true },
-                    { id: 7, moduleId: 2, title: 'Tabelas e Imagens', description: 'Inserir e formatar tabelas e imagens', type: 'video', duration: 22, order: 3, status: 'published', mandatory: true },
-                    { id: 8, moduleId: 2, title: 'Quiz do Módulo 2', description: 'Teste seus conhecimentos', type: 'quiz', duration: 15, order: 4, status: 'published', mandatory: true },
-                    
-                    // Word Module 3 Lessons
-                    { id: 9, moduleId: 3, title: 'Mala Direta', description: 'Personalização de documentos', type: 'video', duration: 20, order: 1, status: 'published', mandatory: true },
-                    { id: 10, moduleId: 3, title: 'Sumário Automático', description: 'Geração de sumários', type: 'video', duration: 18, order: 2, status: 'published', mandatory: true },
-                    { id: 11, moduleId: 3, title: 'Revisão e Impressão', description: 'Revisão ortográfica e impressão', type: 'video', duration: 15, order: 3, status: 'published', mandatory: true },
-                    { id: 12, moduleId: 3, title: 'Certificação Word', description: 'Conclusão do curso', type: 'text', duration: 5, order: 4, status: 'published', mandatory: true },
-                    
-                    // Excel Module 1 Lessons
-                    { id: 13, moduleId: 4, title: 'Introdução ao Excel', description: 'Conceitos básicos de planilhas', type: 'video', duration: 15, order: 1, status: 'published', mandatory: true },
-                    { id: 14, moduleId: 4, title: 'Células e Tipos de Dados', description: 'Trabalhando com células', type: 'video', duration: 20, order: 2, status: 'published', mandatory: true },
-                    { id: 15, moduleId: 4, title: 'Fórmulas Básicas', description: 'Operações matemáticas', type: 'video', duration: 18, order: 3, status: 'published', mandatory: true },
-                    { id: 16, moduleId: 4, title: 'Quiz do Módulo 1 Excel', description: 'Teste seus conhecimentos', type: 'quiz', duration: 12, order: 4, status: 'published', mandatory: true },
-                    
-                    // Excel Module 2 Lessons
-                    { id: 17, moduleId: 5, title: 'Função SOMA e MÉDIA', description: 'Funções matemáticas', type: 'video', duration: 20, order: 1, status: 'published', mandatory: true },
-                    { id: 18, moduleId: 5, title: 'Função SE (IF)', description: 'Condições lógicas', type: 'video', duration: 22, order: 2, status: 'published', mandatory: true },
-                    { id: 19, moduleId: 5, title: 'PROCV e PROCH', description: 'Busca de valores', type: 'video', duration: 25, order: 3, status: 'published', mandatory: true },
-                    { id: 20, moduleId: 5, title: 'Quiz do Módulo 2 Excel', description: 'Teste seus conhecimentos', type: 'quiz', duration: 15, order: 4, status: 'published', mandatory: true },
-                    
-                    // Excel Module 3 Lessons
-                    { id: 21, moduleId: 6, title: 'Criação de Gráficos', description: 'Visualização de dados', type: 'video', duration: 20, order: 1, status: 'published', mandatory: true },
-                    { id: 22, moduleId: 6, title: 'Formatação Condicional', description: 'Destaque automático', type: 'video', duration: 18, order: 2, status: 'published', mandatory: true },
-                    { id: 23, moduleId: 6, title: 'Filtros e Tabela Dinâmica', description: 'Análise de dados', type: 'video', duration: 25, order: 3, status: 'published', mandatory: true },
-                    { id: 24, moduleId: 6, title: 'Certificação Excel', description: 'Conclusão do curso', type: 'text', duration: 5, order: 4, status: 'published', mandatory: true },
-                    
-                    // PowerPoint Module 1 Lessons
-                    { id: 25, moduleId: 7, title: 'Interface do PowerPoint', description: 'Ambiente de trabalho', type: 'video', duration: 12, order: 1, status: 'published', mandatory: true },
-                    { id: 26, moduleId: 7, title: 'Slides e Textos', description: 'Criação de conteúdo', type: 'video', duration: 18, order: 2, status: 'published', mandatory: true },
-                    { id: 27, moduleId: 7, title: 'Temas e Modelos', description: 'Design profissional', type: 'video', duration: 15, order: 3, status: 'published', mandatory: true },
-                    { id: 28, moduleId: 7, title: 'Quiz do Módulo 1 PP', description: 'Teste seus conhecimentos', type: 'quiz', duration: 10, order: 4, status: 'published', mandatory: true },
-                    
-                    // PowerPoint Module 2 Lessons
-                    { id: 29, moduleId: 8, title: 'Animações', description: 'Efeitos de movimento', type: 'video', duration: 20, order: 1, status: 'published', mandatory: true },
-                    { id: 30, moduleId: 8, title: 'Transições', description: 'Passagem entre slides', type: 'video', duration: 15, order: 2, status: 'published', mandatory: true },
-                    { id: 31, moduleId: 8, title: 'Mídia e Vídeos', description: 'Inclusão de mídia', type: 'video', duration: 18, order: 3, status: 'published', mandatory: true },
-                    { id: 32, moduleId: 8, title: 'Certificação PowerPoint', description: 'Conclusão do curso', type: 'text', duration: 5, order: 4, status: 'published', mandatory: true },
-                    
-                    // AI Module 1 Lessons
-                    { id: 33, moduleId: 9, title: 'História da Inteligência Artificial', description: 'Origens e evolução', type: 'video', duration: 20, order: 1, status: 'published', mandatory: true },
-                    { id: 34, moduleId: 9, title: 'Tipos de Inteligência Artificial', description: 'Classificação e aplicações', type: 'video', duration: 18, order: 2, status: 'published', mandatory: true },
-                    { id: 35, moduleId: 9, title: 'IA no Dia a Dia', description: 'Exemplos práticos', type: 'video', duration: 15, order: 3, status: 'published', mandatory: true },
-                    { id: 36, moduleId: 9, title: 'Quiz do Módulo 1 IA', description: 'Teste seus conhecimentos', type: 'quiz', duration: 12, order: 4, status: 'published', mandatory: true },
-                    
-                    // AI Module 2 Lessons
-                    { id: 37, moduleId: 10, title: 'ChatGPT e Assistente Virtual', description: 'Utilização prática', type: 'video', duration: 22, order: 1, status: 'published', mandatory: true },
-                    { id: 38, moduleId: 10, title: 'Geradores de Imagem', description: 'Midjourney, DALL-E', type: 'video', duration: 20, order: 2, status: 'published', mandatory: true },
-                    { id: 39, moduleId: 10, title: 'Assistentes de Voz', description: 'Alexa, Google Assistant', type: 'video', duration: 15, order: 3, status: 'published', mandatory: true },
-                    { id: 40, moduleId: 10, title: 'Quiz do Módulo 2 IA', description: 'Teste seus conhecimentos', type: 'quiz', duration: 15, order: 4, status: 'published', mandatory: true },
-                    
-                    // AI Module 3 Lessons
-                    { id: 41, moduleId: 11, title: 'IA para Estudos', description: 'Ferramentas educacionais', type: 'video', duration: 18, order: 1, status: 'published', mandatory: true },
-                    { id: 42, moduleId: 11, title: 'IA no Trabalho', description: 'Automação e produtividade', type: 'video', duration: 20, order: 2, status: 'published', mandatory: true },
-                    { id: 43, moduleId: 11, title: 'Ética e Inteligência Artificial', description: 'Responsabilidade e limites', type: 'video', duration: 25, order: 3, status: 'published', mandatory: true },
-                    { id: 44, moduleId: 11, title: 'Certificação IA', description: 'Conclusão do curso', type: 'text', duration: 5, order: 4, status: 'published', mandatory: true },
-                    
-                    // Basic IT Module 1 Lessons
-                    { id: 45, moduleId: 12, title: 'Hardware e Software', description: 'Componentes do computador', type: 'video', duration: 20, order: 1, status: 'published', mandatory: true },
-                    { id: 46, moduleId: 12, title: 'Sistema Operacional', description: 'Windows, Linux, macOS', type: 'video', duration: 18, order: 2, status: 'published', mandatory: true },
-                    { id: 47, moduleId: 12, title: 'Periféricos', description: 'Entrada e saída', type: 'video', duration: 15, order: 3, status: 'published', mandatory: true },
-                    { id: 48, moduleId: 12, title: 'Quiz do Módulo 1 IT', description: 'Teste seus conhecimentos', type: 'quiz', duration: 12, order: 4, status: 'published', mandatory: true },
-                    
-                    // Basic IT Module 2 Lessons
-                    { id: 49, moduleId: 13, title: 'Navegadores Web', description: 'Chrome, Firefox, Edge', type: 'video', duration: 15, order: 1, status: 'published', mandatory: true },
-                    { id: 50, moduleId: 13, title: 'Pesquisa na Internet', description: 'Técnicas de busca', type: 'video', duration: 18, order: 2, status: 'published', mandatory: true },
-                    { id: 51, moduleId: 13, title: 'Segurança Online', description: 'Proteção e privacidade', type: 'video', duration: 22, order: 3, status: 'published', mandatory: true },
-                    { id: 52, moduleId: 13, title: 'Quiz do Módulo 2 IT', description: 'Teste seus conhecimentos', type: 'quiz', duration: 15, order: 4, status: 'published', mandatory: true },
-                    
-                    // Basic IT Module 3 Lessons
-                    { id: 53, moduleId: 14, title: 'Email Profissional', description: 'Configuração e uso', type: 'video', duration: 20, order: 1, status: 'published', mandatory: true },
-                    { id: 54, moduleId: 14, title: 'Armazenamento em Nuvem', description: 'Google Drive, OneDrive', type: 'video', duration: 18, order: 2, status: 'published', mandatory: true },
-                    { id: 55, moduleId: 14, title: 'Organização de Arquivos', description: 'Pastas e backups', type: 'video', duration: 15, order: 3, status: 'published', mandatory: true },
-                    { id: 56, moduleId: 14, title: 'Certificação IT Básica', description: 'Conclusão do curso', type: 'text', duration: 5, order: 4, status: 'published', mandatory: true }
-                ];
-                Storage.set('lessons', lessons);
-
-                // Create quizzes for lessons
-                const quizzes = [
-                    {
-                        id: 1,
-                        lessonId: 4,
-                        title: 'Exercícios Práticos Word',
-                        questions: [
-                            {
-                                id: 1,
-                                question: 'Qual é a extensão padrão de um documento do Word?',
-                                type: 'multiple-choice',
-                                options: ['A) .xls', 'B) .ppt', 'C) .docx', 'D) .pdf'],
-                                correctAnswer: 'C) .docx',
-                                explanation: 'A extensão .docx é o formato padrão do Microsoft Word desde 2007.'
-                            },
-                            {
-                                id: 2,
-                                question: 'Como alinhar texto à direita no Word?',
-                                type: 'multiple-choice',
-                                options: ['A) Ctrl + R', 'B) Tecla TAB', 'C) Botão de alinhamento', 'D) Ctrl + Shift + R'],
-                                correctAnswer: 'C) Botão de alinhamento',
-                                explanation: 'O alinhamento é feito através do botão de alinhamento na barra de ferramentas.'
-                            },
-                            {
-                                id: 3,
-                                question: 'O Word permite a criação de tabelas?',
-                                type: 'true-false',
-                                correctAnswer: 'true',
-                                explanation: 'Sim, o Word tem recursos completos para criação e edição de tabelas.'
-                            },
-                            {
-                                id: 4,
-                                question: 'Qual combinação de teclas salva um documento no Word?',
-                                type: 'multiple-choice',
-                                options: ['A) Ctrl + N', 'B) Ctrl + S', 'C) Ctrl + O', 'D) Ctrl + P'],
-                                correctAnswer: 'B) Ctrl + S',
-                                explanation: 'Ctrl + S é o atalho padrão para salvar documentos em muitos aplicativos.'
-                            },
-                            {
-                                id: 5,
-                                question: 'O Word pode exportar para PDF?',
-                                type: 'true-false',
-                                correctAnswer: 'true',
-                                explanation: 'Sim, o Word permite exportar documentos para o formato PDF.'
-                            }
-                        ],
-                        passingScore: 60
-                    },
-                    {
-                        id: 2,
-                        lessonId: 8,
-                        title: 'Quiz do Módulo 2 Word',
-                        questions: [
-                            {
-                                id: 1,
-                                question: 'O que são estilos no Word?',
-                                type: 'multiple-choice',
-                                options: ['A) Tipos de papel', 'B) Formatações pré-definidas', 'C) Modelos de documentos', 'D) Tipos de fonte'],
-                                correctAnswer: 'B) Formatações pré-definidas',
-                                explanation: 'Estilos são conjuntos de formatações que podem ser aplicados rapidamente.'
-                            },
-                            {
-                                id: 2,
-                                question: 'Cabeçalhos aparecem em todas as páginas?',
-                                type: 'true-false',
-                                correctAnswer: 'true',
-                                explanation: 'Por padrão, cabeçalhos são repetidos em todas as páginas do documento.'
-                            },
-                            {
-                                id: 3,
-                                question: 'Como inserir uma tabela no Word?',
-                                type: 'multiple-choice',
-                                options: ['A) Inserir > Tabela', 'B) Formatar > Tabela', 'C) Ferramentas > Tabela', 'D) Página Inicial > Tabela'],
-                                correctAnswer: 'A) Inserir > Tabela',
-                                explanation: 'A opção para inserir tabelas está na guia Inserir.'
-                            },
-                            {
-                                id: 4,
-                                question: 'Imagens no Word podem ser redimensionadas?',
-                                type: 'true-false',
-                                correctAnswer: 'true',
-                                explanation: 'Sim, as imagens podem ser redimensionadas arrastando as alças de redimensionamento.'
-                            },
-                            {
-                                id: 5,
-                                question: 'Qual é a função do rodapé?',
-                                type: 'multiple-choice',
-                                options: ['A) Iniciar o documento', 'B) Finalizar o documento', 'C) Repetir informações no final da página', 'D) Proteger o documento'],
-                                correctAnswer: 'C) Repetir informações no final da página',
-                                explanation: 'Rodapés contêm informações que aparecem no final de cada página.'
-                            }
-                        ],
-                        passingScore: 70
-                    }
-                ];
-                Storage.set('quizzes', quizzes);
-
-                // Create certificates if they don't exist
-                const certificates = [];
-                Storage.set('certificates', certificates);
-
-                // Create notifications if they don't exist
-                const notifications = [
-                    {
-                        id: 1,
-                        title: 'Novo curso disponível',
-                        message: 'O curso de Introdução à Inteligência Artificial está disponível!',
-                        priority: 'normal',
-                        date: new Date().toISOString(),
-                        read: false,
-                        userId: null,
-                        courseId: 4
-                    },
-                    {
-                        id: 2,
-                        title: 'Lembrete de aula',
-                        message: 'Não esqueça da aula de Excel amanhã às 14h',
-                        priority: 'important',
-                        date: new Date(Date.now() - 86400000).toISOString(),
-                        read: false,
-                        userId: null,
-                        courseId: 2
-                    }
-                ];
-                Storage.set('notifications', notifications);
-            }
-        }
-
-        // Authentication System
-        const Auth = {
-            currentUser: null,
-
-            login(email, password) {
-                const users = Storage.get('users') || [];
-                const user = users.find(u => u.email === email && u.password === password);
-                
-                if (user) {
-                    this.currentUser = user;
-                    Storage.set('currentUser', user.id);
-                    return true;
-                }
-                return false;
-            },
-
-            logout() {
-                this.currentUser = null;
-                Storage.remove('currentUser');
-            },
-
-            isLoggedIn() {
-                return this.currentUser !== null;
-            },
-
-            getCurrentUser() {
-                if (!this.currentUser) {
-                    const userId = Storage.get('currentUser');
-                    if (userId) {
-                        const users = Storage.get('users') || [];
-                        this.currentUser = users.find(u => u.id === userId);
-                    }
-                }
-                return this.currentUser;
-            },
-
-            register(userData) {
-                const users = Storage.get('users') || [];
-                const existingUser = users.find(u => u.email === userData.email);
-                
-                if (existingUser) {
-                    return { success: false, message: 'Email já cadastrado' };
-                }
-
-                const newUser = {
-                    ...userData,
-                    id: generateId(),
-                    role: 'student',
-                    profilePicture: null,
-                    createdAt: new Date().toISOString(),
-                    isActive: true
-                };
-
-                users.push(newUser);
-                Storage.set('users', users);
-                return { success: true, user: newUser };
-            }
-        };
-
-        // Utility Functions
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
-        }
-
-        function formatDate(dateString) {
-            return new Date(dateString).toLocaleDateString('pt-BR');
-        }
-
-        function formatTime(minutes) {
-            const hours = Math.floor(minutes / 60);
-            const mins = minutes % 60;
-            return hours > 0 ? `${hours}h ${mins}min` : `${mins}min`;
-        }
-
-        function showToast(message, type = 'info') {
-            const toastContainer = document.getElementById('toastContainer');
+        // Dados mockados
+        let currentUser = null;
+        let courses = [
+            { id: '1', title: 'Word - Do Básico ao Avançado', description: 'Aprenda a dominar o Microsoft Word desde os conceitos básicos até recursos avançados.', category: 'Pacote Office', workload: 20, level: 'Básico', status: 'ativo' },
+            { id: '2', title: 'Excel Essencial', description: 'Domine as planilhas eletrônicas com fórmulas, funções e gráficos profissionais.', category: 'Pacote Office', workload: 24, level: 'Básico', status: 'ativo' },
+            { id: '3', title: 'PowerPoint - Apresentações Profissionais', description: 'Crie apresentações impactantes que encantam seu público.', category: 'Pacote Office', workload: 16, level: 'Básico', status: 'ativo' },
+            { id: '4', title: 'Introdução à Inteligência Artificial', description: 'Descubra o mundo da IA e como ela pode transformar seu dia a dia.', category: 'Inteligência Artificial', workload: 20, level: 'Básico', status: 'ativo' },
+            { id: '5', title: 'Informática Básica - Fundamentos', description: 'Aprenda os fundamentos da informática do zero.', category: 'Informática Básica', workload: 18, level: 'Básico', status: 'ativo' }
+        ];
+        
+        let enrollments = [];
+        let certificates = [];
+        
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.textContent = message;
-            
-            toastContainer.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `<div class="toast-content"><div class="toast-title">${type === 'success' ? 'Sucesso' : 'Erro'}</div><div class="toast-message">${message}</div></div><button class="toast-close" onclick="this.parentElement.remove()">✕</button>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
         }
-
-        function showModal(title, content, footer = null) {
-            const modalOverlay = document.getElementById('modalOverlay');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalBody = document.getElementById('modalBody');
-            const modalFooter = document.getElementById('modalFooter');
-
-            modalTitle.textContent = title;
-            modalBody.innerHTML = content;
-
-            if (footer) {
-                modalFooter.innerHTML = footer;
+        
+        function showLoading(show) {
+            document.getElementById('loading-overlay').style.display = show ? 'flex' : 'none';
+        }
+        
+        function saveToLocalStorage() {
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('courses', JSON.stringify(courses));
+            localStorage.setItem('enrollments', JSON.stringify(enrollments));
+            localStorage.setItem('certificates', JSON.stringify(certificates));
+        }
+        
+        let users = [
+            { id: '1', name: 'Administrador UNISO', email: 'admin@uniso.br', password: 'admin123', role: 'admin' },
+            { id: '2', name: 'João Silva', email: 'aluno@uniso.br', password: 'aluno123', role: 'aluno' }
+        ];
+        
+        function initData() {
+            const storedUsers = localStorage.getItem('users');
+            const storedCourses = localStorage.getItem('courses');
+            const storedEnrollments = localStorage.getItem('enrollments');
+            const storedCertificates = localStorage.getItem('certificates');
+            if (storedUsers) users = JSON.parse(storedUsers);
+            if (storedCourses) courses = JSON.parse(storedCourses);
+            if (storedEnrollments) enrollments = JSON.parse(storedEnrollments);
+            if (storedCertificates) certificates = JSON.parse(storedCertificates);
+        }
+        
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const user = users.find(u => u.email === email && u.password === password);
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                showToast('Login realizado com sucesso!');
+                document.getElementById('auth-container').classList.add('hidden');
+                document.getElementById('app-container').classList.remove('hidden');
+                updateUserInterface();
+                loadDashboard();
             } else {
-                modalFooter.innerHTML = `
-                    <button class="btn btn-secondary" id="modalCancel">Cancelar</button>
-                    <button class="btn btn-primary" id="modalSave">Salvar</button>
-                `;
-            }
-
-            modalOverlay.classList.remove('hidden');
-        }
-
-        function hideModal() {
-            document.getElementById('modalOverlay').classList.add('hidden');
-        }
-
-        // Router System
-        const Router = {
-            currentRoute: null,
-
-            navigate(route, params = {}) {
-                this.currentRoute = route;
-                loadPage(route, params);
-            },
-
-            getCurrentRoute() {
-                return this.currentRoute;
-            }
-        };
-
-        // Page Loader
-        async function loadPage(route, params = {}) {
-            const mainContent = document.getElementById('mainContent');
-            const pageTitle = document.getElementById('pageTitle');
-            const user = Auth.getCurrentUser();
-
-            // Show loading state
-            mainContent.innerHTML = '<div class="loading-spinner"></div> Carregando...';
-            pageTitle.textContent = 'Carregando...';
-
-            // Simulate loading delay
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            switch (route) {
-                case CONFIG.ROUTES.DASHBOARD_ADMIN:
-                    loadAdminDashboard();
-                    break;
-                case CONFIG.ROUTES.DASHBOARD_STUDENT:
-                    loadStudentDashboard();
-                    break;
-                case CONFIG.ROUTES.COURSES:
-                    loadCourseCatalog();
-                    break;
-                case CONFIG.ROUTES.COURSE_DETAIL:
-                    loadCourseDetail(params.courseId);
-                    break;
-                case CONFIG.ROUTES.LESSON_PLAYER:
-                    loadLessonPlayer(params.lessonId);
-                    break;
-                case CONFIG.ROUTES.QUIZ:
-                    loadQuiz(params.quizId);
-                    break;
-                case CONFIG.ROUTES.CERTIFICATES:
-                    loadCertificates();
-                    break;
-                case CONFIG.ROUTES.PROFILE:
-                    loadProfile();
-                    break;
-                case CONFIG.ROUTES.MANAGE_COURSES:
-                    loadManageCourses();
-                    break;
-                case CONFIG.ROUTES.MANAGE_USERS:
-                    loadManageUsers();
-                    break;
-                case CONFIG.ROUTES.MANAGE_QUIZZES:
-                    loadManageQuizzes();
-                    break;
-                case CONFIG.ROUTES.MANAGE_CERTIFICATES:
-                    loadManageCertificates();
-                    break;
-                case CONFIG.ROUTES.REPORTS:
-                    loadReports();
-                    break;
-                case CONFIG.ROUTES.SETTINGS:
-                    loadSettings();
-                    break;
-                default:
-                    if (user && user.role === 'admin') {
-                        loadAdminDashboard();
-                    } else if (user && user.role === 'student') {
-                        loadStudentDashboard();
-                    } else {
-                        Router.navigate(CONFIG.ROUTES.LOGIN);
-                    }
+                showToast('Email ou senha inválidos', 'error');
             }
         }
-
-        // Dashboard Admin Module
-        function loadAdminDashboard() {
-            const user = Auth.getCurrentUser();
-            const courses = Storage.get('courses') || [];
-            const users = Storage.get('users') || [];
-            const lessons = Storage.get('lessons') || [];
-            const certificates = Storage.get('certificates') || [];
-
-            const studentUsers = users.filter(u => u.role === 'student');
-            const activeCourses = courses.filter(c => c.status === 'active');
-
-            document.getElementById('pageTitle').textContent = 'Dashboard Administrativo';
-
-            const content = `
-                <div class="page-title">Dashboard Administrativo</div>
-                
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number">${studentUsers.length}
-
-                        
-Alunos Cadastrados
-
-                    
-                    
-
-                        
-${activeCourses.length}</div>
-                        <div class="stat-label">Cursos Ativos</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${lessons.length}
-
-                        
-Aulas Publicadas
-
-                    
-
-                    
-
-                        
-${certificates.length}</div>
-                        <div class="stat-label">Certificados Emitidos</div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Gráfico de Acessos (Últimos 7 Dias)</h3>
-                    <div class="chart-container">
-                        ${generateAccessChart()}
-                    
-
-                
-
-
-                
-
-                    
-Alunos por Curso
-
-                    
-
-                        ${generateCourseDistributionChart(courses)}
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Últimos Alunos Cadastrados</h3>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Email</th>
-                                <th>Data Cadastro</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${getRecentStudents(studentUsers).map(user => `
-                                
-                                    ${user.name}</td>
-                                    <td>${user.email}
-                                    ${formatDate(user.createdAt)}</td>
-                                    <td>${user.isActive ? 'Ativo' : 'Inativo'}
-                                
-                            `).join('')}
-                        
-                    
-                
-
-            `;
-
-            document.getElementById('mainContent').innerHTML = content;
-        }
-
-        function generateAccessChart() {
-            const days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
-            const accessData = [120, 150, 90, 180, 200, 80, 140];
-            
-            return accessData.map((value, index) => {
-                const height = (value / 200) * 100;
-                return `
-                    
-
-                        <div class="chart-bar-label">${days[index]}
-
-                    
-
-                `;
-            }).join('');
-        }
-
-        function generateCourseDistributionChart(courses) {
-            const courseNames = courses.slice(0, 5).map(c => c.title.substring(0, 10) + '...');
-            const enrollmentData = courses.slice(0, 5).map(c => c.enrolledStudents);
-            const maxValue = Math.max(...enrollmentData);
-            
-            return enrollmentData.map((value, index) => {
-                const height = maxValue > 0 ? (value / maxValue) * 100 : 0;
-                return `
-                    
-
-                        <div class="chart-bar-label">${courseNames[index]}
-
-                    
-                `;
-            }).join('');
-        }
-
-        function getRecentStudents(students) {
-            return students.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 10);
-        }
-
-        // Student Dashboard Module
-        function loadStudentDashboard() {
-            const user = Auth.getCurrentUser();
-            const courses = Storage.get('courses') || [];
-            const enrolledCourses = courses.filter(course => 
-                user.enrolledCourses && user.enrolledCourses.includes(course.id)
-            );
-
-            document.getElementById('pageTitle').textContent = 'Meu Painel';
-
-            const content = `
-                
-Olá, ${user.name}!</div>
-                
-                <div class="card">
-                    <h3>Cursos em Andamento</h3>
-                    <div class="courses-carousel">
-                        ${enrolledCourses.map(course => {
-                            const progress = user.courseProgress?.[course.id] || { completionRate: 0 };
-                            return `
-                                
-
-                                    
-📚
-
-                                    
-
-                                        
-${course.title}</h3>
-                                        <p class="course-description">${course.shortDescription}
-
-                                        
-
-                                            ${getCategoryName(course.categoryId)}</span>
-                                            <span>${formatTime(course.totalHours * 60)}
-                                        
-
-                                        
-
-                                            
-</div>
-                                        </div>
-                                        <p>${progress.completionRate}% concluído
-
-                                    
-
-                                
-
-                            `;
-                        }).join('')}
-                    
-
-                
-
-
-                
-
-                    
-Próximas Aulas Sugeridas
-
-                    
-
-                        ${getSuggestedLessons(enrolledCourses, user).map(lesson => `
-                            <div class="course-card" onclick="Router.navigate('${CONFIG.ROUTES.LESSON_PLAYER}', {lessonId: ${lesson.id}})">
-                                <div class="course-image">🎥</div>
-                                <div class="course-content">
-                                    <h3 class="course-title">%%%LATEX_BLOCK_16%%%{lesson.description}</p>
-                                    <div class="course-meta">
-                                        <span>%%%LATEX_BLOCK_17%%%{formatTime(lesson.duration)} min</span>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Meus Certificados</h3>
-                    <div class="courses-carousel">
-                        ${getCompletedCertificates(user).map(cert => `
-                            
-
-                                <div class="course-image">📜</div>
-                                <div class="course-content">
-                                    <h3 class="course-title">${cert.courseTitle}
-                                    
-Concluído em ${formatDate(cert.date)}</p>
-                                    <div class="course-meta">
-                                        <span>${formatTime(cert.hours)} horas
-                                    
-
-
-                                
-
-                            
-
-                        `).join('')}
-                    
-
-                
-            `;
-
-            document.getElementById('mainContent').innerHTML = content;
-        }
-
-        function getCategoryName(categoryId) {
-            const categories = Storage.get('categories') || [];
-            const category = categories.find(c => c.id === categoryId);
-            return category ? category.name : 'Sem Categoria';
-        }
-
-        function getModuleName(moduleId) {
-            const modules = Storage.get('modules') || [];
-            const module = modules.find(m => m.id === moduleId);
-            return module ? module.title : 'Sem Módulo';
-        }
-
-        function getSuggestedLessons(courses, user) {
-            // Return incomplete lessons from enrolled courses
-            const lessons = Storage.get('lessons') || [];
-            const incompleteLessons = lessons.filter(lesson => {
-                const course = courses.find(c => c.id === getCourseIdByModule(lesson.moduleId));
-                return course && !isLessonCompleted(user, lesson.id);
-            });
-            return incompleteLessons.slice(0, 4);
-        }
-
-        function getCourseIdByModule(moduleId) {
-            const modules = Storage.get('modules') || [];
-            const module = modules.find(m => m.id === moduleId);
-            return module ? module.courseId : null;
-        }
-
-        function isLessonCompleted(user, lessonId) {
-            // Placeholder function - implement actual logic
-            return false;
-        }
-
-        function getCompletedCertificates(user) {
-            // Placeholder function - implement actual logic
-            return [
-                { courseTitle: 'Word - Do Básico ao Avançado', date: '2024-01-15', hours: 20 },
-                { courseTitle: 'Introdução à Inteligência Artificial', date: '2024-02-20', hours: 20 }
-            ];
-        }
-
-        // Course Catalog Module
-        function loadCourseCatalog() {
-            const courses = Storage.get('courses') || [];
-            const categories = Storage.get('categories') || [];
-            const user = Auth.getCurrentUser();
-
-            document.getElementById('pageTitle').textContent = 'Catálogo de Cursos';
-
-            const content = `
-                
-Catálogo de Cursos
-
-                
-                
-
-                    
-Todas as Categorias
-${user.name}
-
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="profileEmail">Email</label>
-                                        <input type="email" id="profileEmail" value="${user.email}" readonly>
-                                    
-
-                                
-                                
-
-                                    
-
-                                        Telefone
-                                        
-${user.phone || ''}
-
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="profileBirthDate">Data de Nascimento</label>
-                                        <input type="date" id="profileBirthDate" value="${user.birthDate || ''}" required>
-                                    
-
-                                
-
-                                Atualizar Perfil
-                            
-                        
-                    
-                
-
-                
-
-                    
-Alterar Senha
-
-                    
-
-                        
-
-                            
-
-                                Senha Atual
-                                
-
-                            
-
-                        
-
-                        
-
-                            
-
-                                Nova Senha
-                                
-
-                            
-
-                            
-
-                                Confirmar Nova Senha
-                                
-
-                            
-
-                        
-
-                        Alterar Senha
-                    
-
-                
-
-
-                
-
-                    
-Estatísticas de Estudo
-
-                    
-
-                            
-
-                                ${user.enrolledCourses ? user.enrolledCourses.length : 0}
-                            </div>
-                            <div>Cursos Matriculados</div>
-                        </div>
-                        <div style="text-align: center; padding: 1rem; background: var(--purple-pastel); border-radius: 8px;">
-                            <div style="font-size: 2rem; color: var(--green-success); font-weight: bold;">
-                                ${Object.values(user.courseProgress || {}).reduce((sum, progress) => sum + progress.completedLessons, 0)}
-                            
-
-                            
-Aulas Concluídas
-
-                        
-
-                            
-
-                                ${getTotalStudyHours(user)}
-                            </div>
-                            <div>Horas de Estudo</div>
-                        </div>
-                        <div style="text-align: center; padding: 1rem; background: var(--purple-pastel); border-radius: 8px;">
-                            <div style="font-size: 2rem; color: var(--yellow-warning); font-weight: bold;">
-                                ${getCompletedCertificates(user).length}
-                            
-
-                            
-Certificados
-
-                        
-
-                
-
-            `;
-
-            document.getElementById('mainContent').innerHTML = content;
-
-            // Add form event listeners
-            document.getElementById('profileForm').addEventListener('submit', updateProfile);
-            document.getElementById('passwordForm').addEventListener('submit', changePassword);
-        }
-
-        function getTotalStudyHours(user) {
-            // Calculate based on completed lessons and their durations
-            const lessons = Storage.get('lessons') || [];
-            const completedLessons = Object.values(user.courseProgress || {})
-                .reduce((sum, progress) => sum + progress.completedLessons, 0);
-            
-            // Approximate calculation - in a real app, this would be more precise
-            return Math.round(completedLessons * 0.5); // Assuming 30 min average per lesson
-        }
-
-        function updateProfile(e) {
+        
+        function handleRegister(e) {
             e.preventDefault();
-            const user = Auth.getCurrentUser();
-            
-            user.name = document.getElementById('profileName').value;
-            user.phone = document.getElementById('profilePhone').value;
-            user.birthDate = document.getElementById('profileBirthDate').value;
-            
-            // Update user in storage
-            const users = Storage.get('users') || [];
-            const userIndex = users.findIndex(u => u.id === user.id);
-            if (userIndex !== -1) {
-                users[userIndex] = user;
-                Storage.set('users', users);
-            }
-            
-            showToast('Perfil atualizado com sucesso!', 'success');
-        }
-
-        function changePassword(e) {
-            e.preventDefault();
-            const user = Auth.getCurrentUser();
-            const currentPassword = document.getElementById('currentPassword').value;
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
-            
-            if (currentPassword !== user.password) {
-                showToast('Senha atual incorreta', 'error');
-                return;
-            }
-            
-            if (newPassword !== confirmNewPassword) {
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirm = document.getElementById('register-confirm-password').value;
+            if (password !== confirm) {
                 showToast('As senhas não coincidem', 'error');
                 return;
             }
-            
-            if (newPassword.length < 6) {
-                showToast('A nova senha deve ter pelo menos 6 caracteres', 'error');
+            if (users.find(u => u.email === email)) {
+                showToast('Email já cadastrado', 'error');
                 return;
             }
-            
-            user.password = newPassword;
-            
-            // Update user in storage
-            const users = Storage.get('users') || [];
-            const userIndex = users.findIndex(u => u.id === user.id);
-            if (userIndex !== -1) {
-                users[userIndex] = user;
-                Storage.set('users', users);
-            }
-            
-            showToast('Senha alterada com sucesso!', 'success');
-            
-            // Clear the form
-            document.getElementById('passwordForm').reset();
+            const newUser = { id: String(users.length + 1), name, email, password, role: 'aluno' };
+            users.push(newUser);
+            saveToLocalStorage();
+            showToast('Cadastro realizado! Faça login.');
+            showLoginForm();
         }
-
-        function uploadProfilePicture() {
-            // Simulate profile picture upload
-            const user = Auth.getCurrentUser();
-            user.profilePicture = 'data:image/svg+xml;base64,' + btoa(`
-                
-            `);
-            
-            // Update user in storage
-            const users = Storage.get('users') || [];
-            const userIndex = users.findIndex(u => u.id === user.id);
-            if (userIndex !== -1) {
-                users[userIndex] = user;
-                Storage.set('users', users);
-            }
-            
-            showToast('Foto de perfil atualizada!', 'success');
-            updateUserDisplay();
+        
+        function showLoginForm(e) {
+            if (e) e.preventDefault();
+            document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('register-form').classList.add('hidden');
         }
-
-        // Management Modules (for Admin)
-        function loadManageCourses() {
-            const courses = Storage.get('courses') || [];
-            const categories = Storage.get('categories') || [];
-
-            document.getElementById('pageTitle').textContent = 'Gerenciar Cursos';
-
-            const content = `
-                
-Gerenciar Cursos
-
-                
-                
-
-                    Adicionar Novo Curso
-                
-
-
-                
-
-Todas as Categorias
-${initialValues.title}
- </div> <div class="form-group"> <label for="courseCategory">Categoria</label> <select id="courseCategory" required> ${categories.map(cat => `${cat.name} </option> `).join('')} </select> </div> </div> <div class="form-row"> <div class="form-group"> <label for="courseLevel">Nível</label> <select id="courseLevel" required> <option value="Básico" %%%LATEX_BLOCK_99%%%{initialValues.level === 'Intermediário' ? 'selected' : ''}>Intermediário</option> <option value="Avançado" %%%LATEX_BLOCK_100%%%{initialValues.totalHours}" required> </div> </div> <div class="form-row"> <div class="form-group"> <label for="courseStatus">Status</label> <select id="courseStatus" required> <option value="active" %%%LATEX_BLOCK_101%%%{initialValues.status === 'inactive' ? 'selected' : ''}>Inativo</option> <option value="draft" %%%LATEX_BLOCK_102%%%{initialValues.displayOrder}" required> </div> </div> <div class="form-group form-full"> <label for="courseShortDesc">Descrição Curta</label> <textarea id="courseShortDesc" rows="2" required>%%%LATEX_BLOCK_103%%%{initialValues.fullDescription}</textarea> </div> <div class="form-group form-full"> <label for="courseCover">Imagem de Capa (URL)</label> <input type="url" id="courseCover" value=
-Título da Aula 
-${initialValues.title}
- required> </div> <div class="form-group"> <label for="lessonType">Tipo de Conteúdo</label> <select id="lessonType" required> <option value="video" %%%LATEX_BLOCK_123%%%{initialValues.type === 'text' ? 'selected' : ''}>Texto</option> <option value="quiz" %%%LATEX_BLOCK_124%%%{initialValues.duration}" required> </div> <div class="form-group"> <label for="lessonOrder">Ordem de Exibição</label> <input type="number" id="lessonOrder" value="%%%LATEX_BLOCK_125%%%{initialValues.status === 'published' ? 'selected' : ''}>Publicada</option> <option value="draft" %%%LATEX_BLOCK_126%%%{initialValues.mandatory ? 'checked' : ''}> Aula Obrigatória </label> </div> </div> <div class="form-group form-full"> <label for="lessonDescription">Descrição da Aula</label> <textarea id="lessonDescription" rows="3" required>%%%LATEX_BLOCK_127%%%{getLessonContentFields(initialValues.type, lesson)} </div> </form> `; const footer = ` <button class="btn btn-secondary" id="modalCancel">Cancelar</button> <button class="btn btn-primary" id="saveLessonBtn">%%%LATEX_BLOCK_128%%%{lesson?.videoUrl || ''}"> </div> <div class="form-group form-full"> <label for="lessonVideoContent">Conteúdo em Texto (opcional)</label> <textarea id="lessonVideoContent" rows="4">%%%LATEX_BLOCK_129%%%{lesson?.textContent || ''}</textarea> </div> `; break; case 'quiz': fields = ` <div class="form-group form-full"> <label for="lessonQuizId">ID do Quiz Associado</label> <input type="number" id="lessonQuizId" value="${lesson?.quizId || ''}" placeholder="Deixe vazio para criar novo quiz">
-Nota Mínima para Aprovação (%) 
- min="0" max="100"> </div> `; break; } return fields; } function saveLesson(lessonId, moduleId) { const formData = { title: document.getElementById('lessonTitle').value, description: document.getElementById('lessonDescription').value, type: document.getElementById('lessonType').value, duration: parseInt(document.getElementById('lessonDuration').value), order: parseInt(document.getElementById('lessonOrder').value), status: document.getElementById('lessonStatus').value, mandatory: document.getElementById('lessonMandatory').checked, moduleId: moduleId }; // Add type-specific fields switch (formData.type) { case 'video': formData.videoUrl = document.getElementById('lessonVideoUrl').value; formData.textContent = document.getElementById('lessonVideoContent').value; break; case 'text': formData.textContent = document.getElementById('lessonTextContent').value; break; case 'quiz': formData.quizId = document.getElementById('lessonQuizId').value; formData.passingScore = parseInt(document.getElementById('lessonQuizPassingScore').value); break; } const lessons = Storage.get('lessons') || []; if (lessonId) { // Update existing lesson const index = lessons.findIndex(l => l.id == lessonId); if (index !== -1) { lessons[index] = { ...lessons[index], ...formData }; } } else { // Add new lesson formData.id = generateId(); lessons.push(formData); } Storage.set('lessons', lessons); hideModal(); showToast(lessonId ? 'Aula atualizada com sucesso!' : 'Aula adicionada com sucesso!', 'success'); viewModuleLessons(moduleId); } function previewLesson(lessonId) { const lessons = Storage.get('lessons') || []; const lesson = lessons.find(l => l.id == lessonId); const content = ` <h3>Preview da Aula: %%%LATEX_BLOCK_131%%%{lesson.type}</p> <p><strong>Duração:</strong> %%%LATEX_BLOCK_132%%%{lesson.status}</p> <p><strong>Obrigatória:</strong> %%%LATEX_BLOCK_133%%%{lesson.description}</p> %%%LATEX_BLOCK_134%%%{lesson.textContent} </div> </div> ` : ''} </div> `; showModal('Preview da Aula', content, '<button class="btn btn-secondary" id="modalClose">Fechar</button>'); } function deleteLesson(lessonId) { if (confirm('Tem certeza que deseja excluir esta aula? Esta ação não pode ser desfeita.')) { const lessons = Storage.get('lessons') || []; const filteredLessons = lessons.filter(l => l.id != lessonId); Storage.set('lessons', filteredLessons); hideModal(); showToast('Aula excluída com sucesso!', 'success'); // Refresh the parent view const lesson = lessons.find(l => l.id == lessonId); if (lesson) { viewModuleLessons(lesson.moduleId); } } } function loadManageUsers() { const users = Storage.get('users') || []; const studentUsers = users.filter(u => u.role === 'student'); document.getElementById('pageTitle').textContent = 'Gerenciar Alunos'; const content = ` <div class="page-title">Gerenciar Alunos</div> <div class="card"> <table class="table"> <thead> <tr> <th>ID</th> <th>Nome</th> <th>Email</th> <th>Data Cadastro</th> <th>Status</th> <th>Cursos</th> <th>Ações</th> </tr> </thead> <tbody> ${studentUsers.map(user => ` ${user.id.substring(0, 8)}</td> <td>${user.name} ${user.email}</td> <td>${formatDate(user.createdAt)} ${user.isActive ? 'Ativo' : 'Inativo'} ${user.enrolledCourses ? user.enrolledCourses.length : 0}</td> <td class="table-actions"> <button class="btn-table btn-edit" onclick="editStudent(${user.id})">Editar Progresso</button> <button class="btn-table btn-delete" onclick="toggleStudentStatus(${user.id}, ${user.isActive})"> ${user.isActive ? 'Bloquear' : 'Desbloquear'} `).join('')}
-`; document.getElementById('mainContent').innerHTML = content; } function editStudent(userId) { const users = Storage.get('users') || []; const user = users.find(u => u.id == userId); const content = `
-Nome Completo 
-${user.name}
- </div> <div class="form-group"> <label for="editStudentEmail">Email</label> <input type="email" id="editStudentEmail" value="${user.email}" required>
-Telefone 
-${user.phone || ''}
- </div> <div class="form-group"> <label for="editStudentBirthDate">Data de Nascimento</label> <input type="date" id="editStudentBirthDate" value="${user.birthDate || ''}" required>
-Aluno Ativo </label> </div> </form>
-`
-;
-const
-footer
-=
-` <button class="btn btn-secondary" id="modalCancel">Cancelar</button> <button class="btn btn-primary" id="saveStudentBtn">Atualizar</button> `
+        
+        function showRegisterForm() {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('register-form').classList.remove('hidden');
+        }
+        
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('auth-container').classList.remove('hidden');
+            document.getElementById('app-container').classList.add('hidden');
+            showToast('Logout realizado');
+        }
+        
+        function updateUserInterface() {
+            if (currentUser) {
+                const initials = currentUser.name.substring(0, 2).toUpperCase();
+                document.getElementById('sidebar-avatar-initials').innerText = initials;
+                document.getElementById('header-avatar-initials').innerText = initials;
+                document.getElementById('sidebar-user-name').innerText = currentUser.name;
+                document.getElementById('header-user-name').innerText = currentUser.name;
+                renderSidebar();
+            }
+        }
+        
+        function renderSidebar() {
+            const nav = document.getElementById('sidebar-nav');
+            const items = currentUser.role === 'admin' 
+                ? [{ id: 'dashboard', label: 'Dashboard', icon: '📊' }, { id: 'courses', label: 'Cursos', icon: '📚' }, { id: 'students', label: 'Alunos', icon: '👥' }]
+                : [{ id: 'dashboard', label: 'Meus Cursos', icon: '🎓' }, { id: 'certificates', label: 'Certificados', icon: '🏆' }];
+            nav.innerHTML = items.map(item => `<div class="sidebar-link" onclick="navigateTo('${item.id}')"><span>${item.icon}</span><span>${item.label}</span></div>`).join('');
+        }
+        
+        function navigateTo(page) {
+            if (page === 'dashboard') loadDashboard();
+            else if (page === 'courses') loadCourses();
+            else if (page === 'students') loadStudents();
+            else if (page === 'certificates') loadCertificates();
+            else if (page === 'profile') loadProfile();
+        }
+        
+        function loadDashboard() {
+            const content = document.getElementById('main-content');
+            const userEnrollments = enrollments.filter(e => e.userId === currentUser.id);
+            const completedCourses = userEnrollments.filter(e => e.progress >= 70).length;
+            const inProgress = userEnrollments.filter(e => e.progress > 0 && e.progress < 70).length;
+            
+            let html = `<div class="page-header"><h1 class="page-title">Bem-vindo, ${currentUser.name}</h1></div>`;
+            
+            if (currentUser.role === 'admin') {
+                html += `<div class="grid grid-cols-4">
+                    <div class="stat-card"><div class="stat-icon">📚</div><div><div class="stat-value">${courses.length}</div><div>Cursos</div></div></div>
+                    <div class="stat-card"><div class="stat-icon">👥</div><div><div class="stat-value">${users.length}</div><div>Alunos</div></div></div>
+                    <div class="stat-card"><div class="stat-icon">📝</div><div><div class="stat-value">${enrollments.length}</div><div>Matrículas</div></div></div>
+                    <div class="stat-card"><div class="stat-icon">🏆</div><div><div class="stat-value">${certificates.length}</div><div>Certificados</div></div></div>
+                </div>`;
+                html += `<div class="card mt-4"><div class="card-header"><h3 class="card-title">Cursos Disponíveis</h3></div><div class="card-body"><div class="grid grid-cols-3">`;
+                courses.slice(0, 3).forEach(course => {
+                    html += `<div class="course-card" onclick="viewCourse('${course.id}')"><div class="course-card-image">📘</div><div class="course-card-body"><h4 class="course-card-title">${course.title}</h4><p class="course-card-description">${course.description.substring(0, 80)}...</p></div></div>`;
+                });
+                html += `</div></div></div>`;
+            } else {
+                html += `<div class="grid grid-cols-2"><div class="stat-card"><div class="stat-icon">📚</div><div><div class="stat-value">${userEnrollments.length}</div><div>Cursos Matriculados</div></div></div>
+                <div class="stat-card"><div class="stat-icon">🏆</div><div><div class="stat-value">${completedCourses}</div><div>Cursos Concluídos</div></div></div></div>`;
+                html += `<div class="card mt-4"><div class="card-header"><h3 class="card-title">Meus Cursos</h3></div><div class="card-body">`;
+                const enrolledCourses = userEnrollments.map(e => courses.find(c => c.id === e.courseId)).filter(c => c);
+                if (enrolledCourses.length === 0) {
+                    html += `<p class="text-center">Você ainda não está matriculado em nenhum curso. <button class="btn btn-primary btn-sm" onclick="navigateTo('courses')">Explorar Cursos</button></p>`;
+                } else {
+                    html += `<div class="grid grid-cols-2">`;
+                    enrolledCourses.forEach(course => {
+                        const enrollment = userEnrollments.find(e => e.courseId === course.id);
+                        html += `<div class="course-card"><div class="course-card-image">📘</div><div class="course-card-body"><h4 class="course-card-title">${course.title}</h4><div class="progress mt-2"><div class="progress-bar" style="width: ${enrollment?.progress || 0}%"></div></div><p class="text-sm mt-2">Progresso: ${enrollment?.progress || 0}%</p><button class="btn btn-primary btn-sm mt-2" onclick="viewCourse('${course.id}')">Continuar</button></div></div>`;
+                    });
+                    html += `</div>`;
+                }
+                html += `</div></div>`;
+            }
+            content.innerHTML = html;
+        }
+        
+        function loadCourses() {
+            const content = document.getElementById('main-content');
+            const userEnrollments = enrollments.filter(e => e.userId === currentUser.id);
+            const enrolledIds = userEnrollments.map(e => e.courseId);
+            
+            let html = `<div class="page-header"><h1 class="page-title">Cursos Disponíveis</h1></div><div class="grid grid-cols-3">`;
+            courses.forEach(course => {
+                const isEnrolled = enrolledIds.includes(course.id);
+                html += `<div class="course-card"><div class="course-card-image">📘</div><div class="course-card-body"><h4 class="course-card-title">${course.title}</h4><p class="course-card-description">${course.description.substring(0, 100)}</p><p class="text-sm mt-2">Carga horária: ${course.workload}h | Nível: ${course.level}</p>`;
+                if (isEnrolled) {
+                    html += `<button class="btn btn-primary btn-sm mt-2" onclick="viewCourse('${course.id}')">Continuar</button>`;
+                } else {
+                    html += `<button class="btn btn-secondary btn-sm mt-2" onclick="enrollCourse('${course.id}')">Matricular-se</button>`;
+                }
+                html += `</div></div>`;
+            });
+            html += `</div>`;
+            content.innerHTML = html;
+        }
+        
+        function enrollCourse(courseId) {
+            if (enrollments.find(e => e.userId === currentUser.id && e.courseId === courseId)) {
+                showToast('Você já está matriculado neste curso');
+                return;
+            }
+            enrollments.push({ userId: currentUser.id, courseId, progress: 0, startedAt: new Date().toISOString() });
+            saveToLocalStorage();
+            showToast('Matrícula realizada com sucesso!');
+            loadCourses();
+        }
+        
+        function viewCourse(courseId) {
+            const course = courses.find(c => c.id === courseId);
+            if (!course) return;
+            const enrollment = enrollments.find(e => e.userId === currentUser.id && e.courseId === courseId);
+            const progress = enrollment ? enrollment.progress : 0;
+            const content = document.getElementById('main-content');
+            content.innerHTML = `<div class="page-header"><h1 class="page-title">${course.title}</h1><p>${course.description}</p></div>
+            <div class="card"><div class="card-body"><div class="progress mb-3"><div class="progress-bar" style="width: ${progress}%"></div></div><p class="text-center">Progresso: ${progress}%</p><div class="text-center mt-4"><button class="btn btn-primary" onclick="markProgress('${courseId}')">Marcar Progresso +25%</button></div></div></div>`;
+        }
+        
+        function markProgress(courseId) {
+            const enrollment = enrollments.find(e => e.userId === currentUser.id && e.courseId === courseId);
+            if (enrollment) {
+                let newProgress = Math.min(enrollment.progress + 25, 100);
+                enrollment.progress = newProgress;
+                saveToLocalStorage();
+                showToast(`Progresso atualizado: ${newProgress}%`);
+                if (newProgress >= 70 && !certificates.find(c => c.userId === currentUser.id && c.courseId === courseId)) {
+                    const course = courses.find(c => c.id === courseId);
+                    certificates.push({ userId: currentUser.id, courseId, courseTitle: course.title, date: new Date().toISOString(), code: 'CERT-' + Math.random().toString(36).substr(2, 8).toUpperCase() });
+                    saveToLocalStorage();
+                    showToast('Parabéns! Você atingiu 70% e ganhou um certificado!', 'success');
+                }
+                viewCourse(courseId);
+            }
+        }
+        
+        function loadStudents() {
+            const content = document.getElementById('main-content');
+            let html = `<div class="page-header"><h1 class="page-title">Alunos Matriculados</h1></div><div class="card"><div class="card-body"><table style="width:100%;border-collapse:collapse;"><thead><tr style="border-bottom:2px solid #e5e7eb;"><th style="text-align:left;padding:12px;">Nome</th><th style="text-align:left;padding:12px;">Email</th><th style="text-align:left;padding:12px;">Cursos</th></tr></thead><tbody>`;
+            users.filter(u => u.role === 'aluno').forEach(student => {
+                const studentEnrollments = enrollments.filter(e => e.userId === student.id);
+                const courseNames = studentEnrollments.map(e => courses.find(c => c.id === e.courseId)?.title).filter(Boolean).join(', ');
+                html += `<tr style="border-bottom:1px solid #e5e7eb;"><td style="padding:12px;">${student.name}</td><td style="padding:12px;">${student.email}</td><td style="padding:12px;">${courseNames || 'Nenhum curso'}</td></tr>`;
+            });
+            html += `</tbody></table></div></div>`;
+            content.innerHTML = html;
+        }
+        
+        function loadCertificates() {
+            const userCerts = certificates.filter(c => c.userId === currentUser.id);
+            const content = document.getElementById('main-content');
+            if (userCerts.length === 0) {
+                content.innerHTML = `<div class="page-header"><h1 class="page-title">Meus Certificados</h1></div><div class="card"><div class="card-body text-center"><p>Você ainda não possui certificados.</p><p>Complete cursos com pelo menos 70% de progresso para ganhar seu certificado!</p></div></div>`;
+                return;
+            }
+            let html = `<div class="page-header"><h1 class="page-title">Meus Certificados</h1></div><div class="grid grid-cols-2">`;
+            userCerts.forEach(cert => {
+                html += `<div class="card"><div class="card-body"><div class="text-center"><div style="font-size:3rem;">🏆</div><h3 class="mt-2">${cert.courseTitle}</h3><p class="text-sm">Concluído em: ${new Date(cert.date).toLocaleDateString()}</p><p class="text-sm">Código: ${cert.code}</p><button class="btn btn-primary btn-sm mt-3" onclick="viewCertificate('${cert.code}')">Ver Certificado</button></div></div></div>`;
+            });
+            html += `</div>`;
+            content.innerHTML = html;
+        }
+        
+        function viewCertificate(code) {
+            const cert = certificates.find(c => c.code === code);
+            if (!cert) return;
+            const course = courses.find(c => c.id === cert.courseId);
+            const modalDiv = document.getElementById('modal-container');
+            modalDiv.innerHTML = `<div class="modal-overlay"><div class="modal"><div class="modal-header"><h3 class="modal-title">Certificado</h3><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="text-center"><div style="border:2px solid #5B2D8E;padding:40px;border-radius:16px;"><h2 style="color:#2D1B69;">UNISO Voluntarios</h2><p class="mt-4">Certificamos que</p><h3 style="font-size:1.5rem;margin:20px 0;">${currentUser.name}</h3><p>concluiu com êxito o curso</p><h4 style="color:#5B2D8E;">${cert.courseTitle}</h4><p>com carga horária de ${course?.workload || 0} horas.</p><p class="mt-4">Código: ${cert.code}</p><p class="mt-4">Emitido em: ${new Date(cert.date).toLocaleDateString()}</p></div></div></div><div class="modal-footer"><button class="btn btn-primary" onclick="window.print();closeModal();">Imprimir</button><button class="btn btn-secondary" onclick="closeModal()">Fechar</button></div></div></div>`;
+        }
+        
+        function loadProfile() {
+            const content = document.getElementById('main-content');
+            content.innerHTML = `<div class="page-header"><h1 class="page-title">Meu Perfil</h1></div><div class="card"><div class="card-body"><div class="text-center"><div class="avatar" style="width:80px;height:80px;font-size:2rem;margin:0 auto;">${currentUser.name.substring(0,2).toUpperCase()}</div><h2 class="mt-3">${currentUser.name}</h2><p>${currentUser.email}</p><p>${currentUser.role === 'admin' ? 'Administrador' : 'Aluno'}</p></div></div></div>`;
+        }
+        
+        function closeModal() {
+            document.getElementById('modal-container').innerHTML = '';
+        }
+        
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+        }
+        
+        function toggleUserMenu() {
+            const menu = document.getElementById('user-menu');
+            menu.classList.toggle('hidden');
+        }
+        
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('user-menu');
+            const userBtn = document.querySelector('.header-user');
+            if (menu && userBtn && !userBtn.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+        
+        document.getElementById('login-form-element').addEventListener('submit', handleLogin);
+        document.getElementById('register-form-element').addEventListener('submit', handleRegister);
+        
+        initData();
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            if (users.find(u => u.id === currentUser.id)) {
+                document.getElementById('auth-container').classList.add('hidden');
+                document.getElementById('app-container').classList.remove('hidden');
+                updateUserInterface();
+                loadDashboard();
+            } else {
+                localStorage.removeItem('currentUser');
+            }
+        }
+        document.getElementById('loading-overlay').style.display = 'none';
+        
+        window.showLoginForm = showLoginForm;
+        window.showRegisterForm = showRegisterForm;
+        window.logout = logout;
+        window.navigateTo = navigateTo;
+        window.enrollCourse = enrollCourse;
+        window.viewCourse = viewCourse;
+        window.markProgress = markProgress;
+        window.viewCertificate = viewCertificate;
+        window.closeModal = closeModal;
+        window.toggleSidebar = toggleSidebar;
+        window.toggleUserMenu = toggleUserMenu;
+    </script>
+</body>
+</html>
