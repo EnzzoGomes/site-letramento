@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UNISO Digital - Learning Experience</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* === CONFIGURAÇÕES GERAIS === */
         :root {
-            --roxo-escuro: #1e1b4b;
+            --roxo-escuro: #111827;
             --roxo-medio: #4338ca;
             --roxo-claro: #6366f1;
             --roxo-muito-claro: #eef2ff;
@@ -26,13 +26,15 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
             background-color: var(--roxo-pastel);
             color: var(--cinza-escuro);
-            transition: all 0.3s ease;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         a {
@@ -147,6 +149,12 @@
             padding: 20px;
             margin-bottom: 20px;
             transition: all 0.3s ease;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--roxo-escuro);
         }
 
         .table {
@@ -298,32 +306,11 @@
             height: 100vh;
             position: fixed;
             overflow-y: auto;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 200;
+            transition: all 0.3s ease;
         }
 
         .sidebar.collapsed {
-            width: 70px;
-        }
-
-        .sidebar.collapsed .logo,
-        .sidebar.collapsed .menu-text {
-            display: none;
-        }
-
-        .sidebar.collapsed .sidebar-header {
-            padding: 20px 0;
-            justify-content: center;
-        }
-
-        .sidebar.collapsed .menu-item {
-            padding: 15px 0;
-            justify-content: center;
-            margin: 4px 8px;
-        }
-
-        .sidebar.collapsed .menu-icon {
-            margin-right: 0;
+            width: 60px;
         }
 
         .sidebar-header {
@@ -369,17 +356,17 @@
             margin-left: 250px;
             min-height: 100vh;
             padding-top: 70px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
         }
 
         .main-content.full-width {
-            margin-left: 70px;
+            margin-left: 60px;
         }
 
         .header {
             position: fixed;
             top: 0;
-            left: 250px;
+            left: 280px;
             right: 0;
             height: 80px;
             background: rgba(255, 255, 255, 0.8);
@@ -389,11 +376,11 @@
             align-items: center;
             padding: 0 30px;
             z-index: 100;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
         }
 
         .header.full-width {
-            left: 70px;
+            left: 60px;
         }
 
         .logo {
@@ -621,7 +608,7 @@
             text-align: center; font-size: 10px; color: var(--cinza-medio);
         }
         .badge-icon {
-            font-size: 32px; display: block; margin-bottom: 5px;
+            font-size: 24px; display: block; margin-bottom: 5px; font-weight: bold;
             filter: grayscale(1); opacity: 0.3;
         }
         .badge-icon.unlocked { filter: grayscale(0); opacity: 1; }
@@ -1189,7 +1176,7 @@
 
         <!-- HEADER -->
         <div class="header" id="header">
-            <div class="logo" id="page-title" style="font-size: 22px;">Dashboard</div>
+            <div class="logo" id="page-title" style="font-size: 20px; text-transform: uppercase; letter-spacing: 1px;">Dashboard</div>
             <button id="sidebar-toggle" style="margin-left: 20px; background: none; font-size: 20px;">☰</button>
             <div class="user-info">
                 <div id="student-stats" class="flex items-center gap-3" style="display: none;">
@@ -1614,10 +1601,10 @@
                 const content = `
                     <div class="flex justify-between items-center mb-6">
                         <div>
-                            <h2 style="font-size: 24px;">Olá, Gestor! 👋</h2>
-                            <p style="color: var(--cinza-medio)">Aqui está o que está acontecendo na plataforma hoje.</p>
+                            <h2 style="font-size: 24px;">Painel Administrativo</h2>
+                            <p style="color: var(--cinza-medio); font-size: 14px;">Visão geral do sistema e indicadores de performance.</p>
                         </div>
-                        <button class="btn-primary">+ Novo Relatório</button>
+                        <button class="btn-primary" onclick="AdminDashboard.exportReport()">+ Gerar Relatório</button>
                     </div>
                     <div class="dashboard-grid">
                         <div class="stat-card">
@@ -1633,8 +1620,8 @@
                             <div class="stat-label">Aulas Publicadas</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-number" id="total-certificates">0</div>
-                            <div class="stat-label">Certificados Gerados</div>
+                            <div class="stat-number">98%</div>
+                            <div class="stat-label">Satisfação Alunos</div>
                         </div>
                     </div>
                     
@@ -1648,15 +1635,15 @@
                             <div style="font-size: 13px;">
                                 <div class="mb-3 p-2" style="border-left: 3px solid var(--verde)">
                                     <strong>João Silva</strong> concluiu Word Básico.
-                                    <div style="color: var(--cinza-medio)">há 5 minutos</div>
+                                    <div style="color: var(--cinza-medio)">5 minutos atrás</div>
                                 </div>
                                 <div class="mb-3 p-2" style="border-left: 3px solid var(--roxo-claro)">
                                     <strong>Maria Souza</strong> se matriculou em Excel.
-                                    <div style="color: var(--cinza-medio)">há 12 minutos</div>
+                                    <div style="color: var(--cinza-medio)">12 minutos atrás</div>
                                 </div>
                                 <div class="mb-3 p-2" style="border-left: 3px solid var(--amarelo)">
                                     <strong>Novo Curso</strong> IA para Negócios criado.
-                                    <div style="color: var(--cinza-medio)">há 1 hora</div>
+                                    <div style="color: var(--cinza-medio)">1 hora atrás</div>
                                 </div>
                             </div>
                         </div>
@@ -1692,7 +1679,7 @@
                 document.getElementById('total-lessons').textContent = totalLessons;
                 
                 const completedCount = users.filter(u => u.role === 'student' && u.progress && Object.keys(u.progress).some(k => u.progress[k] >= 100)).length;
-                if(document.getElementById('total-certificates')) document.getElementById('total-certificates').textContent = completedCount;
+                document.getElementById('total-certificates').textContent = completedCount;
             },
             
             exportReport: function() {
@@ -1790,8 +1777,8 @@
                                             <td>${course.duration} horas</td>
                                             <td><span class="badge badge-success">ativo</span></td>
                                             <td class="table-actions">
-                                                <button class="action-btn view-btn" style="background: var(--roxo-claro);" onclick="window.CourseManager.manageContent('${course.id}')">Conteúdo</button>
-                                                <button class="action-btn delete-btn" onclick="window.CourseManager.deleteCourse('${course.id}')">Excluir</button>
+                                                <button class="action-btn view-btn" style="background: var(--roxo-claro);" onclick="CourseManager.manageContent('${course.id}')">Gerenciar Conteúdo</button>
+                                                <button class="action-btn delete-btn" onclick="CourseManager.deleteCourse('${course.id}')">Excluir</button>
                                             </td>
                                         </tr>
                                     `).join('')}
@@ -1886,7 +1873,6 @@
                 Storage.set('courses', courses);
                 
                 Modal.hide('course-modal');
-                document.getElementById('course-modal')?.remove();
                 this.renderList();
                 Toast.show('Curso adicionado com sucesso!', 'success');
             },
@@ -1897,25 +1883,25 @@
                 
                 const content = `
                     <div class="flex justify-between items-center mb-6">
-                        <button class="btn-secondary" onclick="window.CourseManager.renderList()">Voltar</button>
-                        <h2>Gestão de Conteúdo: ${course.title}</h2>
-                        <button class="btn-primary" onclick="window.CourseManager.addModuleForm('${courseId}')">+ Novo Módulo</button>
+                        <button class="btn-secondary" onclick="CourseManager.renderList()">Voltar</button>
+                        <h2 style="font-size: 20px;">Estrutura: ${course.title}</h2>
+                        <button class="btn-primary" onclick="CourseManager.addModuleForm('${courseId}')">+ Novo Módulo</button>
                     </div>
                     
                     <div id="modules-list">
-                        ${course.modules.length === 0 ? '<div class="card text-center">Nenhum módulo cadastrado.</div>' : ''}
+                        ${course.modules.length === 0 ? '<div class="card text-center p-5">Nenhum conteúdo cadastrado. Comece adicionando um módulo.</div>' : ''}
                         ${course.modules.map(module => `
                             <div class="card mb-4" style="border-left: 4px solid var(--roxo-claro)">
                                 <div class="flex justify-between items-center mb-3">
-                                    <h3>Módulo: ${module.title}</h3>
-                                    <button class="btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="window.CourseManager.addLessonForm('${courseId}', '${module.id}')">Adicionar Aula</button>
+                                    <h3 style="font-size: 16px;">Módulo: ${module.title}</h3>
+                                    <button class="btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="CourseManager.addLessonForm('${courseId}', '${module.id}')">Adicionar Aula</button>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table" style="font-size: 13px;">
                                         <thead>
                                             <tr>
-                                                <th>Título da Aula</th>
-                                                <th>Duração (min)</th>
+                                                <th style="width: 60%">Título</th>
+                                                <th>Duração</th>
                                                 <th>Tipo</th>
                                             </tr>
                                         </thead>
@@ -1923,10 +1909,11 @@
                                             ${module.lessons.map(lesson => `
                                                 <tr>
                                                     <td>${lesson.title}</td>
-                                                    <td>${lesson.duration}</td>
+                                                    <td>${lesson.duration} min</td>
                                                     <td><span class="badge ${lesson.type === 'video' ? 'badge-warning' : 'badge-success'}">${lesson.type.toUpperCase()}</span></td>
                                                 </tr>
                                             `).join('')}
+                                            ${module.lessons.length === 0 ? '<tr><td colspan="3" class="text-center" style="color: var(--cinza-medio); padding: 15px;">Módulo vazio</td></tr>' : ''}
                                         </tbody>
                                     </table>
                                 </div>
@@ -1938,7 +1925,7 @@
             },
 
             addModuleForm: function(courseId) {
-                const title = prompt("Digite o nome do novo módulo:");
+                const title = prompt("Digite o nome do novo módulo (ex: Fundamentos de IA):");
                 if (title) {
                     const courses = Storage.get('courses');
                     const index = courses.findIndex(c => c.id === courseId);
@@ -1954,10 +1941,53 @@
             },
 
             addLessonForm: function(courseId, moduleId) {
-                const title = prompt("Título da aula:");
-                const videoId = prompt("ID do vídeo do YouTube (opcional):");
-                const duration = prompt("Duração (minutos):", "15");
-                
+                const modalId = 'lesson-add-modal';
+                const modalHtml = `
+                    <div class="modal show" id="${modalId}">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Cadastrar Aula</h3>
+                                <button class="close-modal" onclick="document.getElementById('${modalId}').remove()">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Título da Aula</label>
+                                    <input type="text" id="l-title" placeholder="Ex: Introdução ao Prompt Engineering">
+                                </div>
+                                <div class="form-group">
+                                    <label>ID do Vídeo (YouTube)</label>
+                                    <input type="text" id="l-video-id" placeholder="Ex: dQw4w9WgXcQ">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Tempo Estimado (min)</label>
+                                        <input type="number" id="l-dur" value="10">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tipo de Recurso</label>
+                                        <select id="l-type">
+                                            <option value="video">Vídeo Aula</option>
+                                            <option value="quiz">Atividade / Quiz</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn-secondary" onclick="document.getElementById('${modalId}').remove()">Cancelar</button>
+                                <button class="btn-primary" onclick="CourseManager.saveLesson('${courseId}', '${moduleId}')">Salvar Aula</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+            },
+
+            saveLesson: function(courseId, moduleId) {
+                const title = document.getElementById('l-title').value;
+                const videoId = document.getElementById('l-video-id').value;
+                const duration = document.getElementById('l-dur').value;
+                const type = document.getElementById('l-type').value;
+
                 if (title && duration) {
                     const courses = Storage.get('courses');
                     const cIndex = courses.findIndex(c => c.id === courseId);
@@ -1968,13 +1998,16 @@
                         title: title,
                         videoId: videoId || null,
                         duration: parseInt(duration),
-                        type: 'video',
+                        type: type,
                         completed: false
                     });
 
                     Storage.set('courses', courses);
+                    document.getElementById('lesson-add-modal').remove();
                     this.manageContent(courseId);
-                    Toast.show('Aula adicionada!', 'success');
+                    Toast.show('Conteúdo adicionado!', 'success');
+                } else {
+                    Toast.show('Preencha os dados da aula', 'error');
                 }
             },
             
@@ -2126,9 +2159,9 @@
                 
                 const content = `
                     <div class="catalog-header">
-                        <h2>Catálogo de Cursos</h2>
+                        <h2 style="font-size: 24px;">Catálogo de Cursos</h2>
                         <div class="search-box">
-                            <span class="search-icon">🔍</span>
+                            <span class="search-icon">Pesquisar</span>
                             <input type="text" id="search-input" placeholder="Buscar cursos..." onkeyup="CourseCatalog.filterCourses()">
                         </div>
                     </div>
@@ -2176,8 +2209,8 @@
                                             <div class="course-title">${course.title}</div>
                                             <div class="course-description">${course.description.substring(0, 80)}...</div>
                                             <div class="course-meta">
-                                                <span>📚 ${course.duration} horas</span>
-                                                <span>📊 ${course.level === 'basico' ? 'Básico' : course.level === 'intermediario' ? 'Intermediário' : 'Avançado'}</span>
+                                                <span>Duração: ${course.duration}h</span>
+                                                <span>Nível: ${course.level === 'basico' ? 'Iniciante' : 'Avançado'}</span>
                                             </div>
                                             ${currentUser && currentUser.enrolledCourses?.includes(course.id) ? `
                                                 <div class="course-progress">
@@ -2242,8 +2275,8 @@
                                                 <div class="course-title">${course.title}</div>
                                                 <div class="course-description">${course.description.substring(0, 80)}...</div>
                                                 <div class="course-meta">
-                                                    <span>📚 ${course.duration} horas</span>
-                                                    <span>📊 ${course.level === 'basico' ? 'Básico' : course.level === 'intermediario' ? 'Intermediário' : 'Avançado'}</span>
+                                                        <span>Duração: ${course.duration}h</span>
+                                                        <span>Nível: ${course.level.toUpperCase()}</span>
                                                 </div>
                                                 ${currentUser && currentUser.enrolledCourses?.includes(course.id) ? `
                                                     <div class="course-progress">
@@ -2300,9 +2333,9 @@
                         <div class="course-detail-info">
                             <h1>${course.title}</h1>
                             <div class="course-detail-meta">
-                                <div class="meta-item">📚 ${course.duration} horas</div>
-                                <div class="meta-item">📊 ${course.level === 'basico' ? 'Básico' : course.level === 'intermediario' ? 'Intermediário' : 'Avançado'}</div>
-                                <div class="meta-item">📖 ${course.modules.length} módulos</div>
+                                <div class="meta-item">Carga Horária: ${course.duration} horas</div>
+                                <div class="meta-item">Nível: ${course.level.toUpperCase()}</div>
+                                <div class="meta-item">Estrutura: ${course.modules.length} módulos</div>
                             </div>
                             <p>${course.description}</p>
                         </div>
@@ -2325,12 +2358,12 @@
                                 <ul class="lesson-list">
                                     ${module.lessons.map(lesson => `
                                         <li class="lesson-item" onclick="CourseDetail.openLesson('${courseId}', '${lesson.id}', '${lesson.type}')">
-                                            <div class="lesson-icon">${lesson.type === 'video' ? '📹' : '📝'}</div>
+                                            <div class="lesson-icon" style="background: var(--cinza-medio); font-size: 10px;">${lesson.type === 'video' ? 'VIDEO' : 'QUIZ'}</div>
                                             <div class="lesson-info">
                                                 <div class="lesson-title">${lesson.title}</div>
                                                 <div class="lesson-meta">
-                                                    <span>⏱️ ${lesson.duration} min</span>
-                                                    <span>${lesson.type === 'video' ? 'Vídeo' : 'Quiz'}</span>
+                                                    <span>${lesson.duration} min</span>
+                                                    <span style="color: var(--roxo-claro)">${lesson.type === 'video' ? 'Aula gravada' : 'Avaliação'}</span>
                                                 </div>
                                             </div>
                                             <div class="lesson-status ${completedLessons.includes(lesson.id) ? 'completed' : ''}" 
@@ -2420,16 +2453,20 @@
                     if (found) lesson = found;
                 });
 
+                const videoContent = lesson.videoId 
+                    ? `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${lesson.videoId}" frameborder="0" allowfullscreen></iframe>`
+                    : `<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: white; background: linear-gradient(45deg, #1a1a1a, #2D1B69);">
+                        <div style="border: 2px solid white; padding: 20px; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">PLAY</div>
+                        <h2 class="mb-4">${lesson.title}</h2>
+                        <p class="mb-4" style="font-size: 14px; opacity: 0.8;">Módulo de Transmissão Digital</p>
+                        <button class="btn-primary" onclick="LessonPlayer.complete('${courseId}', '${lessonId}')">Concluir Aula e Ganhar 100 XP</button>
+                       </div>`;
+
                 const content = `
                     <div class="player-view">
                         <button class="btn-secondary mb-4" onclick="CourseDetail.render('${courseId}')">← Voltar ao Curso</button>
                         <div class="card p-0 overflow-hidden" style="background: #000;">
-                            <div style="aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; background: linear-gradient(45deg, #1a1a1a, #2D1B69);">
-                                <span style="font-size: 64px; margin-bottom: 20px;">🎬</span>
-                                <h2 class="mb-4">${lesson.title}</h2>
-                                <p class="mb-4">Simulação de Aula Interativa</p>
-                                <button class="btn-primary" onclick="LessonPlayer.complete('${courseId}', '${lessonId}')">Concluir Aula e Ganhar 100 XP</button>
-                            </div>
+                            <div style="aspect-ratio: 16/9;">${videoContent}</div>
                         </div>
                         <div class="card mt-4">
                             <h3>Sobre esta aula</h3>
@@ -2504,17 +2541,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="card">
-                        <h3>Minhas Conquistas</h3>
-                        <div class="badge-grid">
-                            <div class="badge-item"><span class="badge-icon unlocked">🥇</span>Primeiros Passos</div>
-                            <div class="badge-item"><span class="badge-icon unlocked">📖</span>Leitor Ávido</div>
-                            <div class="badge-item"><span class="badge-icon ${currentUser.xp > 1000 ? 'unlocked' : ''}">⚡</span>Ninja de IA</div>
-                            <div class="badge-item"><span class="badge-icon">🎓</span>Graduado</div>
-                            <div class="badge-item"><span class="badge-icon">🌟</span>Embaixador</div>
-                        </div>
-                    </div>
                 `;
                 
                 document.getElementById('content-area').innerHTML = content;
@@ -2565,7 +2591,7 @@
                             <h2>Resultado do Quiz</h2>
                             <div class="result-score">${percentage}%</div>
                             <div class="result-message">
-                                ${passed ? 'Parabéns! Você foi aprovado! 🎉' : 'Você não atingiu a pontuação mínima. Tente novamente! 📚'}
+                                ${passed ? 'Aprovado com sucesso.' : 'Pontuação insuficiente. Revise o material e tente novamente.'}
                             </div>
                             <div class="result-details">
                                 <p>Acertos: ${correctCount} de ${this.questions.length}</p>
@@ -2641,8 +2667,8 @@
                                         <div class="course-title">${course.title}</div>
                                         <div class="course-description">${course.description.substring(0, 80)}...</div>
                                         <div class="course-meta">
-                                            <span>📚 ${course.duration} horas</span>
-                                            <span>📊 ${course.level === 'basico' ? 'Básico' : course.level === 'intermediario' ? 'Intermediário' : 'Avançado'}</span>
+                                                <span>${course.duration} horas</span>
+                                                <span>Nível: ${course.level.toUpperCase()}</span>
                                         </div>
                                         <div class="course-progress">
                                             <div class="progress-bar">
@@ -2680,24 +2706,24 @@
                 const completionDate = new Date().toLocaleDateString('pt-BR');
                 
                 const content = `
-                    <button class="btn-secondary mb-4 no-print" onclick="Router.navigate('my-courses')">← Voltar</button>
-                    <button class="btn-primary mb-4 no-print" onclick="window.print()">🖨️ Imprimir Certificado</button>
+                    <button class="btn-secondary mb-4 no-print" onclick="Router.navigate('my-courses')">Voltar</button>
+                    <button class="btn-primary mb-4 no-print" onclick="window.print()">Exportar PDF / Imprimir</button>
                     
                     <div class="certificate-container" id="certificate">
                         <div class="certificate-header">
-                            <div class="certificate-logo">UNISO Voluntários</div>
+                            <div class="certificate-logo">UNISO DIGITAL</div>
                             <div class="certificate-title">CERTIFICADO DE CONCLUSÃO</div>
                         </div>
                         <div class="certificate-content">
                             <p style="text-align: center;">Certificamos que</p>
-                            <h2 style="text-align: center; margin: 20px 0;">${currentUser.name}</h2>
+                            <h2 style="text-align: center; margin: 20px 0; text-transform: uppercase;">${currentUser.name}</h2>
                             <p style="text-align: center;">concluiu com aproveitamento o curso</p>
                             <h3 style="text-align: center; margin: 20px 0;">${course.title}</h3>
                             <p style="text-align: center;">com carga horária de ${course.duration} horas, no dia ${completionDate}.</p>
                         </div>
                         <div class="certificate-signature">
                             <div class="signature-line"></div>
-                            <p>Coordenação UNISO Voluntários</p>
+                            <p>COORDENAÇÃO ACADÊMICA</p>
                         </div>
                     </div>
                 `;
@@ -2720,8 +2746,8 @@
                             <h2 style="font-size: 28px;">${currentUser.name}</h2>
                             <p style="opacity: 0.8">Aluno UNISO Digital • Nível ${Math.floor((currentUser.xp || 0) / 500) + 1}</p>
                             <div class="flex gap-4 mt-4">
-                                <div class="xp-badge">🔥 Streak: 5 dias</div>
-                                <div class="xp-badge">🏆 ${currentUser.xp || 0} Total XP</div>
+                                <div class="xp-badge">ESTRUTURA: 5 DIAS</div>
+                                <div class="xp-badge">PONTUAÇÃO: ${currentUser.xp || 0} XP</div>
                             </div>
                         </div>
                     </div>
@@ -2840,16 +2866,16 @@
                 
                 if (user?.role === 'admin') {
                     menuItems = [
-                        { icon: '📊', text: 'Dashboard', route: 'admin-dashboard' },
-                        { icon: '📚', text: 'Gerenciar Cursos', route: 'admin-courses' },
-                        { icon: '👥', text: 'Gerenciar Alunos', route: 'admin-students' },
-                        { icon: '👤', text: 'Meu Perfil', route: 'profile' }
+                        { icon: 'D', text: 'Dashboard', route: 'admin-dashboard' },
+                        { icon: 'C', text: 'Gerenciar Cursos', route: 'admin-courses' },
+                        { icon: 'A', text: 'Gerenciar Alunos', route: 'admin-students' },
+                        { icon: 'P', text: 'Meu Perfil', route: 'profile' }
                     ];
                 } else {
                     menuItems = [
-                        { icon: '🏠', text: 'Catálogo', route: 'catalog' },
-                        { icon: '📖', text: 'Meus Cursos', route: 'my-courses' },
-                        { icon: '👤', text: 'Meu Perfil', route: 'profile' }
+                        { icon: 'L', text: 'Catálogo', route: 'catalog' },
+                        { icon: 'M', text: 'Meus Cursos', route: 'my-courses' },
+                        { icon: 'P', text: 'Meu Perfil', route: 'profile' }
                     ];
                 }
                 
@@ -2945,6 +2971,7 @@
         });
         
         // Make functions globally available
+        window.AdminDashboard = AdminDashboard;
         window.CourseManager = CourseManager;
         window.StudentManager = StudentManager;
         window.CourseCatalog = CourseCatalog;
