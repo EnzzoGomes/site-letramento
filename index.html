@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plataforma de Letramento Digital</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,273 +13,238 @@
         }
 
         :root {
-            --primary: #7ED957; /* Verde vibrante */
-            --secondary: #5271FF; /* Azul amigável */
-            --accent: #FF914D; /* Laranja */
-            --yellow: #FFDE59;
-            --bg-body: #FFF9F0; /* Fundo creme suave */
-            --text-main: #333;
-            --text-muted: #888;
-            --white: #ffffff;
-            --shadow: 0 8px 0px rgba(0,0,0,0.05);
-            --border-radius: 24px;
+            --primary: #1875E2;
+            --bg-dark: #041833;
+            --bg-card: #111e31;
+            --text-main: #FFFFFF;
+            --text-muted: #9ca3af;
+            --border: #2e3b4e;
+            --success: #3fb950;
+            --accent: #00f2ff;
         }
 
         body {
-            font-family: 'Nunito', sans-serif;
-            background-color: var(--bg-body);
-            background-image: radial-gradient(#FFDE59 1px, transparent 1px);
-            background-size: 40px 40px; /* Textura de bolinhas sutil */
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
             color: var(--text-main);
             line-height: 1.6;
         }
 
-        h1, h2, h3, h4, .nav-logo {
-            font-family: 'Fredoka', sans-serif;
-        }
-
         nav {
-            background: var(--white);
-            padding: 15px 5%;
+            background: rgba(4, 24, 51, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            border-bottom: 5px solid var(--primary);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 25px 50px;
+            padding: 40px 20px;
         }
 
         header {
-            text-align: center;
-            margin-bottom: 50px;
-            padding: 20px 0;
+            margin-bottom: 40px;
         }
 
         h1 {
-            color: var(--secondary);
+            font-size: 2.5rem;
+            font-weight: 700;
             margin-bottom: 10px;
-            font-size: 3em;
-            text-shadow: 2px 2px 0px var(--white);
+            background: linear-gradient(90deg, #fff, #1875E2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .subtitle {
-            color: var(--accent);
-            font-size: 1.4em;
-            font-weight: bold;
+            color: var(--text-muted);
+            font-size: 1.1rem;
         }
 
         .main-content {
             display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 40px;
-            margin-bottom: 30px;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
         }
 
         .card {
-            background: var(--white);
-            padding: 30px;
-            border-radius: var(--border-radius);
-            border: 3px solid #eee;
-            position: relative;
-            transition: transform 0.2s;
+            background: var(--bg-card);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: border-color 0.3s ease;
         }
 
-        .card:hover { transform: translateY(-5px); }
+        .card:hover {
+            border-color: var(--primary);
+        }
 
         .card h3 {
-            color: var(--secondary);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary);
             margin-bottom: 20px;
-            font-size: 1.5em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .aluno {
-            background: #F0F4FF;
-            padding: 15px;
-            margin-bottom: 12px;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 2px solid transparent;
+            border: 1px solid transparent;
         }
 
         .aluno:hover {
-            border-color: var(--secondary);
-            background: white;
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border);
         }
 
         .aluno-nome {
             font-weight: bold;
-            color: var(--secondary);
+            font-size: 0.95rem;
         }
 
         .xp-badge {
-            background: var(--yellow);
-            color: #856404;
-            padding: 4px 12px;
-            border-radius: 10px;
-            font-size: 0.85em;
-            font-weight: 700;
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
         .aula {
-            background: var(--white);
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 20px;
+            background: var(--bg-card);
+            padding: 18px;
+            margin-bottom: 12px;
+            border-radius: 10px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 3px solid #eee;
-            box-shadow: 0 6px 0px #eee;
-            transition: all 0.1s;
+            border: 1px solid var(--border);
+            transition: 0.3s;
         }
 
         .aula:hover {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0px #eee;
-            border-color: var(--primary);
+            background: #1c2c41;
         }
 
         .aula.concluida {
-            background: #E8F8E8;
-            border-color: var(--primary);
-            box-shadow: 0 6px 0px #D0EDD0;
+            border-left: 4px solid var(--success);
+        }
+
+        .aula-xp {
+            color: var(--success);
+            font-weight: bold;
+            font-size: 0.9rem;
         }
 
         .btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 18px;
+            padding: 10px 20px;
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: 800;
-            font-family: 'Fredoka', sans-serif;
-            box-shadow: 0 5px 0px #5DA841;
-            transition: all 0.1s;
+            font-weight: 600;
             text-transform: uppercase;
+            font-size: 0.85rem;
             letter-spacing: 1px;
+            transition: 0.2s;
         }
 
         .btn:hover {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0px #5DA841;
-        }
-
-        .ranking {
-            background: var(--accent);
-            color: white;
-            padding: 35px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 10px 0px #E6762D;
+            filter: brightness(1.2);
+            transform: translateY(-1px);
         }
 
         .selo {
-            background: var(--yellow);
-            color: #7A6000;
-            padding: 6px 15px;
-            border-radius: 12px;
-            font-size: 0.85em;
-            font-weight: bold;
-            display: inline-block;
+            background: #1c2c41;
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            border: 1px solid var(--accent);
         }
 
-        .forum {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 20px;
-            border: 3px solid #eee;
-            margin-bottom: 20px;
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #1c2c41;
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow: hidden;
         }
 
-        .modal-content {
-            border-radius: 30px;
-            border: 5px solid var(--secondary);
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 60%;
+            box-shadow: 0 0 10px var(--primary);
         }
 
-        .section h3 {
-            color: var(--secondary);
-            font-size: 1.8em;
-            margin-bottom: 20px;
+        .ranking-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
         }
     </style>
 </head>
 <body>
     <nav>
-        <div class="nav-logo" style="font-size: 1.8em; color: var(--secondary);">🐘 Letramento<span style="color:var(--accent)">Digital</span></div>
-        <div style="font-weight: bold; color: var(--text-muted);">
-            <span style="margin-left: 20px; cursor: pointer;">🏠 Início</span>
-            <span style="margin-left: 20px; cursor: pointer; color: var(--primary);">📚 Minhas Trilhas</span>
-            <span style="margin-left: 20px; cursor: pointer;">🏆 Ranking</span>
+        <div style="font-weight: 800; font-size: 1.4rem; letter-spacing: -1px;">
+            ALURA<span style="color:var(--primary)">_FRONT</span>
+        </div>
+        <div style="font-size: 0.9rem; font-weight: 500;">
+            <span style="margin-left: 30px; cursor: pointer;">MEU APRENDIZADO</span>
+            <span style="margin-left: 30px; cursor: pointer; color: var(--primary);">COMUNIDADE</span>
+            <span style="margin-left: 30px; cursor: pointer; border: 1px solid var(--primary); padding: 5px 15px; border-radius: 4px;">SAIR</span>
         </div>
     </nav>
 
     <div class="container">
         <header>
-            <h1>Olá, Pequeno Explorador! 🚀</h1>
-            <p class="subtitle">Qual aventura vamos viver hoje no mundo digital?</p>
+            <h1>Letramento Digital_</h1>
+            <p class="subtitle">Domine as ferramentas que moldam o futuro da tecnologia.</p>
         </header>
 
         <div class="main-content">
-            <!-- SEÇÃO DE ALUNOS -->
-            <div class="card">
-                <h3> Meus Colegas</h3>
-                <div id="listaAlunos"></div>
-                <button class="btn" style="width: 100%; margin-top: 15px; background: var(--secondary); box-shadow: 0 5px 0px #3A52B8;" onclick="adicionarAluno()">+ Novo Amigo</button>
-            </div>
-
-            <!-- SEÇÃO DE TRILHAS E AULAS -->
             <div>
-                <div class="card" style="margin-bottom: 20px; border-color: var(--primary);">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <span class="selo" style="margin-bottom: 10px;">🌟 AVENTURA OURO</span>
-                            <h2 style="color: var(--primary); font-size: 2em;">Inteligência Artificial</h2>
-                        </div>
-                        <div style="text-align: right;">
-                            <div style="font-size: 0.9em; font-weight: bold; color: var(--text-muted); margin-bottom: 5px;">Seu Progresso</div>
-                            <div style="width: 150px; height: 15px; background: #eee; border-radius: 10px; overflow: hidden; border: 2px solid #ddd;">
-                                <div style="width: 60%; height: 100%; background: var(--primary); border-radius: 10px;"></div>
-                            </div>
-                        </div>
+                <div class="card" style="margin-bottom: 20px;">
+                    <h3>Status da Trilha</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <span style="font-size: 1.5rem; font-weight: bold;">IA & PROMPT ENG.</span>
+                        <span style="color: var(--success); font-size: 0.9rem;">60% CONCLUÍDO</span>
                     </div>
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
                 </div>
+                
+                <h3 style="margin: 30px 0 15px; font-size: 0.9rem; color: var(--text-muted);">AULAS DISPONÍVEIS</h3>
                 <div id="listaAulas"></div>
             </div>
-        </div>
 
-        <!-- SEÇÃO DE DOWNLOADS DE CERTIFICADOS -->
-        <div class="section">
-            <h3><span class="icons">🏆</span>Certificados Desbloqueados</h3>
-            <div id="certificados"></div>
-        </div>
+            <div class="sidebar">
+                <div class="card" style="margin-bottom: 20px;">
+                    <h3>RANKING GLOBAL</h3>
+                    <div id="ranking"></div>
+                </div>
 
-        <!-- SEÇÃO DO RANKING -->
-        <div class="section">
-            <div class="ranking">
-                <h4>🏆 Ranking de Engajamento</h4>
-                <div id="ranking"></div>
+                <div class="card">
+                    <h3>COLABORADORES</h3>
+                    <div id="listaAlunos"></div>
+                    <button class="btn" style="width: 100%; margin-top: 15px;" onclick="adicionarAluno()">+ CONVIDAR</button>
+                </div>
             </div>
         </div>
-
-        <!-- SEÇÃO DO FÓRUM -->
-        <div class="section">
-            <h3><span class="icons">💬</span>Fórum - Dúvidas e Discussões</h3>
-            <div id="forum"></div>
-            <button class="btn" onclick="adicionarTopico()">+ Novo Tópico</button>
-        </div>
-    </div>
 
     <!-- MODAL PARA NOVO ALUNO -->
     <div id="modalAluno" class="modal">
