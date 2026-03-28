@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNISO Voluntários - Plataforma de Ensino</title>
+    <title>UNISO Digital - Learning Experience</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* === CONFIGURAÇÕES GERAIS === */
         :root {
-            --roxo-escuro: #2D1B69;
-            --roxo-medio: #5B2D8E;
-            --roxo-claro: #8B5CF6;
-            --roxo-muito-claro: #EDE9FE;
-            --roxo-pastel: #F5F3FF;
+            --roxo-escuro: #1e1b4b;
+            --roxo-medio: #4338ca;
+            --roxo-claro: #6366f1;
+            --roxo-muito-claro: #eef2ff;
+            --roxo-pastel: #f8fafc;
             --branco: #FFFFFF;
-            --cinza-escuro: #1F2937;
-            --cinza-medio: #6B7280;
+            --cinza-escuro: #0f172a;
+            --cinza-medio: #64748b;
+            --cinza-border: #e2e8f0;
             --verde: #10B981;
             --vermelho: #EF4444;
             --amarelo: #F59E0B;
@@ -100,15 +101,17 @@
         .p-4 { padding: 1rem; }
 
         .btn-primary {
-            background-color: var(--roxo-medio);
+            background: linear-gradient(135deg, var(--roxo-medio), var(--roxo-claro));
             color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
         }
 
         .btn-primary:hover {
-            background-color: var(--roxo-claro);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
         }
 
         .btn-secondary {
@@ -138,10 +141,12 @@
 
         .card {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            border: 1px solid var(--cinza-border);
             padding: 20px;
             margin-bottom: 20px;
+            transition: all 0.3s ease;
         }
 
         .table {
@@ -236,14 +241,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--roxo-escuro), var(--roxo-medio));
+            background: radial-gradient(circle at top left, var(--roxo-escuro), #000);
         }
 
         .login-card {
             background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 48px;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
             width: 100%;
             max-width: 400px;
         }
@@ -353,11 +358,12 @@
         .header {
             position: fixed;
             top: 0;
-            left: 250px;
+            left: 280px;
             right: 0;
-            height: 70px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: 80px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--cinza-border);
             display: flex;
             align-items: center;
             padding: 0 30px;
@@ -411,10 +417,10 @@
         }
 
         .stat-card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            background: white; border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--cinza-border);
+            display: flex; flex-direction: column;
         }
 
         .stat-number {
@@ -586,17 +592,23 @@
             color: var(--cinza-medio);
         }
 
-        .xp-badge {
-            background: linear-gradient(135deg, var(--amarelo), #F59E0B);
-            color: white;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
+        .badge-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 15px; margin-top: 15px;
         }
+        .badge-item {
+            text-align: center; font-size: 10px; color: var(--cinza-medio);
+        }
+        .badge-icon {
+            font-size: 32px; display: block; margin-bottom: 5px;
+            filter: grayscale(1); opacity: 0.3;
+        }
+        .badge-icon.unlocked { filter: grayscale(0); opacity: 1; }
 
-        .modal-body {
-            padding: 20px;
+        .xp-badge {
+            background: #fef3c7; color: #92400e;
+            padding: 4px 12px; border-radius: 99px;
+            font-size: 12px; font-weight: 700;
         }
 
         .modal-footer {
@@ -1049,7 +1061,8 @@
     <!-- LOGIN PAGE -->
     <div id="login-page">
         <div class="login-card">
-            <h2>UNISO Voluntários</h2>
+            <h2>UNISO Digital</h2>
+            <p>Seu portal de aceleração profissional.</p>
             <form id="login-form">
                 <div class="form-group">
                     <label for="email">Email</label>
@@ -1145,7 +1158,8 @@
         <!-- SIDEBAR -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="logo">UNISO Voluntários</div>
+                <div style="width: 35px; height: 35px; background: var(--roxo-claro); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold;">U</div>
+                <div class="logo" style="color: white;">UNISO Digital</div>
             </div>
             <div class="sidebar-menu" id="sidebar-menu">
                 <!-- Menu items will be populated by JavaScript -->
@@ -1154,7 +1168,7 @@
 
         <!-- HEADER -->
         <div class="header" id="header">
-            <div class="logo" id="page-title">Dashboard</div>
+            <div class="logo" id="page-title" style="font-size: 22px;">Dashboard</div>
             <button id="sidebar-toggle" style="margin-left: 20px; background: none; font-size: 20px;">☰</button>
             <div class="user-info">
                 <div id="student-stats" class="flex items-center gap-3" style="display: none;">
@@ -1181,7 +1195,7 @@
 
     <script>
         // === CONFIGURAÇÃO E CONSTANTES ===
-        const APP_NAME = "UNISO Voluntários - Plataforma de Ensino";
+        const APP_NAME = "UNISO Digital - Learning Experience";
         const ROLES = {
             ADMIN: 'admin',
             INSTRUCTOR: 'instructor',
@@ -1322,7 +1336,7 @@
             users: [
                 {
                     id: 'admin1',
-                    name: 'Administrador UNISO',
+                    name: 'Gestor UNISO',
                     email: 'admin@uniso.br',
                     password: 'admin123',
                     role: 'admin',
@@ -1577,6 +1591,13 @@
         const AdminDashboard = {
             render: function() {
                 const content = `
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 style="font-size: 24px;">Olá, Gestor! 👋</h2>
+                            <p style="color: var(--cinza-medio)">Aqui está o que está acontecendo na plataforma hoje.</p>
+                        </div>
+                        <button class="btn-primary">+ Novo Relatório</button>
+                    </div>
                     <div class="dashboard-grid">
                         <div class="stat-card">
                             <div class="stat-number" id="total-students">0</div>
@@ -1591,18 +1612,35 @@
                             <div class="stat-label">Aulas Publicadas</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-number" id="total-certificates">0</div>
-                            <div class="stat-label">Certificados Emitidos</div>
+                            <div class="stat-number">98%</div>
+                            <div class="stat-label">Satisfação Alunos</div>
                         </div>
                     </div>
                     
-                    <div class="chart-container">
-                        <div class="chart-title">Acessos nos Últimos 7 Dias</div>
-                        <div class="bar-chart" id="access-chart">
-                            <!-- Chart bars will be generated by JavaScript -->
+                    <div class="grid" style="grid-template-columns: 2fr 1fr; gap: 20px;">
+                        <div class="chart-container">
+                            <div class="chart-title">Engajamento Semanal</div>
+                            <div class="bar-chart" id="access-chart"></div>
+                        </div>
+                        <div class="card">
+                            <h3 class="mb-4">Atividades Recentes</h3>
+                            <div style="font-size: 13px;">
+                                <div class="mb-3 p-2" style="border-left: 3px solid var(--verde)">
+                                    <strong>João Silva</strong> concluiu Word Básico.
+                                    <div style="color: var(--cinza-medio)">há 5 minutos</div>
+                                </div>
+                                <div class="mb-3 p-2" style="border-left: 3px solid var(--roxo-claro)">
+                                    <strong>Maria Souza</strong> se matriculou em Excel.
+                                    <div style="color: var(--cinza-medio)">há 12 minutos</div>
+                                </div>
+                                <div class="mb-3 p-2" style="border-left: 3px solid var(--amarelo)">
+                                    <strong>Novo Curso</strong> IA para Negócios criado.
+                                    <div style="color: var(--cinza-medio)">há 1 hora</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    
+
                     <div class="chart-container">
                         <div class="chart-title">Alunos por Curso</div>
                         <div class="bar-chart" id="students-chart">
@@ -2344,6 +2382,17 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="card">
+                        <h3>Minhas Conquistas</h3>
+                        <div class="badge-grid">
+                            <div class="badge-item"><span class="badge-icon unlocked">🥇</span>Primeiros Passos</div>
+                            <div class="badge-item"><span class="badge-icon unlocked">📖</span>Leitor Ávido</div>
+                            <div class="badge-item"><span class="badge-icon ${currentUser.xp > 1000 ? 'unlocked' : ''}">⚡</span>Ninja de IA</div>
+                            <div class="badge-item"><span class="badge-icon">🎓</span>Graduado</div>
+                            <div class="badge-item"><span class="badge-icon">🌟</span>Embaixador</div>
+                        </div>
+                    </div>
                 `;
                 
                 document.getElementById('content-area').innerHTML = content;
@@ -2541,6 +2590,20 @@
                 const currentUser = Auth.currentUser;
                 
                 const content = `
+                    <div class="card" style="background: linear-gradient(to right, var(--roxo-escuro), var(--roxo-medio)); color: white; display: flex; align-items: center; gap: 30px; padding: 40px;">
+                        <div style="width: 100px; height: 100px; background: white; color: var(--roxo-escuro); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: bold;">
+                            ${currentUser.name.charAt(0)}
+                        </div>
+                        <div>
+                            <h2 style="font-size: 28px;">${currentUser.name}</h2>
+                            <p style="opacity: 0.8">Aluno UNISO Digital • Nível ${Math.floor((currentUser.xp || 0) / 500) + 1}</p>
+                            <div class="flex gap-4 mt-4">
+                                <div class="xp-badge">🔥 Streak: 5 dias</div>
+                                <div class="xp-badge">🏆 ${currentUser.xp || 0} Total XP</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-section">
                         <h3>Meu Perfil</h3>
                         <div class="form-row">
