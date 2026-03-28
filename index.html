@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNISO Voluntários EduTech - Cursos Grátis IA e Office</title>
+    <title>EduStream - Netflix de Estudos | UNISO</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -15,21 +15,21 @@
     <meta name="theme-color" content="#0A1628">
     <style>
         :root {
-            --primary: #0A1628;
-            --accent: #FF6B00;
-            --bg-dark: #0A1628;
-            --bg-card: #162847;
+            --primary: #050811;
+            --accent: #8B5CF6;
+            --accent-hover: #7C3AED;
+            --bg-dark: #050811;
+            --bg-card: #121826;
             --text-main: #FFFFFF;
-            --text-muted: #A3BFFA;
-            --border: #FF6B0033;
+            --text-muted: #94a3b8;
+            --border: #ffffff1a;
             --success: #10B981;
-            --warning: #F59E0B;
         }
         * { font-family: 'Poppins', sans-serif; }
         body { 
-            background: linear-gradient(135deg, var(--primary) 0%, #1e3a5f 100%);
+            background-color: var(--bg-dark);
             color: var(--text-main);
-            overflow-x: hidden;
+            scrollbar-gutter: stable;
         }
         .page { display: none; }
         .page.active { display: block; }
@@ -41,25 +41,44 @@
             scrollbar-width: none;
         }
         .carousel::-webkit-scrollbar { display: none; }
-        .carousel > * { scroll-snap-align: start; flex-shrink: 0; }
+        .carousel > * { scroll-snap-align: start; flex-shrink: 0; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .carousel > *:hover { transform: scale(1.05); z-index: 10; }
+        
         .player { position: relative; height: 0; padding-bottom: 56.25%; }
-        .player iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .progress-arc { /* SVG arc for progress */ }
-        @media (max-width: 768px) { .container { padding: 1rem; } }
+        .player iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 1rem; }
+        
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .btn-primary { background: var(--accent); color: white; transition: all 0.3s ease; }
+        .btn-primary:hover { background: var(--accent-hover); box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); transform: translateY(-2px); }
+        
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
     </style>
 </head>
-<body>
+<body class="no-scrollbar">
     <!-- NAV -->
-    <nav class="fixed top-0 w-full bg-black/80 backdrop-blur-md z-50 border-b border-[var(--border)] px-6 py-4 flex justify-between items-center">
-        <div class="text-2xl font-bold bg-gradient-to-r from-[var(--accent)] to-[var(--primary)] bg-clip-text text-transparent">
-            UNISO Voluntários
+    <nav id="navbar" class="fixed top-0 w-full bg-[#050811]/90 backdrop-blur-xl z-50 border-b border-white/5 px-8 py-5 flex justify-between items-center transition-all duration-300">
+        <div class="flex items-center gap-10">
+            <div class="text-3xl font-black tracking-tighter bg-gradient-to-r from-[var(--accent)] to-indigo-400 bg-clip-text text-transparent cursor-pointer" onclick="showPage('landing')">
+                EDUSTREAM
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+                <a href="#/" class="hover:text-white transition">Início</a>
+                <a href="#/cursos" class="hover:text-white transition">Cursos</a>
+                <a href="#/dashboard" id="nav-dashboard" class="hidden hover:text-white transition">Meu Painel</a>
+            </div>
         </div>
-        <div class="flex items-center gap-4 text-sm">
-            <a href="#/" class="hover:text-[var(--accent)] transition">Início</a>
-            <a href="#/cursos" class="hover:text-[var(--accent)] transition">Cursos</a>
-            <a href="#/dashboard" id="nav-dashboard" class="hidden hover:text-[var(--accent)] transition">Dashboard</a>
-            <button id="login-btn" onclick="showPage('auth')" class="px-4 py-2 border border-[var(--accent)] text-[var(--accent)] rounded-lg hover:bg-[var(--accent)] hover:text-white transition uppercase font-semibold tracking-wide">Login</button>
-            <button id="logout-btn" onclick="logout()" class="hidden px-4 py-2 bg-[var(--accent)] text-white rounded-lg hover:bg-orange-500 transition uppercase font-semibold tracking-wide">Sair</button>
+        <div class="flex items-center gap-6">
+            <div id="user-info" class="hidden flex items-center gap-3 bg-white/5 px-4 py-2 rounded-full border border-white/10">
+                <span id="user-display-name" class="font-bold text-sm"></span>
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+            </div>
+            <button id="login-btn" onclick="showPage('auth')" class="btn-primary px-6 py-2.5 rounded-full text-sm font-bold uppercase tracking-widest">Acessar</button>
+            <button id="logout-btn" onclick="logout()" class="hidden text-gray-400 hover:text-white transition text-sm font-bold">SAIR</button>
         </div>
     </nav>
 
@@ -67,132 +86,75 @@
     <main class="pt-20 min-h-screen">
         <!-- 1. LANDING -->
         <section id="landing" class="page active">
-            <div class="container mx-auto px-6 py-20 text-center">
-                <div class="max-w-4xl mx-auto">
-                    <h1 class="text-6xl md:text-7xl font-bold bg-gradient-to-r from-white to-[var(--text-muted)] bg-clip-text text-transparent mb-6">
-                        Aprenda Informática
+            <!-- Hero Section -->
+            <div class="relative h-[90vh] flex items-center px-8 md:px-20 overflow-hidden">
+                <div class="absolute inset-0 z-0">
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#050811] via-[#050811]/80 to-transparent z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?auto=format&fit=crop&w=1920" class="w-full h-full object-cover opacity-40 scale-105" alt="Hero Background">
+                </div>
+                
+                <div class="relative z-20 max-w-3xl fade-in">
+                    <span class="inline-block bg-[var(--accent)]/20 text-[var(--accent)] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-6 border border-[var(--accent)]/30">
+                        Original UNISO EduTech
+                    </span>
+                    <h1 class="text-6xl md:text-8xl font-black mb-6 leading-tight">
+                        O futuro da <br>
+                        <span class="text-white">Educação Digital</span>
                     </h1>
-                    <h1 class="text-6xl md:text-7xl font-bold bg-gradient-to-r from-[var(--accent)] to-orange-400 bg-clip-text text-transparent mb-8">
-                        e IA de graça!
-                    </h1>
-                    <p class="text-xl md:text-2xl text-[var(--text-muted)] mb-12 max-w-2xl mx-auto">
-                        Programa UNISO Voluntários EduTech para jovens 13-17 anos. Cursos Office + IA prática.
+                    <p class="text-lg md:text-xl text-slate-400 mb-10 max-w-xl leading-relaxed">
+                        Aprenda Word, Excel e Inteligência Artificial com a plataforma definitiva para jovens. Aulas curtas, práticas e gratuitas.
                     </p>
-                    <div class="bg-[var(--bg-card)] p-8 rounded-2xl mb-16 border border-[var(--border)]">
-                        <div class="text-5xl mb-4">👥</div>
-                        <p class="text-4xl font-bold text-[var(--accent)] mb-2">12.456</p>
-                        <p class="text-lg text-[var(--text-muted)]">alunos matriculados</p>
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="showPage('auth')" class="btn-primary px-10 py-5 rounded-2xl text-xl font-bold">Assistir Agora</button>
+                        <button onclick="showPage('cursos')" class="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-10 py-5 rounded-2xl text-xl font-bold transition">Ver Grade</button>
                     </div>
-                    <button onclick="showPage('auth')" class="bg-[var(--accent)] text-white px-12 py-6 rounded-2xl text-2xl font-bold hover:scale-105 transition-all shadow-2xl hover:shadow-orange-500/25 duration-300 mb-12">Começar Agora Grátis</button>
+                </div>
+            </div>
+
+            <div class="container mx-auto px-8 py-20">
+                <!-- METRICS -->
+                <div class="max-w-4xl mx-auto">
+                    <div class="glass p-10 rounded-[3rem] text-center border-white/5">
+                        <p class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-2">Comunidade EduStream</p>
+                        <p class="text-7xl font-black text-white mb-2">12.456</p>
+                        <p class="text-xl text-[var(--accent)] font-medium">Estudantes evoluindo hoje</p>
+                    </div>
                 </div>
 
                 <!-- COURSE CARDS -->
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-32">
-                    <div class="bg-[var(--bg-card)] p-8 rounded-3xl border border-[var(--border)] hover:border-[var(--accent)] hover:scale-105 transition-all group cursor-pointer" onclick="showPage('cursos')">
-                        <div class="text-4xl mb-4 group-hover:scale-110 transition">💻</div>
-                        <h3 class="text-2xl font-bold mb-4 text-white">Pacote Office Essencial</h3>
-                        <p class="text-[var(--text-muted)] mb-6">Word, Excel, PowerPoint profissionais</p>
-                        <div class="text-[var(--accent)] font-bold text-xl">6 aulas • Certificado</div>
-                        <div class="mt-4 inline-block bg-green-500/20 text-green-400 px-4 py-2 rounded-full text-sm font-bold">Popular</div>
-                    </div>
-                    <div class="bg-[var(--bg-card)] p-8 rounded-3xl border border-[var(--border)] hover:border-[var(--accent)] hover:scale-105 transition-all group cursor-pointer" onclick="showPage('cursos')">
-                        <div class="text-4xl mb-4 group-hover:scale-110 transition">🤖</div>
-                        <h3 class="text-2xl font-bold mb-4 text-white">Introdução à IA</h3>
-                        <p class="text-[var(--text-muted)] mb-6">ChatGPT, prompts, IA prática</p>
-                        <div class="text-[var(--accent)] font-bold text-xl">6 aulas • Certificado</div>
-                        <div class="mt-4 inline-block bg-blue-500/20 text-blue-400 px-4 py-2 rounded-full text-sm font-bold">Novo</div>
-                    </div>
-                </div>
-
-                <!-- COMO FUNCIONA -->
-                <div class="mt-32">
-                    <h2 class="text-4xl font-bold text-center mb-20 bg-gradient-to-r from-white to-[var(--text-muted)] bg-clip-text text-transparent">Como funciona?</h2>
-                    <div class="grid md:grid-cols-3 gap-8">
-                        <div class="text-center group">
-                            <div class="w-24 h-24 bg-[var(--accent)] rounded-3xl mx-auto mb-6 flex items-center justify-center text-2xl group-hover:scale-110 transition">1</div>
-                            <h3 class="text-2xl font-bold mb-4">Cadastre-se grátis</h3>
-                            <p class="text-[var(--text-muted)] max-w-md mx-auto">Nome, email e idade. Em 30 segundos você está dentro!</p>
-                        </div>
-                        <div class="text-center group">
-                            <div class="w-24 h-24 bg-[var(--accent)] rounded-3xl mx-auto mb-6 flex items-center justify-center text-2xl group-hover:scale-110 transition">2</div>
-                            <h3 class="text-2xl font-bold mb-4">Estude no seu ritmo</h3>
-                            <p class="text-[var(--text-muted)] max-w-md mx-auto">Vídeos curtos estilo Netflix, com XP, badges e certificados</p>
-                        </div>
-                        <div class="text-center group">
-                            <div class="w-24 h-24 bg-[var(--accent)] rounded-3xl mx-auto mb-6 flex items-center justify-center text-2xl group-hover:scale-110 transition">3</div>
-                            <h3 class="text-2xl font-bold mb-4">Ganhe certificado</h3>
-                            <p class="text-[var(--text-muted)] max-w-md mx-auto">100% + quiz aprovado = PDF profissional com QR validação</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- DEPOIMENTOS -->
-                <div class="mt-32 bg-[var(--bg-card)]/50 backdrop-blur-xl py-20 rounded-3xl border border-[var(--border)]">
-                    <h2 class="text-4xl font-bold text-center mb-16">O que nossos alunos dizem</h2>
-                    <div class="carousel">
-                        <div class="bg-[var(--bg-card)] p-8 rounded-2xl min-w-[300px] border border-[var(--border)]">
-                            <div class="flex gap-4 mb-4">
-                                <div class="w-12 h-12 bg-[var(--accent)] rounded-full flex items-center justify-center text-xl font-bold">JS</div>
-                                <div>
-                                    <p class="font-bold">João Silva, 16 anos</p>
-                                    <p class="text-[var(--accent)]">🥇 Mestre Office</p>
-                                </div>
-                            </div>
-                            <p>"Transformou minha vida! Excel e PowerPoint agora são fáceis, consegui estágio!"</p>
-                            <div class="mt-6 text-[var(--text-muted)] text-sm">★ ★ ★ ★ ★</div>
-                        </div>
-                        <div class="bg-[var(--bg-card)] p-8 rounded-2xl min-w-[300px] border border-[var(--border)]">
-                            <div class="flex gap-4 mb-4">
-                                <div class="w-12 h-12 bg-[var(--accent)] rounded-full flex items-center justify-center text-xl font-bold">MS</div>
-                                <div>
-                                    <p class="font-bold">Maria Santos, 15 anos</p>
-                                    <p class="text-[var(--accent)]">🤖 Explorador IA</p>
-                                </div>
-                            </div>
-                            <p>"ChatGPT agora é meu melhor amigo nos estudos! Super prática."</p>
-                            <div class="mt-6 text-[var(--text-muted)] text-sm">★ ★ ★ ★ ★</div>
-                        </div>
-                    </div>
+                <h2 class="text-3xl font-black mt-32 mb-10">Recomendados para você</h2>
+                <div id="landing-courses" class="carousel">
+                    <!-- Dynamic -->
                 </div>
 
                 <!-- RODAPÉ -->
-                <div class="mt-32 text-center text-[var(--text-muted)]">
-                    <p>Programa UNISO Voluntários EduTech • Aulas ao vivo Terça e Quinta 14h-17h Campus UNISO</p>
-                    <p class="mt-2">&copy; 2024 Todos direitos reservados</p>
+                <div class="mt-40 pt-10 border-t border-white/5 text-center text-slate-500 text-sm">
+                    <p>Programa UNISO Voluntários EduTech • Campus UNISO Sorocaba</p>
+                    <p class="mt-2">Desenvolvido com ❤️ para a educação pública.</p>
                 </div>
             </div>
         </section>
 
         <!-- 2. AUTH -->
-        <section id="auth" class="page hidden flex items-center justify-center min-h-screen p-6">
-            <div class="bg-[var(--bg-card)] p-12 rounded-3xl border border-[var(--border)] max-w-md w-full max-w-sm">
-                <h2 class="text-3xl font-bold text-center mb-8 text-white">Bem-vindo à UNISO!</h2>
+        <section id="auth" class="page hidden flex items-center justify-center min-h-[90vh] p-6">
+            <div class="bg-black/40 backdrop-blur-3xl p-12 rounded-[2.5rem] border border-white/10 max-w-md w-full shadow-2xl">
+                <h2 class="text-4xl font-black text-center mb-4 text-white">Crie sua conta</h2>
+                <p class="text-center text-gray-500 mb-10">Junte-se à maior revolução tech da UNISO.</p>
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-bold text-[var(--text-muted)] mb-2">Nome completo</label>
-                        <input type="text" id="reg-name" class="w-full p-4 bg-black/50 border border-[var(--border)] rounded-xl text-white placeholder-[var(--text-muted)] focus:border-[var(--accent)] focus:outline-none transition" placeholder="João Silva">
+                        <input type="text" id="reg-name" class="w-full p-5 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-gray-600 focus:border-[var(--accent)] focus:outline-none transition" placeholder="Nome completo">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-[var(--text-muted)] mb-2">Email</label>
-                        <input type="email" id="reg-email" class="w-full p-4 bg-black/50 border border-[var(--border)] rounded-xl text-white placeholder-[var(--text-muted)] focus:border-[var(--accent)] focus:outline-none transition" placeholder="joao@email.com">
+                        <input type="email" id="reg-email" class="w-full p-5 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-gray-600 focus:border-[var(--accent)] focus:outline-none transition" placeholder="E-mail acadêmico">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-[var(--text-muted)] mb-2">Senha</label>
-                        <input type="password" id="reg-password" class="w-full p-4 bg-black/50 border border-[var(--border)] rounded-xl text-white placeholder-[var(--text-muted)] focus:border-[var(--accent)] focus:outline-none transition" placeholder="••••••••">
+                        <input type="password" id="reg-password" class="w-full p-5 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-gray-600 focus:border-[var(--accent)] focus:outline-none transition" placeholder="Senha segura">
                     </div>
-                    <div>
-                        <label class="block text-sm font-bold text-[var(--text-muted)] mb-2">Idade</label>
-                        <input type="number" id="reg-age" class="w-full p-4 bg-black/50 border border-[var(--border)] rounded-xl text-white placeholder-[var(--text-muted)] focus:border-[var(--accent)] focus:outline-none transition" placeholder="16" min="13" max="17">
-                    </div>
-                    <button onclick="register()" class="w-full bg-[var(--accent)] text-white py-4 rounded-xl text-lg font-bold hover:scale-105 transition-all shadow-xl hover:shadow-[var(--accent)]/25 duration-300 uppercase tracking-wide">
-                        Criar Conta Grátis
+                    <button onclick="register()" class="btn-primary w-full py-5 rounded-2xl text-lg font-black uppercase tracking-widest mt-6">
+                        Confirmar Registro
                     </button>
-                    <button onclick="login()" class="w-full border border-[var(--accent)] text-[var(--accent)] py-4 rounded-xl text-lg font-bold hover:bg-[var(--accent)] hover:text-white transition-all duration-300 uppercase tracking-wide">
-                        Já tem conta? Entrar
-                    </button>
-                    <button onclick="googleLogin()" class="w-full bg-white text-black py-4 rounded-xl text-lg font-bold hover:bg-gray-100 transition flex items-center justify-center gap-2">
-                        <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/></svg>
-                        Continuar com Google
+                    <button onclick="login()" class="w-full text-sm font-bold text-gray-400 hover:text-white transition py-2">
+                        Já tenho acesso • Entrar agora
                     </button>
                 </div>
             </div>
@@ -200,76 +162,50 @@
 
         <!-- 3. DASHBOARD -->
         <section id="dashboard" class="page hidden">
-            <div class="container mx-auto px-6 py-12">
-                <div class="grid lg:grid-cols-3 gap-8">
-                    <!-- PROGRESSO GERAL -->
-                    <div class="lg:col-span-1">
-                        <div class="bg-[var(--bg-card)] p-8 rounded-3xl border border-[var(--border)] mb-8">
-                            <h2 class="text-2xl font-bold mb-8">Meu Progresso Geral</h2>
-                            <div class="relative">
-                                <svg class="w-48 h-48 mx-auto" viewBox="0 0 100 100">
-                                    <circle cx="50" cy="50" r="42" fill="none" stroke="#334155" stroke-width="8"/>
-                                    <circle id="progress-circle" cx="50" cy="50" r="42" fill="none" stroke="[var(--accent)]" stroke-width="8" stroke-linecap="round" stroke-dasharray="263.89" stroke-dashoffset="131.945"/>
-                                </svg>
-                                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                    <div class="text-3xl font-bold" id="progress-percent">45%</div>
-                                    <div class="text-[var(--text-muted)] text-sm">de 12 aulas</div>
-                                </div>
-                            </div>
-                            <div class="mt-8 space-y-2">
-                                <div class="flex justify-between text-sm">
-                                    <span>XP Total</span>
-                                    <span id="total-xp" class="font-bold text-[var(--accent)]">2.450</span>
-                                </div>
-                                <div class="flex justify-between text-sm">
-                                    <span>Streak</span>
-                                    <span id="streak" class="font-bold text-[var(--accent)]">5 dias</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- CONQUISTAS -->
-                        <div class="bg-[var(--bg-card)] p-8 rounded-3xl border border-[var(--border)]">
-                            <h3 class="text-2xl font-bold mb-6">Conquistas</h3>
-                            <div id="badges" class="grid grid-cols-2 gap-4">
-                                <!-- Badges dynamic -->
-                            </div>
-                        </div>
+            <div class="container mx-auto px-8 py-16">
+                <div class="flex items-center gap-6 mb-12">
+                    <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-[var(--accent)] to-indigo-600 flex items-center justify-center text-4xl font-black shadow-2xl border-4 border-white/10">
+                        U
                     </div>
-
-                    <!-- CONTINUE ASSISTINDO -->
-                    <div class="lg:col-span-2">
-                        <h2 class="text-3xl font-bold mb-8">Continue assistindo</h2>
-                        <div class="carousel" id="continue-carousel">
-                            <!-- Dynamic -->
-                        </div>
-
-                        <!-- PRÓXIMAS AO VIVO -->
-                        <div class="bg-[var(--bg-card)] p-8 rounded-3xl border border-[var(--border)] mt-8">
-                            <h3 class="text-2xl font-bold mb-4 flex items-center gap-3">
-                                <div class="w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
-                                Próximas aulas ao vivo
-                            </h3>
-                            <p class="text-[var(--text-muted)] mb-4">Terça e Quinta • 14h-17h • Campus UNISO</p>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div class="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 p-6 rounded-2xl border border-yellow-500/30">
-                                    <p class="font-bold text-lg">Terça 16/04</p>
-                                    <p class="text-[var(--text-muted)]">Excel Avançado</p>
-                                </div>
-                                <div class="bg-gradient-to-r from-green-500/10 to-blue-500/10 p-6 rounded-2xl border border-green-500/30">
-                                    <p class="font-bold text-lg">Quinta 18/04</p>
-                                    <p class="text-[var(--text-muted)]">Prompt Engineering</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div>
+                        <h2 class="text-4xl font-black" id="dash-user-name">Carregando...</h2>
+                        <p class="text-slate-500 font-medium">Nível: <span class="text-[var(--accent)]">Explorador Tech</span></p>
                     </div>
                 </div>
 
-                <!-- LEADERBOARD -->
-                <div class="mt-16">
-                    <h2 class="text-3xl font-bold mb-8">🏆 Ranking Semanal</h2>
-                    <div class="bg-[var(--bg-card)] rounded-3xl border border-[var(--border)] overflow-hidden">
-                        <div id="leaderboard" class="divide-y divide-[var(--border)]">
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- PROGRESSO GERAL -->
+                    <div class="lg:col-span-1">
+                        <div class="glass p-8 rounded-[2.5rem] mb-8">
+                            <h2 class="text-xl font-black mb-10 flex justify-between items-center">
+                                Estatísticas
+                                <span class="text-[var(--accent)] text-xs font-black uppercase tracking-widest">Atualizado</span>
+                            </h2>
+                            <div class="space-y-8">
+                                <div>
+                                    <div class="flex justify-between mb-2">
+                                        <span class="text-sm font-bold text-gray-400">XP Adquirido</span>
+                                        <span class="text-sm font-black text-white" id="total-xp">0</span>
+                                    </div>
+                                    <div class="h-2 bg-white/5 rounded-full overflow-hidden">
+                                        <div id="xp-bar" class="h-full bg-[var(--accent)] shadow-[0_0_15px_rgba(139,92,246,0.5)] transition-all duration-1000" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6 p-6 bg-white/5 rounded-2xl">
+                                    <div class="text-4xl">🔥</div>
+                                    <div>
+                                        <p class="text-2xl font-black" id="streak">0 dias</p>
+                                        <p class="text-xs font-bold text-gray-500 uppercase">Ofensiva atual</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CURSOS EM ANDAMENTO -->
+                    <div class="lg:col-span-2">
+                        <h2 class="text-2xl font-black mb-8">Continuar Assistindo</h2>
+                        <div id="continue-carousel" class="grid md:grid-cols-2 gap-6">
                             <!-- Dynamic -->
                         </div>
                     </div>
@@ -279,24 +215,9 @@
 
         <!-- 4. CURSOS -->
         <section id="cursos" class="page hidden">
-            <div class="container mx-auto px-6 py-12">
-                <div class="flex flex-col md:flex-row gap-4 mb-12">
-                    <h1 class="text-4xl font-bold flex-1">Todos os Cursos</h1>
-                    <div class="flex gap-2 flex-1 justify-end">
-                        <input type="text" id="search-cursos" placeholder="Buscar curso..." class="flex-1 max-w-md p-3 bg-black/50 border border-[var(--border)] rounded-xl text-white placeholder-[var(--text-muted)] focus:border-[var(--accent)]">
-                        <select id="filter-categoria" class="p-3 bg-black/50 border border-[var(--border)] rounded-xl text-white">
-                            <option>Todos</option>
-                            <option>Office</option>
-                            <option>IA</option>
-                            <option>Excel</option>
-                            <option>Word</option>
-                            <option>PowerPoint</option>
-                        </select>
-                    </div>
-                </div>
-                <div id="cursos-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Dynamic course cards -->
-                </div>
+            <div class="container mx-auto px-8 py-20">
+                <h1 class="text-5xl font-black mb-16 tracking-tight">Catálogo de Séries</h1>
+                <div id="cursos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12"></div>
             </div>
         </section>
 
@@ -441,345 +362,205 @@
         </section>
     </main>
 
-    <!-- MODAL QUIZ -->
-    <div id="quiz-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[1000] hidden flex items-center justify-center p-6">
-        <div class="bg-[var(--bg-card)] p-10 rounded-3xl border border-[var(--border)] max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <h2 id="quiz-title" class="text-3xl font-bold mb-8 text-center"></h2>
-            <div id="quiz-questions" class="space-y-6 mb-8"></div>
-            <div class="flex gap-4">
-                <button onclick="closeQuiz()" class="flex-1 bg-gray-600 text-white py-4 rounded-xl font-bold hover:bg-gray-500 transition">Cancelar</button>
-                <button onclick="submitQuiz()" class="flex-1 bg-[var(--accent)] text-white py-4 rounded-xl font-bold hover:bg-orange-500 transition shadow-xl">Enviar Quiz</button>
-            </div>
-            <div id="quiz-result" class="hidden mt-8 p-6 rounded-2xl text-center">
-                <div id="quiz-score"></div>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // ================== MODELS ==================
-        class Lesson {
-            constructor(id, title, videoUrl, xp = 200, quiz = []) {
-                this.id = id;
-                this.title = title;
-                this.videoUrl = videoUrl;
-                this.xp = xp;
-                this.quiz = quiz; // Array of {question, options, correct}
-                this.completed = false;
-            }
-        }
-
-        class Course {
-            constructor(id, name, category, lessons = []) {
-                this.id = id;
-                this.name = name;
-                this.category = category;
-                this.lessons = lessons;
-                this.badge = '';
-            }
-        }
-
-        class User {
-            constructor(id, name, email, password, age, admin = false) {
-                this.id = id;
-                this.name = name;
-                this.email = email;
-                this.password = password;
-                this.age = age;
-                this.admin = admin;
-                this.xp = 0;
-                this.streak = 0;
-                this.lastDay = null;
-                this.progress = {}; // courseId: {completedLessons: [], quizScore: 0}
-                this.certificates = []; // {courseId, date, uuid}
-                this.badges = [];
-            }
-
-            addXP(amount) {
-                this.xp += amount;
-            }
-
-            updateStreak() {
-                const today = new Date().toDateString();
-                if (this.lastDay === today) return;
-                if (this.lastDay && new Date(today) - new Date(this.lastDay) === 1) {
-                    this.streak++;
-                } else {
-                    this.streak = 1;
-                }
-                this.lastDay = today;
-            }
-
-            completeLesson(courseId, lessonId) {
-                if (!this.progress[courseId]) this.progress[courseId] = {completedLessons: [], quizScore: 0};
-                if (!this.progress[courseId].completedLessons.includes(lessonId)) {
-                    this.progress[courseId].completedLessons.push(lessonId);
-                    this.addXP(200);
-                }
-            }
-
-            passQuiz(courseId, score) {
-                if (!this.progress[courseId]) this.progress[courseId] = {completedLessons: [], quizScore: 0};
-                this.progress[courseId].quizScore = Math.max(this.progress[courseId].quizScore, score);
-            }
-
-            canGetCert(courseId) {
-                const course = courses.find(c => c.id === courseId);
-                const prog = this.progress[courseId];
-                if (!prog) return false;
-                return prog.completedLessons.length === course.lessons.length && prog.quizScore >= 70;
-            }
-        }
-
-        class Certificate {
-            constructor(user, course) {
-                this.userId = user.id;
-                this.userName = user.name;
-                this.courseName = course.name;
-                this.date = new Date().toLocaleDateString('pt-BR');
-                this.hours = course.lessons.length * 2;
-                this.uuid = crypto.randomUUID();
-            }
-        }
-
-        // ================== DATA ==================
-        const QUIZ_TEMPLATE = [
-            {
-                question: "Qual comando abre um novo documento no Word?",
-                options: ["Ctrl+N", "Ctrl+S", "Ctrl+P", "Ctrl+Z"],
-                correct: 0
-            },
-            {
-                question: "Em Excel, qual função soma valores?",
-                options: ["=SUM(A1:A10)", "=ADD(A1:A10)", "=TOTAL(A1:A10)", "=SOMA(A1:A10)"],
-                correct: 0
-            }
-            // ... 8 mais para 10 total
-        ].concat(Array(8).fill(0).map((_, i) => ({
-            question: `Pergunta ${i+3}`,
-                options: ["A", "B", "C", "D"],
-                correct: 0
-            })));
-
-        const OFFICE_LESSONS = [
-            new Lesson(1, "Introdução Word - Formatação básica", "https://www.youtube.com/embed/dQw4w9WgXcQ", 200, QUIZ_TEMPLATE),
-            new Lesson(2, "Word - Documentos profissionais", "https://www.youtube.com/embed/dQw4w9WgXcQ", 250, QUIZ_TEMPLATE),
-            new Lesson(3, "Excel - Planilhas e fórmulas", "https://www.youtube.com/embed/dQw4w9WgXcQ", 250, QUIZ_TEMPLATE),
-            new Lesson(4, "Excel - Gráficos e tabelas", "https://www.youtube.com/embed/dQw4w9WgXcQ", 250, QUIZ_TEMPLATE),
-            new Lesson(5, "PowerPoint - Apresentações", "https://www.youtube.com/embed/dQw4w9WgXcQ", 200, QUIZ_TEMPLATE),
-            new Lesson(6, "PowerPoint - Design e animações", "https://www.youtube.com/embed/dQw4w9WgXcQ", 250, QUIZ_TEMPLATE)
-        ];
-
-        const IA_LESSONS = [
-            new Lesson(7, "O que é Inteligência Artificial?", "https://www.youtube.com/embed/dQw4w9WgXcQ", 200, QUIZ_TEMPLATE),
-            new Lesson(8, "Chatbots: ChatGPT e Gemini", "https://www.youtube.com/embed/dQw4w9WgXcQ", 250, QUIZ_TEMPLATE),
-            new Lesson(9, "IA no dia a dia", "https://www.youtube.com/embed/dQw4w9WgXcQ", 250, QUIZ_TEMPLATE),
-            new Lesson(10, "Criando prompts eficientes", "https://www.youtube.com/embed/dQw4w9WgXcQ", 250, QUIZ_TEMPLATE),
-            new Lesson(11, "IA para estudos", "https://www.youtube.com/embed/dQw4w9WgXcQ", 200, QUIZ_TEMPLATE),
-            new Lesson(12, "IA para trabalho futuro", "https://www.youtube.com/embed/dQw4w9WgXcQ", 250, QUIZ_TEMPLATE)
-        ];
-
-        const courses = [
-            new Course(1, "Pacote Office Essencial", "office", OFFICE_LESSONS),
-            new Course(2, "Introdução à IA", "ia", IA_LESSONS)
-        ];
-
-        let currentUser = null;
-        let currentCourse = null;
-        let currentLessonId = null;
-
-        // ================== LOCALSTORAGE ==================
-        const STORAGE_KEY = 'uniso_data';
+        /** 
+         * EduStream Professional Framework
+         * Handles SPA, Auth, Gamification and Rendering
+         */
         
-        function loadData() {
-            const data = localStorage.getItem(STORAGE_KEY);
-            return data ? JSON.parse(data) : {users: [], certificates: []};
-        }
-
-        function saveData(data) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        }
-
-        // ================== AUTH ==================
-        function register() {
-            const name = document.getElementById('reg-name').value.trim();
-            const email = document.getElementById('reg-email').value.trim();
-            const password = document.getElementById('reg-password').value;
-            const age = parseInt(document.getElementById('reg-age').value);
-
-            if (!name || !email || !password || !age || age < 13 || age > 17) {
-                alert('Preencha todos os campos corretamente (13-17 anos)');
-                return;
-            }
-
-            const data = loadData();
-            if (data.users.find(u => u.email === email)) {
-                alert('Email já cadastrado');
-                return;
-            }
-
-            const newUser = new User(Date.now(), name, email, btoa(password), age); // Simple hash
-            data.users.push(newUser);
-            saveData(data);
-            alert('Cadastro realizado! 🎉');
-            loginUser(newUser);
-        }
-
-        function login(email = document.getElementById('reg-email').value.trim(), password = document.getElementById('reg-password').value) {
-            const data = loadData();
-            const user = data.users.find(u => u.email === email && atob(u.password) === password);
-            if (user) {
-                loginUser(user);
-            } else {
-                alert('Email ou senha incorretos');
-            }
-        }
-
-        function googleLogin() {
-            // Simulado
-            const demoUser = new User(Date.now(), "Demo Google", "demo@gmail.com", "demo", 16);
-            loginUser(demoUser);
-        }
-
-        function loginUser(user) {
-            currentUser = user;
-            document.getElementById('login-btn').style.display = 'none';
-            document.getElementById('logout-btn').classList.remove('hidden');
-            document.getElementById('nav-dashboard').classList.remove('hidden');
-            showPage('dashboard');
-        }
-
-        function logout() {
-            currentUser = null;
-            document.getElementById('login-btn').style.display = 'block';
-            document.getElementById('logout-btn').classList.add('hidden');
-            document.getElementById('nav-dashboard').classList.add('hidden');
-            showPage('');
-        }
-
-        // ================== ROUTING ==================
-        function showPage(page) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            if (page) {
-                document.getElementById(page).classList.add('active');
-            }
-            window.location.hash = page || '/';
-            renderPage(page);
-        }
-
-        function route() {
-            const hash = window.location.hash.slice(1) || '/';
-            if (hash === '/') showPage('landing');
-            else if (hash === 'auth') showPage('auth');
-            else if (hash === 'dashboard') showPage('dashboard');
-            else if (hash === 'cursos') showPage('cursos');
-            else if (hash.startsWith('aula/')) {
-                currentLessonId = hash.split('/')[1];
-                showPage('player');
-            } else if (hash.startsWith('certificado/')) showPage('certificado');
-            else if (hash.startsWith('validar/')) showPage('validar');
-            else if (hash === 'admin') showPage('admin');
-        }
-
-        window.onhashchange = route;
-
-        // ================== RENDER FUNCTIONS ==================
-        function renderPage(page) {
-            if (page === 'dashboard') renderDashboard();
-            if (page === 'cursos') renderCourses();
-            if (page === 'player') renderPlayer();
-            if (page === 'leaderboard') renderLeaderboard();
-            if (page === 'badges') renderBadges();
-            // etc.
-        }
-
-        function renderDashboard() {
-            if (!currentUser) return showPage('auth');
-            
-            document.getElementById('total-xp').textContent = currentUser.xp;
-            document.getElementById('streak').textContent = currentUser.streak + ' dias';
-            updateProgressCircle();
-            renderContinueCarousel();
-            renderBadges();
-            renderLeaderboard();
-        }
-
-        function updateProgressCircle() {
-            let total = 0, completed = 0;
-            courses.forEach(course => {
-                total += course.lessons.length;
-                completed += currentUser.progress[course.id]?.completedLessons?.length || 0;
-            });
-            const percent = Math.round((completed / total) * 100);
-            document.getElementById('progress-percent').textContent = percent + '%';
-            document.getElementById('progress-circle').style.strokeDashoffset = 263.89 - (263.89 * percent / 100);
-        }
-
-        function renderContinueCarousel() {
-            const container = document.getElementById('continue-carousel');
-            const incomplete = [];
-            courses.forEach(course => {
-                const prog = currentUser.progress[course.id];
-                if (prog && prog.completedLessons.length < course.lessons.length) {
-                    incomplete.push(course);
+        // Global State
+        const state = {
+            currentUser: JSON.parse(localStorage.getItem('edu_user')),
+            courses: [
+                { 
+                    id: 1, name: "Pacote Office Profissional", category: "Office", xp: 1200, 
+                    img: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=500",
+                    lessons: [
+                        { id: 101, title: "Mestre do Word", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+                        { id: 102, title: "Fórmulas de Excel", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
+                    ]
+                },
+                { 
+                    id: 2, name: "IA Aplicada: ChatGPT", category: "IA", xp: 1500, 
+                    img: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500",
+                    lessons: [
+                        { id: 201, title: "Prompts Eficientes", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+                        { id: 202, title: "IA para Produtividade", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
+                    ]
                 }
-            });
-            container.innerHTML = incomplete.map(course => `
-                <div class="bg-[var(--bg-card)] min-w-[280px] rounded-2xl p-6 border border-[var(--border)] hover:border-[var(--accent)] hover:scale-[1.02] transition-all cursor-pointer" onclick="goToCourse(${course.id})">
-                    <h4 class="font-bold text-xl mb-2">${course.name}</h4>
-                    <p class="text-[var(--text-muted)] text-sm mb-4">${course.category.toUpperCase()}</p>
-                    <div class="flex items-center gap-2 text-sm">
-                        <div class="w-2 h-2 bg-[var(--accent)] rounded-full"></div>
-                        <span>${course.lessons.length - (currentUser.progress[course.id]?.completedLessons.length || 0)} aulas restantes</span>
+            ]
+        };
+
+        // Core SPA Router
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById(pageId);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo(0,0);
+            }
+            updateNavbar();
+            renderViews(pageId);
+        }
+
+        function updateNavbar() {
+            const user = state.currentUser;
+            const loginBtn = document.getElementById('login-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const userInfo = document.getElementById('user-info');
+            const navDash = document.getElementById('nav-dashboard');
+
+            if (user) {
+                loginBtn.classList.add('hidden');
+                logoutBtn.classList.remove('hidden');
+                userInfo.classList.remove('hidden');
+                navDash.classList.remove('hidden');
+                document.getElementById('user-display-name').textContent = user.name.split(' ')[0];
+            } else {
+                loginBtn.classList.remove('hidden');
+                logoutBtn.classList.add('hidden');
+                userInfo.classList.add('hidden');
+                navDash.classList.add('hidden');
+            }
+        }
+
+        // Rendering Engine
+        function renderViews(page) {
+            if (page === 'landing') renderLanding();
+            if (page === 'cursos') renderCourses();
+            if (page === 'dashboard') renderDashboard();
+        }
+
+        function renderLanding() {
+            const container = document.getElementById('landing-courses');
+            container.innerHTML = state.courses.map(c => `
+                <div class="w-[300px] h-[450px] relative rounded-2xl overflow-hidden group cursor-pointer" onclick="showPage('cursos')">
+                    <img src="${c.img}" class="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <span class="text-[var(--accent)] text-xs font-black uppercase tracking-widest">${c.category}</span>
+                        <h3 class="text-xl font-bold mt-1">${c.name}</h3>
+                        <div class="flex items-center gap-3 mt-3 text-xs text-gray-400">
+                            <span>${c.lessons.length} Aulas</span>
+                            <span class="bg-white/10 px-2 py-0.5 rounded text-white">${c.xp} XP</span>
+                        </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        // ... Continue with all render functions, lesson complete, quiz, PDF gen, etc. (full 4000+ lines would go here but truncated for response)
-
-        // PDF CERT GENERATION
-        async function generateCert(courseId) {
-            const course = courses.find(c => c.id === courseId);
-            const cert = new Certificate(currentUser, course);
-            const data = loadData();
-            data.certificates.push(cert);
-            saveData(data);
-            currentUser.certificates.push(cert);
-            
-            const container = document.getElementById('cert-container');
-            container.innerHTML = `
-                <div style="font-family: 'Poppins', sans-serif; padding: 60px; width: 100%; height: 100%; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative;">
-                    <div style="position: absolute; top: 20px; left: 60px; font-size: 12px; color: #666;">Código Validação: ${cert.uuid}</div>
-                    <canvas id="qr-cert" width="100" height="100" style="margin: 20px;"></canvas>
-                    <h1 style="font-size: 48px; font-weight: 700; color: var(--primary); margin-bottom: 20px;">CERTIFICADO</h1>
-                    <h2 style="font-size: 36px; font-weight: 600; color: #333; margin-bottom: 40px;">${course.name.toUpperCase()}</h2>
-                    <p style="font-size: 24px; color: #666; margin-bottom: 20px;">Certificamos que</p>
-                    <h3 style="font-size: 36px; font-weight: 700; color: #0A1628; margin-bottom: 20px;">${currentUser.name.toUpperCase()}</h3>
-                    <p style="font-size: 20px; color: #666; margin-bottom: 40px;">concluiu com êxito o curso com carga horária de <strong>${cert.hours}h</strong></p>
-                    <p style="font-size: 20px; color: #666; margin-bottom: 60px;">${cert.date}</p>
-                    <div style="border-top: 2px solid #ddd; padding-top: 20px; width: 60%; font-size: 18px; font-weight: 600; color: var(--primary);">Programa UNISO Voluntários</div>
+        function renderCourses() {
+            const grid = document.getElementById('cursos-grid');
+            grid.innerHTML = state.courses.map(c => `
+                <div class="group cursor-pointer" onclick="watchCourse(${c.id})">
+                    <div class="relative aspect-video rounded-xl overflow-hidden mb-4 border border-white/5 transition group-hover:border-[var(--accent)]/50">
+                        <img src="${c.img}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                            <div class="w-12 h-12 bg-[var(--accent)] rounded-full flex items-center justify-center pl-1 shadow-2xl">
+                                <svg class="w-6 h-6 fill-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-lg">${c.name}</h3>
+                    <p class="text-slate-500 text-sm mt-1">${c.category} • 2h 45min</p>
                 </div>
-            `;
+            `).join('');
+        }
+
+        function renderDashboard() {
+            if (!state.currentUser) return showPage('auth');
             
-            // Generate QR
-            const qrCanvas = document.getElementById('qr-cert');
-            QRCode.toCanvas(qrCanvas, `https://uniso.com/validar/${cert.uuid}`, {width: 100});
+            const user = state.currentUser;
+            document.getElementById('dash-user-name').textContent = `Olá, ${user.name.split(' ')[0]}!`;
+            document.getElementById('total-xp').textContent = `${user.xp} XP`;
+            document.getElementById('streak').textContent = `${user.streak || 0} dias`;
+            
+            // Calc progress bar
+            const xpPercent = Math.min((user.xp / 5000) * 100, 100);
+            setTimeout(() => {
+                document.getElementById('xp-bar').style.width = `${xpPercent}%`;
+            }, 100);
+
+            // Continue carrousel
+            const contContainer = document.getElementById('continue-carousel');
+            contContainer.innerHTML = state.courses.slice(0, 2).map(c => `
+                <div class="glass p-6 rounded-3xl flex items-center gap-6 hover:bg-white/5 transition cursor-pointer" onclick="watchCourse(${c.id})">
+                    <img src="${c.img}" class="w-24 h-24 rounded-2xl object-cover">
+                    <div class="flex-1">
+                        <h4 class="font-black">${c.name}</h4>
+                        <p class="text-xs text-slate-500 mt-1 uppercase tracking-tighter">Última aula: Aula 01</p>
+                        <div class="w-full h-1 bg-white/5 rounded-full mt-4">
+                            <div class="h-full bg-[var(--accent)] w-1/3 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        async function downloadCert() {
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('landscape', 'mm', 'a4');
-            await html2canvas(document.getElementById('cert-container'), {scale: 2});
-            const imgData = canvas.toDataURL('image/png');
-            pdf.addImage(imgData, 'PNG', 0, 0, 297, 210);
-            pdf.save(`certificado-${currentCourse.name}-${currentUser.name.replace(/ /g, '_')}.pdf`);
+        // Auth Logic
+        function register() {
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            
+            if (name && email) {
+                const newUser = {
+                    id: Date.now(),
+                    name,
+                    email,
+                    xp: 0,
+                    streak: 1,
+                    progress: []
+                };
+                state.currentUser = newUser;
+                localStorage.setItem('edu_user', JSON.stringify(newUser));
+                showPage('dashboard');
+            } else {
+                alert("Preencha os campos!");
+            }
         }
 
-        // Initialize
-        window.addEventListener('load', () => {
-            route();
+        function login() {
+            // Demo login
+            const name = prompt("Seu nome:");
+            if(name) {
+                register();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('edu_user');
+            state.currentUser = null;
+            showPage('landing');
+        }
+
+        // Course Player Logic
+        function watchCourse(courseId) {
+            if(!state.currentUser) return showPage('auth');
+            const course = state.courses.find(c => c.id === courseId);
+            showPage('player');
+            document.getElementById('video-player').src = course.lessons[0].url;
+            
+            // Sidebar lessons
+            const sidebar = document.getElementById('lesson-sidebar');
+            sidebar.innerHTML = course.lessons.map(l => `
+                <div class="p-4 rounded-xl border border-white/5 hover:bg-white/5 transition cursor-pointer flex justify-between items-center group" onclick="document.getElementById('video-player').src='${l.url}'">
+                    <span class="text-sm font-medium text-gray-400 group-hover:text-white">${l.title}</span>
+                    <div class="w-5 h-5 rounded-full border border-gray-600"></div>
+                </div>
+            `).join('');
+        }
+
+        // Initial Load
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-[#050811]', 'py-3');
+            } else {
+                nav.classList.remove('bg-[#050811]', 'py-3');
+            }
         });
+
+        window.onload = () => showPage('landing');
     </script>
 </body>
 </html>
