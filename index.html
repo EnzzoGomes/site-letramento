@@ -4,24 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="UNISO Digital - Plataforma de aprendizado profissional com cursos de tecnologia">
-    <title>UNISO Digital - Learning Experience</title>
+    <meta name="description"
+        content="conecta.uniso - Conectando Jovens ao Futuro. Plataforma de aprendizado profissional com cursos de tecnologia">
+    <title>conecta.uniso - Conectando Jovens ao Futuro</title>
     <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234338ca'/><text x='16' y='22' text-anchor='middle' fill='white' font-size='18' font-weight='bold'>U</text></svg>">
+        href="file:///home/enzzo/.gemini/antigravity/brain/234f49a6-7df0-4bf9-bc12-825d5b0248f7/uploaded_image_1774730210352.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <style>
         /* === CONFIGURAÇÕES GERAIS === */
         :root {
-            --roxo-escuro: #111827;
-            --roxo-medio: #4338ca;
-            --roxo-claro: #6366f1;
-            --roxo-muito-claro: #eef2ff;
-            --roxo-pastel: #f8fafc;
+            --roxo-escuro: #0a041a;
+            /* Escuro profundo do logo */
+            --roxo-primario: #7c3aed;
+            /* Roxo vibrante */
+            --roxo-medio: #5b21b6;
+            --roxo-claro: #a78bfa;
+            --roxo-muito-claro: #f5f3ff;
+            --roxo-pastel: #fbfbfe;
             --branco: #FFFFFF;
-            --cinza-escuro: #0f172a;
-            --cinza-medio: #64748b;
+            --cinza-escuro: #121212;
+            --cinza-medio: #6b7280;
             --cinza-border: #e2e8f0;
+            --neon-purple: #9d3fff;
+            --glow: 0 0 15px rgba(157, 63, 255, 0.4);
             --verde: #10B981;
             --vermelho: #EF4444;
             --amarelo: #F59E0B;
@@ -344,42 +350,66 @@
             background: radial-gradient(circle at top left, var(--roxo-escuro), #000);
         }
 
-        .login-card {
-            background: white;
-            padding: 48px;
-            border-radius: 20px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        .login-box {
+            background: #0a041a;
+            /* Dark background from logo */
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(124, 58, 237, 0.2);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            z-index: 10;
         }
 
-        .login-card h2 {
-            text-align: center;
+        .login-logo {
+            width: 160px;
+            height: 160px;
+            background: #000;
+            border-radius: 50%;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid var(--roxo-primario);
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.4);
+        }
+
+        .login-logo img {
+            width: 120%;
+            height: 120%;
+            object-fit: cover;
+        }
+
+        .login-header h1 {
+            color: #fff;
+            font-size: var(--text-2xl);
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        .login-header p {
+            color: var(--roxo-claro);
+            font-size: var(--text-base);
             margin-bottom: 30px;
-            color: var(--roxo-escuro);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
             font-weight: 500;
         }
 
-        .error-message {
-            color: var(--vermelho);
-            font-size: 12px;
-            margin-top: 5px;
+        .login-box label {
+            color: #ccc;
+            font-weight: 500;
+        }
+
+        .login-box input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
         }
 
         .link-button {
-            background: none;
-            border: none;
-            color: var(--roxo-medio);
-            cursor: pointer;
             font-size: 14px;
             text-align: center;
             display: block;
@@ -428,18 +458,39 @@
         }
 
         .sidebar-header {
-            padding: 20px;
+            padding: 16px 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             align-items: center;
             gap: 12px;
-            min-height: 72px;
+            min-height: 80px;
         }
 
-        .sidebar-header .logo {
+        .sidebar-header .logo-container {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .sidebar-header .logo-text {
             transition: opacity 0.2s, width 0.3s;
             white-space: nowrap;
             font-size: var(--text-lg);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #fff;
         }
 
         .sidebar-menu {
@@ -1294,14 +1345,14 @@
 <body>
     <!-- LOGIN PAGE -->
     <div id="login-page">
-        <div class="login-card">
-            <div style="text-align: center; margin-bottom: 32px;">
-                <div
-                    style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--roxo-medio), var(--roxo-claro)); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: white; font-size: 24px; margin: 0 auto 16px;">
-                    U</div>
-                <h2 style="margin-bottom: 6px;">UNISO Digital</h2>
-                <p style="color: var(--cinza-medio); font-size: var(--text-base);">Seu portal de aceleração
-                    profissional.</p>
+        <div class="login-box">
+            <div class="login-logo">
+                <img src="file:///home/enzzo/.gemini/antigravity/brain/234f49a6-7df0-4bf9-bc12-825d5b0248f7/uploaded_image_1774730210352.jpg"
+                    alt="conecta.uniso">
+            </div>
+            <div class="login-header">
+                <h1>conecta.uniso</h1>
+                <p>Conectando Jovens ao Futuro</p>
             </div>
             <form id="login-form">
                 <div class="form-group">
@@ -1398,10 +1449,11 @@
         <!-- SIDEBAR -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div
-                    style="width: 38px; height: 38px; min-width: 38px; background: linear-gradient(135deg, var(--roxo-medio), var(--roxo-claro)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: white; font-size: 16px;">
-                    U</div>
-                <div class="logo" style="color: white;">UNISO Digital</div>
+                <div class="logo-container">
+                    <img src="file:///home/enzzo/.gemini/antigravity/brain/234f49a6-7df0-4bf9-bc12-825d5b0248f7/uploaded_image_1774730210352.jpg"
+                        alt="Logo">
+                </div>
+                <div class="logo-text">conecta.uniso</div>
             </div>
             <div class="sidebar-menu" id="sidebar-menu">
                 <!-- Menu items will be populated by JavaScript -->
@@ -1841,6 +1893,12 @@
 
         const Toast = {
             show: function (message, type = 'info') {
+                // App Branding Info
+                const brandName = 'conecta.uniso';
+                const slogan = 'Conectando Jovens ao Futuro';
+
+                // Update site title and logo text dynamically if needed
+                document.title = `${brandName} - ${slogan}`;
                 const toast = document.getElementById('toast');
                 toast.textContent = message;
                 toast.className = `toast ${type} show`;
@@ -3160,14 +3218,14 @@
                                 ${module.lessons.map((lesson, lIdx) => `
                                     <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:var(--roxo-muito-claro); border-radius:10px; transition: all 0.2s;">
                                         <div style="display:flex; align-items:center; gap:12px;">
-                                            <span style="font-size:12px; background:var(--roxo-medio); color:white; padding:2px 8px; border-radius:4px; font-weight:600;">${lesson.type === 'video' ? 'VIDEO' : lesson.type === 'quiz' ? 'QUIZ' : 'DOC'}</span>
+                                            <span style="font-size:12px; background:var(--roxo-medio); color:white; padding:2px 8px; border-radius:4px; font-weight:600;">${lesson.type === 'video' ? 'VÍDEO' : lesson.type === 'quiz' ? 'QUIZ' : 'DOC'}</span>
                                             <div>
                                                 <div style="font-weight:500;">${lesson.title}</div>
                                                 <div style="font-size:var(--text-xs); color:var(--cinza-medio);">${lesson.duration} min • ${lesson.type.toUpperCase()}${lesson.videoId ? ' • YouTube: ' + lesson.videoId : ''}</div>
                                             </div>
                                         </div>
                                         <div style="display:flex; gap:6px;">
-                                            ${lesson.videoId ? '<button class="action-btn view-btn" style="font-size:11px;" onclick="ContentManager.previewVideo(\'' + lesson.videoId + '\')">' + 'Preview</button>' : ''}
+                                            ${lesson.videoId ? '<button class="action-btn view-btn" style="font-size:11px;" onclick="ContentManager.previewVideo(\'' + lesson.videoId + '\')">' + 'Ver Prévia</button>' : ''}
                                             <button class="action-btn edit-btn" style="font-size:11px;" onclick="ContentManager.editLesson('${courseId}','${module.id}','${lesson.id}')">Editar</button>
                                             <button class="action-btn delete-btn" style="font-size:11px;" onclick="ContentManager.deleteLesson('${courseId}','${module.id}','${lesson.id}')">Excluir</button>
                                         </div>
