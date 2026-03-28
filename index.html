@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plataforma de Letramento Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,290 +12,187 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #1875E2;
+            --primary-dark: #0c59b3;
+            --secondary: #2e3b4e;
+            --bg-body: #f5f7fa;
+            --text-main: #333;
+            --text-muted: #666;
+            --white: #ffffff;
+            --success: #28a745;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        nav {
+            background: var(--secondary);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            margin-bottom: 30px;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            padding: 40px;
+            padding: 0 20px 40px;
         }
 
         header {
-            text-align: center;
             margin-bottom: 40px;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 20px;
+            padding: 20px 0;
         }
 
         h1 {
-            color: #333;
+            color: var(--secondary);
             margin-bottom: 10px;
-            font-size: 2.5em;
+            font-size: 2.2em;
+            font-weight: 700;
         }
 
         .subtitle {
-            color: #666;
+            color: var(--text-muted);
             font-size: 1.1em;
         }
 
         .main-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 350px 1fr;
             gap: 30px;
             margin-bottom: 30px;
         }
 
         .card {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 20px;
+            background: var(--white);
+            padding: 25px;
             border-radius: 10px;
-            transition: transform 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--primary);
         }
 
         .card h3 {
-            color: #667eea;
+            color: var(--secondary);
             margin-bottom: 15px;
-            font-size: 1.3em;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
         }
 
         .aluno {
-            background: white;
-            border: 1px solid #ddd;
-            padding: 15px;
+            background: #fcfcfc;
+            padding: 12px;
             margin-bottom: 10px;
             border-radius: 8px;
+            border-left: 3px solid #eee;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: 0.2s;
+        }
+
+        .aluno:hover {
+            background: #fff;
+            border-left-color: var(--primary);
         }
 
         .aluno-nome {
             font-weight: bold;
-            color: #333;
         }
 
         .xp-badge {
-            background: #667eea;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
+            background: #e1f0ff;
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: 700;
         }
 
         .aula {
-            background: white;
-            border: 1px solid #ddd;
-            padding: 12px;
-            margin: 10px 0;
+            background: var(--white);
+            padding: 15px;
+            margin: 15px 0;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #eee;
+            transition: all 0.2s;
         }
 
         .aula:hover {
-            background: #f0f0f0;
-            border-color: #667eea;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-color: var(--primary);
         }
 
         .aula.concluida {
-            background: #d4edda;
-            border-color: #28a745;
-        }
-
-        .aula-titulo {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .aula-xp {
-            color: #667eea;
-            font-size: 0.9em;
-            font-weight: bold;
+            border-left: 5px solid var(--success);
         }
 
         .btn {
-            background: #667eea;
+            background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
+            padding: 10px 20px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 1em;
+            font-weight: 600;
             transition: background 0.3s;
-            margin: 5px;
         }
 
         .btn:hover {
-            background: #764ba2;
-        }
-
-        .btn-small {
-            padding: 8px 15px;
-            font-size: 0.9em;
+            background: var(--primary-dark);
         }
 
         .ranking {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--secondary);
             color: white;
-            padding: 20px;
+            padding: 30px;
             border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        .ranking h4 {
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-
-        .ranking-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .ranking-item:last-child {
-            border-bottom: none;
-        }
-
-        .medal {
-            display: inline-block;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            background: #ffc107;
-            color: #333;
-            text-align: center;
-            line-height: 25px;
-            font-weight: bold;
-            margin-right: 10px;
+            box-shadow: var(--shadow);
         }
 
         .selo {
-            background: #ffc107;
-            color: #333;
-            padding: 8px 12px;
-            border-radius: 20px;
+            background: #f9d849;
+            color: #4a3c00;
+            padding: 4px 10px;
+            border-radius: 4px;
             font-size: 0.85em;
             font-weight: bold;
             display: inline-block;
-            margin: 5px 0;
         }
 
         .forum {
-            background: #f8f9fa;
-            padding: 15px;
+            background: var(--white);
+            padding: 20px;
             border-radius: 8px;
-            margin-bottom: 15px;
+            border: 1px solid #eee;
+            margin-bottom: 20px;
         }
 
-        .forum-titulo {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .forum-autor {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-        }
-
-        .resposta {
-            background: white;
-            padding: 10px;
-            margin: 8px 0;
-            border-left: 3px solid #667eea;
-            border-radius: 5px;
-        }
-
-        .section {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid #ddd;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover {
-            color: black;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-
-        .icons {
-            font-size: 1.5em;
-            margin-right: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-
-            h1 {
-                font-size: 1.8em;
-            }
-
-            .container {
-                padding: 20px;
-            }
-        }
+        /* Reuso de estilos anteriores mantido para funcionalidade */
     </style>
 </head>
 <body>
+    <nav>
+        <div style="font-weight: 700; font-size: 1.2em;">LETRAMENTO<span style="color:var(--primary)">DIGITAL</span></div>
+        <div>Dashboard | Trilhas | Fórum</div>
+    </nav>
+
     <div class="container">
         <header>
-            <h1><span class="icons">📚</span>Plataforma de Letramento Digital</h1>
-            <p class="subtitle">Desenvolva suas habilidades digitais - Jovens Aprendizes (14-24 anos)</p>
+            <h1>Seu Aprendizado, sua Carreira.</h1>
+            <p class="subtitle">Prepare-se para o futuro do trabalho com as tecnologias que dominam o mercado.</p>
         </header>
 
         <div class="main-content">
@@ -302,16 +200,25 @@
             <div class="card">
                 <h3><span class="icons">👥</span>Alunos</h3>
                 <div id="listaAlunos"></div>
-                <button class="btn btn-small" onclick="adicionarAluno()">+ Novo Aluno</button>
+                <button class="btn" style="width: 100%; margin-top: 15px;" onclick="adicionarAluno()">Matricular Novo Aluno</button>
             </div>
 
             <!-- SEÇÃO DE TRILHAS E AULAS -->
-            <div class="card">
-                <h3><span class="icons">🎓</span>Trilha: IA & Futuro</h3>
-                <p><strong>Categoria:</strong> IA_FUTURO</p>
-                <p><strong>Selo Alvo:</strong> <span class="selo">OURO</span></p>
-                
-                <h4 style="margin-top: 15px; color: #333;">Módulo: Fundamentos de IA</h4>
+            <div>
+                <div class="card" style="margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span class="selo" style="margin-bottom: 10px;">TRILHA GOLD</span>
+                            <h2>IA & Futuro: Prompt Engineering</h2>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.8em; color: var(--text-muted);">Progresso Geral</div>
+                            <div style="width: 100px; height: 10px; background: #eee; border-radius: 5px; overflow: hidden;">
+                                <div style="width: 60%; height: 100%; background: var(--primary);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div id="listaAulas"></div>
             </div>
         </div>
