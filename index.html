@@ -1764,7 +1764,7 @@
                                             <td>${course.duration} horas</td>
                                             <td><span class="badge badge-success">ativo</span></td>
                                             <td class="table-actions">
-                                                <button class="action-btn view-btn" onclick="CourseManager.manageContent('${course.id}')">Conteúdo</button>
+                                                <button class="action-btn view-btn" style="background: var(--roxo-claro);" onclick="CourseManager.manageContent('${course.id}')">Gerenciar Conteúdo</button>
                                                 <button class="action-btn delete-btn" onclick="CourseManager.deleteCourse('${course.id}')">Excluir</button>
                                             </td>
                                         </tr>
@@ -1872,24 +1872,24 @@
                 const content = `
                     <div class="flex justify-between items-center mb-6">
                         <button class="btn-secondary" onclick="CourseManager.renderList()">Voltar</button>
-                        <h2>Conteúdo: ${course.title}</h2>
-                        <button class="btn-primary" onclick="CourseManager.addModuleForm('${courseId}')">Novo Módulo</button>
+                        <h2 style="font-size: 20px;">Estrutura: ${course.title}</h2>
+                        <button class="btn-primary" onclick="CourseManager.addModuleForm('${courseId}')">+ Novo Módulo</button>
                     </div>
                     
                     <div id="modules-list">
-                        ${course.modules.length === 0 ? '<div class="card text-center">Nenhum módulo cadastrado.</div>' : ''}
+                        ${course.modules.length === 0 ? '<div class="card text-center p-5">Nenhum conteúdo cadastrado. Comece adicionando um módulo.</div>' : ''}
                         ${course.modules.map(module => `
-                            <div class="card mb-4">
+                            <div class="card mb-4" style="border-left: 4px solid var(--roxo-claro)">
                                 <div class="flex justify-between items-center mb-3">
-                                    <h3>Módulo: ${module.title}</h3>
-                                    <button class="btn-secondary p-2" onclick="CourseManager.addLessonForm('${courseId}', '${module.id}')">+ Adicionar Aula</button>
+                                    <h3 style="font-size: 16px;">Módulo: ${module.title}</h3>
+                                    <button class="btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="CourseManager.addLessonForm('${courseId}', '${module.id}')">Adicionar Aula</button>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table" style="font-size: 13px;">
                                         <thead>
                                             <tr>
-                                                <th>Título da Aula</th>
-                                                <th>Duração (min)</th>
+                                                <th style="width: 60%">Título</th>
+                                                <th>Duração</th>
                                                 <th>Tipo</th>
                                             </tr>
                                         </thead>
@@ -1897,10 +1897,11 @@
                                             ${module.lessons.map(lesson => `
                                                 <tr>
                                                     <td>${lesson.title}</td>
-                                                    <td>${lesson.duration}</td>
-                                                    <td>${lesson.type.toUpperCase()}</td>
+                                                    <td>${lesson.duration} min</td>
+                                                    <td><span class="badge ${lesson.type === 'video' ? 'badge-warning' : 'badge-success'}">${lesson.type.toUpperCase()}</span></td>
                                                 </tr>
                                             `).join('')}
+                                            ${module.lessons.length === 0 ? '<tr><td colspan="3" class="text-center" style="color: var(--cinza-medio); padding: 15px;">Módulo vazio</td></tr>' : ''}
                                         </tbody>
                                     </table>
                                 </div>
@@ -1912,41 +1913,90 @@
             },
 
             addModuleForm: function(courseId) {
-                const title = prompt("Digite o título do novo módulo:");
-                if (!title) return;
-
-                const courses = Storage.get('courses');
-                const index = courses.findIndex(c => c.id === courseId);
-                
-                courses[index].modules.push({
-                    id: 'mod_' + Date.now(),
-                    title: title,
-                    lessons: []
-                });
-                
-                Storage.set('courses', courses);
-                this.manageContent(courseId);
+                const title = prompt("Digite o nome do novo módulo (ex: Fundamentos de IA):");
+                if (title) {
+                    const courses = Storage.get('courses');
+                    const index = courses.findIndex(c => c.id === courseId);
+                    courses[index].modules.push({
+                        id: 'mod_' + Date.now(),
+                        title: title,
+                        lessons: []
+                    });
+                    Storage.set('courses', courses);
+                    this.manageContent(courseId);
+                    Toast.show('Módulo adicionado', 'success');
+                }
             },
 
             addLessonForm: function(courseId, moduleId) {
-                const title = prompt("Título da aula:");
-                const duration = prompt("Duração (em minutos):");
-                if (!title || !duration) return;
+                const modalId = 'lesson-add-modal';
+                const modalHtml = `
+                    <div class="modal show" id="${modalId}">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Cadastrar Aula</h3>
+                                <button class="close-modal" onclick="document.getElementById('${modalId}').remove()">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Título da Aula</label>
+                                    <input type="text" id="l-title" placeholder="Ex: Introdução ao Prompt Engineering">
+                                </div>
+                                <div class="form-group">
+                                    <label>ID do Vídeo (YouTube)</label>
+                                    <input type="text" id="l-video-id" placeholder="Ex: dQw4w9WgXcQ">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Tempo Estimado (min)</label>
+                                        <input type="number" id="l-dur" value="10">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tipo de Recurso</label>
+                                        <select id="l-type">
+                                            <option value="video">Vídeo Aula</option>
+                                            <option value="quiz">Atividade / Quiz</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn-secondary" onclick="document.getElementById('${modalId}').remove()">Cancelar</button>
+                                <button class="btn-primary" onclick="CourseManager.saveLesson('${courseId}', '${moduleId}')">Salvar Aula</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+            },
 
-                const courses = Storage.get('courses');
-                const cIndex = courses.findIndex(c => c.id === courseId);
-                const mIndex = courses[cIndex].modules.findIndex(m => m.id === moduleId);
-                
-                courses[cIndex].modules[mIndex].lessons.push({
-                    id: 'aula_' + Date.now(),
-                    title: title,
-                    duration: parseInt(duration),
-                    type: 'video',
-                    completed: false
-                });
+            saveLesson: function(courseId, moduleId) {
+                const title = document.getElementById('l-title').value;
+                const videoId = document.getElementById('l-video-id').value;
+                const duration = document.getElementById('l-dur').value;
+                const type = document.getElementById('l-type').value;
 
-                Storage.set('courses', courses);
-                this.manageContent(courseId);
+                if (title && duration) {
+                    const courses = Storage.get('courses');
+                    const cIndex = courses.findIndex(c => c.id === courseId);
+                    const mIndex = courses[cIndex].modules.findIndex(m => m.id === moduleId);
+                    
+                    courses[cIndex].modules[mIndex].lessons.push({
+                        id: 'aula_' + Date.now(),
+                        title: title,
+                        videoId: videoId || null,
+                        duration: parseInt(duration),
+                        type: type,
+                        completed: false
+                    });
+
+                    Storage.set('courses', courses);
+                    document.getElementById('lesson-add-modal').remove();
+                    this.manageContent(courseId);
+                    Toast.show('Conteúdo adicionado!', 'success');
+                } else {
+                    Toast.show('Preencha os dados da aula', 'error');
+                }
             },
             
             deleteCourse: function(courseId) {
@@ -2391,16 +2441,20 @@
                     if (found) lesson = found;
                 });
 
+                const videoContent = lesson.videoId 
+                    ? `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${lesson.videoId}" frameborder="0" allowfullscreen></iframe>`
+                    : `<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: white; background: linear-gradient(45deg, #1a1a1a, #2D1B69);">
+                        <div style="border: 2px solid white; padding: 20px; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">PLAY</div>
+                        <h2 class="mb-4">${lesson.title}</h2>
+                        <p class="mb-4" style="font-size: 14px; opacity: 0.8;">Módulo de Transmissão Digital</p>
+                        <button class="btn-primary" onclick="LessonPlayer.complete('${courseId}', '${lessonId}')">Concluir Aula e Ganhar 100 XP</button>
+                       </div>`;
+
                 const content = `
                     <div class="player-view">
                         <button class="btn-secondary mb-4" onclick="CourseDetail.render('${courseId}')">← Voltar ao Curso</button>
                         <div class="card p-0 overflow-hidden" style="background: #000;">
-                            <div style="aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; background: linear-gradient(45deg, #1a1a1a, #2D1B69);">
-                                <div style="border: 2px solid white; padding: 20px; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">PLAY</div>
-                                <h2 class="mb-4">${lesson.title}</h2>
-                                <p class="mb-4" style="font-size: 14px; opacity: 0.8;">Módulo de Transmissão Digital</p>
-                                <button class="btn-primary" onclick="LessonPlayer.complete('${courseId}', '${lessonId}')">Concluir Aula e Ganhar 100 XP</button>
-                            </div>
+                            <div style="aspect-ratio: 16/9;">${videoContent}</div>
                         </div>
                         <div class="card mt-4">
                             <h3>Sobre esta aula</h3>
@@ -2473,17 +2527,6 @@
                                 <button class="btn-secondary" onclick="Quiz.previousQuestion()" ${this.currentQuestionIndex === 0 ? 'disabled' : ''}>Anterior</button>
                                 <button class="btn-primary" onclick="Quiz.nextQuestion()">${this.currentQuestionIndex === this.questions.length - 1 ? 'Finalizar' : 'Próxima'}</button>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <h3>Minhas Conquistas</h3>
-                        <div class="badge-grid">
-                            <div class="badge-item"><span class="badge-icon unlocked">I</span>Iniciante</div>
-                            <div class="badge-item"><span class="badge-icon unlocked">A</span>Acadêmico</div>
-                            <div class="badge-item"><span class="badge-icon ${currentUser.xp > 1000 ? 'unlocked' : ''}">P</span>Profissional</div>
-                            <div class="badge-item"><span class="badge-icon">E</span>Especialista</div>
-                            <div class="badge-item"><span class="badge-icon">M</span>Mestre</div>
                         </div>
                     </div>
                 `;
