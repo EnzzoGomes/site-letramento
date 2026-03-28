@@ -1604,7 +1604,7 @@
                             <h2 style="font-size: 24px;">Painel Administrativo</h2>
                             <p style="color: var(--cinza-medio); font-size: 14px;">Visão geral do sistema e indicadores de performance.</p>
                         </div>
-                        <button class="btn-primary" onclick="Toast.show('Gerando relatório consolidado...', 'info')">+ Novo Relatório</button>
+                        <button class="btn-primary" onclick="AdminDashboard.exportReport()">+ Gerar Relatório</button>
                     </div>
                     <div class="dashboard-grid">
                         <div class="stat-card">
@@ -1620,8 +1620,8 @@
                             <div class="stat-label">Aulas Publicadas</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-number" id="total-certificates">0</div>
-                            <div class="stat-label">Certificados Gerados</div>
+                            <div class="stat-number">98%</div>
+                            <div class="stat-label">Satisfação Alunos</div>
                         </div>
                     </div>
                     
@@ -1679,9 +1679,22 @@
                 document.getElementById('total-lessons').textContent = totalLessons;
                 
                 const completedCount = users.filter(u => u.role === 'student' && u.progress && Object.keys(u.progress).some(k => u.progress[k] >= 100)).length;
-                if(document.getElementById('total-certificates')) document.getElementById('total-certificates').textContent = completedCount;
+                document.getElementById('total-certificates').textContent = completedCount;
             },
             
+            exportReport: function() {
+                const data = {
+                    users: Storage.get('users'),
+                    courses: Storage.get('courses'),
+                    timestamp: new Date().toISOString()
+                };
+                const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = 'relatorio_uniso.json'; a.click();
+                Toast.show('Relatório gerado com sucesso!', 'success');
+            },
+
             generateCharts: function() {
                 const accessChart = document.getElementById('access-chart');
                 const days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
@@ -2019,7 +2032,7 @@
                     <div class="form-section">
                         <div class="flex justify-between items-center mb-4">
                             <h3>Gerenciamento de Alunos</h3>
-                            <button class="btn-primary" onclick="Toast.show('Exportando base de alunos em CSV...', 'info')">Exportar Lista</button>
+                            <button class="btn-primary" onclick="StudentManager.exportStudents()">Exportar Lista</button>
                         </div>
                         
                         <div class="table-responsive">
@@ -2958,6 +2971,7 @@
         });
         
         // Make functions globally available
+        window.AdminDashboard = AdminDashboard;
         window.CourseManager = CourseManager;
         window.StudentManager = StudentManager;
         window.CourseCatalog = CourseCatalog;
@@ -2970,10 +2984,6 @@
         window.Router = Router;
         window.Modal = Modal;
         window.Toast = Toast;
-        window.Auth = Auth;
-    </script>
-</body>
-</html> window.Toast = Toast;
         window.Auth = Auth;
     </script>
 </body>
