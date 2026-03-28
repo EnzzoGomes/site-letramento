@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plataforma de Letramento Digital</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,160 +13,183 @@
         }
 
         :root {
-            --primary: #1875E2;
-            --primary-dark: #0c59b3;
-            --secondary: #2e3b4e;
-            --bg-body: #f5f7fa;
+            --primary: #7ED957; /* Verde vibrante */
+            --secondary: #5271FF; /* Azul amigável */
+            --accent: #FF914D; /* Laranja */
+            --yellow: #FFDE59;
+            --bg-body: #FFF9F0; /* Fundo creme suave */
             --text-main: #333;
-            --text-muted: #666;
+            --text-muted: #888;
             --white: #ffffff;
-            --success: #28a745;
-            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow: 0 8px 0px rgba(0,0,0,0.05);
+            --border-radius: 24px;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Nunito', sans-serif;
             background-color: var(--bg-body);
+            background-image: radial-gradient(#FFDE59 1px, transparent 1px);
+            background-size: 40px 40px; /* Textura de bolinhas sutil */
             color: var(--text-main);
             line-height: 1.6;
         }
 
+        h1, h2, h3, h4, .nav-logo {
+            font-family: 'Fredoka', sans-serif;
+        }
+
         nav {
-            background: var(--secondary);
-            padding: 1rem 5%;
+            background: var(--white);
+            padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
             margin-bottom: 30px;
+            border-bottom: 5px solid var(--primary);
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px 40px;
+            padding: 0 25px 50px;
         }
 
         header {
-            margin-bottom: 40px;
+            text-align: center;
+            margin-bottom: 50px;
             padding: 20px 0;
         }
 
         h1 {
             color: var(--secondary);
             margin-bottom: 10px;
-            font-size: 2.2em;
-            font-weight: 700;
+            font-size: 3em;
+            text-shadow: 2px 2px 0px var(--white);
         }
 
         .subtitle {
-            color: var(--text-muted);
-            font-size: 1.1em;
+            color: var(--accent);
+            font-size: 1.4em;
+            font-weight: bold;
         }
 
         .main-content {
             display: grid;
-            grid-template-columns: 350px 1fr;
-            gap: 30px;
+            grid-template-columns: 320px 1fr;
+            gap: 40px;
             margin-bottom: 30px;
         }
 
         .card {
             background: var(--white);
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            border-top: 4px solid var(--primary);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            border: 3px solid #eee;
+            position: relative;
+            transition: transform 0.2s;
         }
+
+        .card:hover { transform: translateY(-5px); }
 
         .card h3 {
             color: var(--secondary);
-            margin-bottom: 15px;
-            font-size: 1.2em;
+            margin-bottom: 20px;
+            font-size: 1.5em;
             display: flex;
             align-items: center;
+            gap: 10px;
         }
 
         .aluno {
-            background: #fcfcfc;
-            padding: 12px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border-left: 3px solid #eee;
+            background: #F0F4FF;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: 0.2s;
+            border: 2px solid transparent;
         }
 
         .aluno:hover {
-            background: #fff;
-            border-left-color: var(--primary);
+            border-color: var(--secondary);
+            background: white;
         }
 
         .aluno-nome {
             font-weight: bold;
+            color: var(--secondary);
         }
 
         .xp-badge {
-            background: #e1f0ff;
-            color: var(--primary);
+            background: var(--yellow);
+            color: #856404;
             padding: 4px 12px;
-            border-radius: 6px;
+            border-radius: 10px;
             font-size: 0.85em;
             font-weight: 700;
         }
 
         .aula {
             background: var(--white);
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 20px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #eee;
-            transition: all 0.2s;
+            border: 3px solid #eee;
+            box-shadow: 0 6px 0px #eee;
+            transition: all 0.1s;
         }
 
         .aula:hover {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(2px);
+            box-shadow: 0 2px 0px #eee;
             border-color: var(--primary);
         }
 
         .aula.concluida {
-            border-left: 5px solid var(--success);
+            background: #E8F8E8;
+            border-color: var(--primary);
+            box-shadow: 0 6px 0px #D0EDD0;
         }
 
         .btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 12px 24px;
+            border-radius: 18px;
             cursor: pointer;
-            font-weight: 600;
-            transition: background 0.3s;
+            font-weight: 800;
+            font-family: 'Fredoka', sans-serif;
+            box-shadow: 0 5px 0px #5DA841;
+            transition: all 0.1s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .btn:hover {
-            background: var(--primary-dark);
+            transform: translateY(2px);
+            box-shadow: 0 2px 0px #5DA841;
         }
 
         .ranking {
-            background: var(--secondary);
+            background: var(--accent);
             color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
+            padding: 35px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 0px #E6762D;
         }
 
         .selo {
-            background: #f9d849;
-            color: #4a3c00;
-            padding: 4px 10px;
-            border-radius: 4px;
+            background: var(--yellow);
+            color: #7A6000;
+            padding: 6px 15px;
+            border-radius: 12px;
             font-size: 0.85em;
             font-weight: bold;
             display: inline-block;
@@ -175,46 +198,59 @@
         .forum {
             background: var(--white);
             padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #eee;
+            border-radius: 20px;
+            border: 3px solid #eee;
             margin-bottom: 20px;
         }
 
-        /* Reuso de estilos anteriores mantido para funcionalidade */
+        .modal-content {
+            border-radius: 30px;
+            border: 5px solid var(--secondary);
+        }
+
+        .section h3 {
+            color: var(--secondary);
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <nav>
-        <div style="font-weight: 700; font-size: 1.2em;">LETRAMENTO<span style="color:var(--primary)">DIGITAL</span></div>
-        <div>Dashboard | Trilhas | Fórum</div>
+        <div class="nav-logo" style="font-size: 1.8em; color: var(--secondary);">🐘 Letramento<span style="color:var(--accent)">Digital</span></div>
+        <div style="font-weight: bold; color: var(--text-muted);">
+            <span style="margin-left: 20px; cursor: pointer;">🏠 Início</span>
+            <span style="margin-left: 20px; cursor: pointer; color: var(--primary);">📚 Minhas Trilhas</span>
+            <span style="margin-left: 20px; cursor: pointer;">🏆 Ranking</span>
+        </div>
     </nav>
 
     <div class="container">
         <header>
-            <h1>Seu Aprendizado, sua Carreira.</h1>
-            <p class="subtitle">Prepare-se para o futuro do trabalho com as tecnologias que dominam o mercado.</p>
+            <h1>Olá, Pequeno Explorador! 🚀</h1>
+            <p class="subtitle">Qual aventura vamos viver hoje no mundo digital?</p>
         </header>
 
         <div class="main-content">
             <!-- SEÇÃO DE ALUNOS -->
             <div class="card">
-                <h3><span class="icons">👥</span>Alunos</h3>
+                <h3> Meus Colegas</h3>
                 <div id="listaAlunos"></div>
-                <button class="btn" style="width: 100%; margin-top: 15px;" onclick="adicionarAluno()">Matricular Novo Aluno</button>
+                <button class="btn" style="width: 100%; margin-top: 15px; background: var(--secondary); box-shadow: 0 5px 0px #3A52B8;" onclick="adicionarAluno()">+ Novo Amigo</button>
             </div>
 
             <!-- SEÇÃO DE TRILHAS E AULAS -->
             <div>
-                <div class="card" style="margin-bottom: 20px;">
+                <div class="card" style="margin-bottom: 20px; border-color: var(--primary);">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <span class="selo" style="margin-bottom: 10px;">TRILHA GOLD</span>
-                            <h2>IA & Futuro: Prompt Engineering</h2>
+                            <span class="selo" style="margin-bottom: 10px;">🌟 AVENTURA OURO</span>
+                            <h2 style="color: var(--primary); font-size: 2em;">Inteligência Artificial</h2>
                         </div>
                         <div style="text-align: right;">
-                            <div style="font-size: 0.8em; color: var(--text-muted);">Progresso Geral</div>
-                            <div style="width: 100px; height: 10px; background: #eee; border-radius: 5px; overflow: hidden;">
-                                <div style="width: 60%; height: 100%; background: var(--primary);"></div>
+                            <div style="font-size: 0.9em; font-weight: bold; color: var(--text-muted); margin-bottom: 5px;">Seu Progresso</div>
+                            <div style="width: 150px; height: 15px; background: #eee; border-radius: 10px; overflow: hidden; border: 2px solid #ddd;">
+                                <div style="width: 60%; height: 100%; background: var(--primary); border-radius: 10px;"></div>
                             </div>
                         </div>
                     </div>
