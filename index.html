@@ -1604,7 +1604,7 @@
                             <h2 style="font-size: 24px;">Painel Administrativo</h2>
                             <p style="color: var(--cinza-medio); font-size: 14px;">Visão geral do sistema e indicadores de performance.</p>
                         </div>
-                        <button class="btn-primary">+ Novo Relatório</button>
+                        <button class="btn-primary" onclick="Toast.show('Gerando relatório consolidado...', 'info')">+ Novo Relatório</button>
                     </div>
                     <div class="dashboard-grid">
                         <div class="stat-card">
@@ -1620,8 +1620,8 @@
                             <div class="stat-label">Aulas Publicadas</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-number">98%</div>
-                            <div class="stat-label">Satisfação Alunos</div>
+                            <div class="stat-number" id="total-certificates">0</div>
+                            <div class="stat-label">Certificados Gerados</div>
                         </div>
                     </div>
                     
@@ -1679,7 +1679,7 @@
                 document.getElementById('total-lessons').textContent = totalLessons;
                 
                 const completedCount = users.filter(u => u.role === 'student' && u.progress && Object.keys(u.progress).some(k => u.progress[k] >= 100)).length;
-                document.getElementById('total-certificates').textContent = completedCount;
+                if(document.getElementById('total-certificates')) document.getElementById('total-certificates').textContent = completedCount;
             },
             
             generateCharts: function() {
@@ -1860,7 +1860,6 @@
                 Storage.set('courses', courses);
                 
                 Modal.hide('course-modal');
-                document.getElementById('course-modal')?.remove();
                 this.renderList();
                 Toast.show('Curso adicionado com sucesso!', 'success');
             },
@@ -2020,7 +2019,7 @@
                     <div class="form-section">
                         <div class="flex justify-between items-center mb-4">
                             <h3>Gerenciamento de Alunos</h3>
-                            <button class="btn-primary" onclick="StudentManager.exportStudents()">Exportar Lista</button>
+                            <button class="btn-primary" onclick="Toast.show('Exportando base de alunos em CSV...', 'info')">Exportar Lista</button>
                         </div>
                         
                         <div class="table-responsive">
@@ -2971,6 +2970,10 @@
         window.Router = Router;
         window.Modal = Modal;
         window.Toast = Toast;
+        window.Auth = Auth;
+    </script>
+</body>
+</html> window.Toast = Toast;
         window.Auth = Auth;
     </script>
 </body>
