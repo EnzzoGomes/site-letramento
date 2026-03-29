@@ -3586,10 +3586,10 @@
                 }
 
                 menuContainer.innerHTML = menuItems.map(item => `
-            < div class="menu-item" data - route="${item.route}" onclick = "Router.navigate('${item.route}')" >
+                    <div class="menu-item" data-route="${item.route}" onclick="Router.navigate('${item.route}')">
                         <div class="menu-icon">${item.icon}</div>
                         <div class="menu-text">${item.text}</div>
-                    </div >
+                    </div>
                 `).join('');
             }
         };
