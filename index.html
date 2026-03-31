@@ -13,27 +13,25 @@
     <style>
         /* === CONFIGURAÇÕES GERAIS === */
         :root {
+            --bg: #050505;
+            --card-bg: #111;
+            --primary: #7c3aed;
+            --primary-glow: rgba(124, 58, 237, 0.5);
+            --white: #ffffff;
+            --gray: #a3a3a3;
+            --text-muted: #666;
             --roxo-escuro: #050505;
-            /* Fundo Netflix profundo */
             --roxo-primario: #7c3aed;
-            /* Roxo vibrante Conecta */
             --roxo-medio: #1a1a1a;
-            /* Cinza escuro para cards */
             --roxo-claro: #9d3fff;
             --roxo-muito-claro: #222222;
-            --roxo-pastel: #080808;
             --branco: #FFFFFF;
             --cinza-escuro: #f5f5f5;
-            /* Texto principal claro */
             --cinza-medio: #a3a3a3;
-            /* Texto secundário */
             --cinza-border: #333333;
-            --neon-purple: #9d3fff;
-            --glow: 0 0 20px rgba(157, 63, 255, 0.4);
             --verde: #10B981;
             --vermelho: #EF4444;
             --amarelo: #F59E0B;
-            /* Tipografia */
             --text-xs: 0.75rem;
             --text-sm: 0.8125rem;
             --text-base: 0.875rem;
@@ -42,9 +40,6 @@
             --text-xl: 1.25rem;
             --text-2xl: 1.5rem;
             --text-3xl: 1.75rem;
-            /* Sidebar */
-            --sidebar-width: 260px;
-            --sidebar-collapsed: 72px;
         }
 
         * {
@@ -173,25 +168,41 @@
             padding: 1rem;
         }
 
+        .btn {
+            padding: 18px 40px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            cursor: pointer;
+            font-size: 1rem;
+            border: none;
+            text-align: center;
+        }
+
         .btn-primary {
-            background: linear-gradient(135deg, var(--roxo-medio), var(--roxo-claro));
+            background: var(--primary);
             color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+            box-shadow: 0 0 25px var(--primary-glow);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px var(--primary);
         }
 
         .btn-secondary {
-            background-color: var(--cinza-medio);
+            background: transparent;
+            border: 2px solid #333;
             color: white;
             padding: 10px 20px;
-            border-radius: 4px;
+            border-radius: 8px;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: rgba(124, 58, 237, 0.1);
         }
 
         .btn-danger {
@@ -213,17 +224,35 @@
         }
 
         .card {
-            background: var(--roxo-medio);
-            border: 1px solid var(--cinza-border);
-            border-radius: 12px;
-            padding: 24px;
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            background: var(--card-bg);
+            border: 1px solid #1a1a1a;
+            border-radius: 20px;
+            padding: 35px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--roxo-primario);
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.15);
+            border-color: var(--primary);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(124, 58, 237, 0.2);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            opacity: 0;
+            transition: 0.4s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
         }
 
         /* Netflix Style Cards */
@@ -532,187 +561,106 @@
             display: none;
         }
 
-        .sidebar {
-            width: var(--sidebar-width);
-            background: linear-gradient(180deg, var(--roxo-escuro) 0%, #1e1b4b 100%);
-            color: white;
-            height: 100vh;
-            position: fixed;
-            overflow-y: auto;
-            overflow-x: hidden;
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 200;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
-        }
-
-        .sidebar::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 4px;
-        }
-
-        .sidebar.collapsed {
-            width: var(--sidebar-collapsed);
-        }
-
-        .sidebar.collapsed .sidebar-header .logo,
-        .sidebar.collapsed .menu-text {
-            opacity: 0;
-            width: 0;
-            overflow: hidden;
-            white-space: nowrap;
-            margin: 0;
-        }
-
-        .sidebar-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-height: 80px;
-        }
-
-        .sidebar-header .logo-container {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #000;
-            flex-shrink: 0;
-            border: 1px solid var(--roxo-primario);
-            box-shadow: 0 0 15px rgba(124, 58, 237, 0.3);
-        }
-
-        .sidebar-header .logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .sidebar-header .logo-text {
-            transition: opacity 0.2s, width 0.3s;
-            white-space: nowrap;
-            font-size: var(--text-lg);
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: #fff;
-        }
-
-        .sidebar-menu {
-            padding: 20px 0;
-        }
-
-        .menu-item {
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .menu-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .menu-item.active {
-            background: var(--roxo-medio);
-        }
-
-        .menu-icon {
-            width: 20px;
-            height: 20px;
-            min-width: 20px;
-            margin-right: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: var(--text-lg);
-            color: var(--cinza-medio);
-        }
-
-        .menu-item:hover .menu-icon,
-        .menu-item.active .menu-icon {
-            color: #fff;
-        }
-
-        .menu-text {
-            white-space: nowrap;
-            overflow: hidden;
-            font-size: var(--text-base);
-            transition: opacity 0.2s, width 0.3s;
-        }
-
-        .main-content {
-            margin-left: var(--sidebar-width);
-            min-height: 100vh;
-            padding-top: 80px;
-            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .main-content.sidebar-collapsed {
-            margin-left: var(--sidebar-collapsed);
-        }
-
+        /* --- Navbar Fixa --- */
         .header {
-            position: fixed;
-            top: 0;
-            left: var(--sidebar-width);
-            right: 0;
-            height: 72px;
-            background: rgba(5, 5, 5, 0.8);
-            border-bottom: 1px solid var(--cinza-border);
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 30px;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(12px);
-            z-index: 100;
-        }
-
-        .header.sidebar-collapsed {
-            left: var(--sidebar-collapsed);
+            border-bottom: 1px solid #222;
+            position: sticky;
+            top: 0;
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 0 40px;
+            left: 0 !important;
+            right: 0;
+            width: 100%;
         }
 
         .logo {
-            font-weight: 700;
-            color: var(--roxo-escuro);
-            font-size: var(--text-lg);
+            font-weight: 800;
+            font-size: 1.6rem;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary);
         }
 
         .user-info {
-            margin-left: auto;
             display: flex;
             align-items: center;
             gap: 15px;
         }
 
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: var(--roxo-medio);
+            background: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: 500;
+            font-weight: 700;
+            font-size: 14px;
         }
 
         .logout-btn {
-            background: none;
-            border: none;
-            color: var(--vermelho);
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            padding: 8px 16px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .sidebar {
+            display: none !important;
+        }
+
+        .main-content {
+            margin-left: 0 !important;
+            padding: 40px 20px;
+            min-height: calc(100vh - 80px);
+        }
+
+        .sidebar-toggle-btn {
+            display: none !important;
         }
 
         /* === DASHBOARD ADMIN === */
@@ -1357,40 +1305,8 @@
             gap: 20px;
         }
 
-        /* Default expanded state for menu text */
-        .sidebar .menu-text {
-            display: block;
-            opacity: 1;
-            width: auto;
-        }
-
-        .sidebar .sidebar-header .logo {
-            display: block;
-            opacity: 1;
-            width: auto;
-        }
-
         /* === RESPONSIVE === */
         @media (max-width: 768px) {
-            .sidebar:not(.mobile-expanded) {
-                width: var(--sidebar-collapsed);
-            }
-
-            .sidebar:not(.mobile-expanded) .sidebar-header .logo,
-            .sidebar:not(.mobile-expanded) .menu-text {
-                opacity: 0;
-                width: 0;
-                overflow: hidden;
-            }
-
-            .main-content {
-                margin-left: var(--sidebar-collapsed);
-            }
-
-            .header {
-                left: var(--sidebar-collapsed);
-            }
-
             .form-row {
                 grid-template-columns: 1fr;
             }
@@ -1449,26 +1365,6 @@
 
         .login-card {
             animation: slideUp 0.5s ease-out;
-        }
-
-        /* === SIDEBAR TOGGLE BTN === */
-        .sidebar-toggle-btn {
-            background: none;
-            border: 1px solid var(--cinza-border);
-            border-radius: 8px;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: var(--cinza-medio);
-        }
-
-        .sidebar-toggle-btn:hover {
-            background: var(--roxo-muito-claro);
-            color: var(--roxo-medio);
         }
     </style>
 </head>
@@ -1576,43 +1472,30 @@
 
     <!-- MAIN APP -->
     <div id="main-app">
-        <!-- SIDEBAR -->
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo-container">
-                    <img src="./logo.png" alt="Logo">
-                </div>
-                <div class="logo-text">conecta.uniso</div>
+        <!-- HEADER / NAVIGATION -->
+        <header class="header" id="header">
+            <div class="logo"
+                onclick="Router.navigate(Auth.currentUser?.role === 'admin' ? 'admin-dashboard' : 'catalog')">
+                conecta<span>.uniso</span>
             </div>
-            <div class="sidebar-menu" id="sidebar-menu">
-                <!-- Menu items will be populated by JavaScript -->
-            </div>
-        </div>
 
-        <!-- HEADER -->
-        <div class="header" id="header">
-            <button id="sidebar-toggle" class="sidebar-toggle-btn" title="Abrir/Fechar Menu">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="3" y1="6" x2="21" y2="6" />
-                    <line x1="3" y1="12" x2="21" y2="12" />
-                    <line x1="3" y1="18" x2="21" y2="18" />
-                </svg>
-            </button>
-            <div class="logo" id="page-title"
-                style="margin-left: 16px; font-size: var(--text-lg); text-transform: uppercase; letter-spacing: 1px;">
-                Dashboard</div>
+            <nav class="nav-links" id="top-menu">
+                <!-- Menu items will be populated by JavaScript -->
+            </nav>
+
             <div class="user-info">
-                <div id="student-stats" class="flex items-center gap-3" style="display: none;">
-                    <span class="xp-badge"><span id="user-xp">0</span> XP</span>
-                    <span style="font-size: 12px; color: var(--roxo-medio); font-weight: 600;">Nível <span
+                <div id="student-stats" style="display: none; align-items: center; gap: 10px; margin-right: 15px;">
+                    <span style="font-size: 12px; color: var(--primary); font-weight: 700;">XP: <span
+                            id="user-xp">0</span></span>
+                    <span style="font-size: 12px; color: var(--gray); font-weight: 600;">Nível <span
                             id="user-level">1</span></span>
                 </div>
                 <div class="user-avatar" id="user-avatar">U</div>
-                <span id="user-name" style="font-weight: 500;">Usuário</span>
-                <button class="logout-btn" id="logout-btn">Sair</button>
+                <div id="user-name"
+                    style="font-weight: 600; font-size: 0.95rem; color: var(--white); margin-right: 10px;">Usuário</div>
+                <button id="logout-btn" class="logout-btn">Sair</button>
             </div>
-        </div>
+        </header>
 
         <!-- MAIN CONTENT -->
         <div class="main-content" id="main-content">
@@ -3565,30 +3448,29 @@
             },
 
             buildMenu: function () {
-                const menuContainer = document.getElementById('sidebar-menu');
+                const menuContainer = document.getElementById('top-menu');
                 const user = Auth.currentUser;
                 let menuItems = [];
 
                 if (user?.role === 'admin') {
                     menuItems = [
-                        { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>', text: 'Dashboard', route: 'admin-dashboard' },
-                        { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>', text: 'Cursos', route: 'admin-courses' },
-                        { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>', text: 'Conteúdo', route: 'admin-content' },
-                        { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>', text: 'Alunos', route: 'admin-students' },
-                        { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>', text: 'Meu Perfil', route: 'profile' }
+                        { text: 'Dashboard', route: 'admin-dashboard' },
+                        { text: 'Cursos', route: 'admin-courses' },
+                        { text: 'Conteúdo', route: 'admin-content' },
+                        { text: 'Alunos', route: 'admin-students' },
+                        { text: 'Meu Perfil', route: 'profile' }
                     ];
                 } else {
                     menuItems = [
-                        { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>', text: 'Catálogo', route: 'catalog' },
-                        { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>', text: 'Meus Cursos', route: 'my-courses' },
-                        { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>', text: 'Meu Perfil', route: 'profile' }
+                        { text: 'Catálogo', route: 'catalog' },
+                        { text: 'Meus Cursos', route: 'my-courses' },
+                        { text: 'Meu Perfil', route: 'profile' }
                     ];
                 }
 
                 menuContainer.innerHTML = menuItems.map(item => `
-                    <div class="menu-item" data-route="${item.route}" onclick="Router.navigate('${item.route}')">
-                        <div class="menu-icon">${item.icon}</div>
-                        <div class="menu-text">${item.text}</div>
+                    <div class="nav-link" data-route="${item.route}" onclick="Router.navigate('${item.route}')">
+                        ${item.text}
                     </div>
                 `).join('');
             }
@@ -3607,12 +3489,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             Auth.init();
 
-            // Sidebar Toggle
-            document.getElementById('sidebar-toggle').addEventListener('click', () => {
-                document.getElementById('sidebar').classList.toggle('collapsed');
-                document.getElementById('header').classList.toggle('sidebar-collapsed');
-                document.getElementById('main-content').classList.toggle('sidebar-collapsed');
-            });
+
 
             // Login form
             document.getElementById('login-form').addEventListener('submit', (e) => {
